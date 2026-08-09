@@ -1,227 +1,146 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Menu, X, Settings } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CMSContext } from '../context/CMSContext';
+"use client";
+import { useState, useRef } from 'react';
+import { Menu, X, Globe } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
-  const { introState } = useContext(CMSContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const { t, i18n } = useTranslation();
+  const navRef = useRef(null);
+  const menuDrawerRef = useRef(null);
 
-  const isHome = location.pathname === '/';
+  const navLinks = [
+    { name: t('nav.home', 'Home'), id: '' },
+    { name: t('nav.about', 'About'), id: 'about' },
+    { name: t('nav.services', 'Services'), id: 'services' },
+    { name: t('nav.industries', 'Industries'), id: 'industries' },
+    { name: t('nav.projects', 'Projects'), id: 'projects' },
+    { name: t('nav.contact', 'Contact Us'), id: 'contact' },
+  ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+  const changeLanguage = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
+  useGSAP(() => {
+    // Entrance animation
+    gsap.fromTo(navRef.current, 
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.5 }
+    );
+
+    // Scroll effect (transparent to glassmorphism)
+    ScrollTrigger.create({
+      start: 'top -50',
+      end: 99999,
+      onEnter: () => {
+        if (navRef.current) {
+          navRef.current.classList.add('bg-primary/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+          gsap.to(navRef.current, { padding: '1rem 0', duration: 0.5, ease: 'power2.out' });
+        }
+      },
+      onLeaveBack: () => {
+        if (navRef.current) {
+          navRef.current.classList.remove('bg-primary/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+          gsap.to(navRef.current, { padding: '2rem 0', duration: 0.5, ease: 'power2.out' });
+        }
       }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    });
   }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleNavClick = (sectionId) => {
-    setIsOpen(false);
-    if (!isHome) {
-      navigate('/#' + sectionId);
+    if (!isOpen) {
+      gsap.fromTo(menuDrawerRef.current,
+        { yPercent: -100, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
+      );
+      gsap.fromTo('.mobile-nav-link',
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, stagger: 0.05, delay: 0.2, ease: 'power3.out' }
+      );
     } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      gsap.to(menuDrawerRef.current, {
+        yPercent: -100, opacity: 0, duration: 0.4, ease: 'power3.in'
+      });
     }
   };
 
-  const navLinks = [
-    { name: 'Home', id: 'hero' },
-    { name: 'About', id: 'about' },
-    { name: 'Services', id: 'services' },
-    { name: 'Why Choose Us', id: 'why-choose-us' },
-    { name: 'Industries', id: 'industries' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Quality & Safety', id: 'quality-safety' },
-    { name: 'Contact', id: 'contact' },
-  ];
-
   return (
     <nav
-      className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        padding: isScrolled ? '0.8rem 0' : '1.5rem 0',
-        transition: 'all 0.4s ease',
-        background: isScrolled ? 'rgba(7, 11, 19, 0.85)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: isScrolled ? 'blur(12px)' : 'none',
-        borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid transparent',
-      }}
+      ref={navRef}
+      className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500"
     >
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {/* Logo */}
-        <Link
-          to="/"
-          style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
-          onClick={() => isHome && window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          <img
-            id="navbar-logo-img"
-            src="/images/logo.jpg"
-            alt="Sterling Industrial Solutions LLP Logo"
-            style={{
-              height: '48px',
-              borderRadius: '4px',
-              backgroundColor: '#FFFFFF',
-              padding: '4px',
-              border: '1px solid rgba(255,255,255,0.1)'
-            }}
-          />
+      <div className="container flex items-center justify-between mx-auto px-8">
+        <Link href="/" className="flex items-center gap-3">
+          <span className="font-heading font-light tracking-widest text-xl text-white uppercase">
+            Sterling
+          </span>
         </Link>
 
         {/* Desktop Menu */}
-        <div style={{ display: 'none', alignItems: 'center', gap: '2rem' }} className="desktop-menu">
-          {isHome ? (
-            navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => handleNavClick(link.id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#94A3B8',
-                  cursor: 'pointer',
-                  fontWeight: 500,
-                  fontSize: '0.9rem',
-                  transition: 'var(--transition-fast)',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = 'var(--white)')}
-                onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-              >
+        <div className="hidden lg:flex items-center gap-12">
+          {navLinks.map((link) => (
+            <Link
+              key={link.id}
+              href={`/${link.id}`}
+              className="relative group text-sm uppercase tracking-widest"
+            >
+              <span className={`transition-colors duration-300 ${pathname === `/${link.id}` ? 'text-white' : 'text-secondary hover:text-white'}`}>
                 {link.name}
-              </button>
-            ))
-          ) : (
-            <Link to="/" style={{ color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem' }}>
-              Home
+              </span>
+              <span className={`absolute -bottom-2 left-0 w-full h-[1px] bg-white transform origin-left transition-transform duration-300 ${pathname === `/${link.id}` ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></span>
             </Link>
-          )}
-
-          <Link
-            to="/admin"
-            className="btn btn-secondary"
-            style={{
-              padding: '0.5rem 1rem',
-              fontSize: '0.8rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-            }}
-          >
-            <Settings size={14} />
-            Admin Panel
-          </Link>
+          ))}
+          
+          <div className="flex items-center gap-2 pl-6 border-l border-white/10 text-white">
+            <Globe size={16} />
+            <select 
+              value={i18n.language} 
+              onChange={changeLanguage}
+              className="bg-transparent text-white border-none outline-none cursor-pointer text-sm font-light focus:ring-0 uppercase tracking-widest"
+            >
+              <option value="en" className="text-black">EN</option>
+              <option value="es" className="text-black">ES</option>
+              <option value="de" className="text-black">DE</option>
+            </select>
+          </div>
         </div>
 
         {/* Mobile Menu Icon */}
         <button
           onClick={toggleMenu}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--white)',
-            cursor: 'pointer',
-            display: 'block',
-          }}
-          className="mobile-toggle"
+          className="lg:hidden text-white hover:text-accent transition-colors"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={28} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
         </button>
       </div>
 
       {/* Mobile Menu Drawer */}
-      {isOpen && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            background: 'rgba(7, 11, 19, 0.95)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            padding: '2rem 1.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.5rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            zIndex: 999,
-          }}
-        >
-          {isHome ? (
-            navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => handleNavClick(link.id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#94A3B8',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '1.1rem',
-                  textAlign: 'left',
-                }}
-              >
-                {link.name}
-              </button>
-            ))
-          ) : (
-            <Link to="/" onClick={() => setIsOpen(false)} style={{ color: '#94A3B8', fontWeight: 600, fontSize: '1.1rem' }}>
-              Home
-            </Link>
-          )}
+      <div
+        ref={menuDrawerRef}
+        className="absolute top-full left-0 right-0 bg-primary/95 backdrop-blur-2xl border-b border-white/5 px-8 py-8 flex-col gap-6 -translate-y-full opacity-0 pointer-events-none lg:hidden"
+        style={{ display: isOpen ? 'flex' : 'none', pointerEvents: isOpen ? 'auto' : 'none' }}
+      >
+        {navLinks.map((link) => (
           <Link
-            to="/admin"
-            onClick={() => setIsOpen(false)}
-            className="btn btn-primary"
-            style={{
-              padding: '0.75rem 1.5rem',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-            }}
+            key={link.id}
+            href={`/${link.id}`}
+            onClick={() => toggleMenu()}
+            className="mobile-nav-link text-white font-light text-lg tracking-widest uppercase"
           >
-            <Settings size={16} />
-            Admin Panel (CMS)
+            {link.name}
           </Link>
-        </div>
-      )}
-
-      {/* Injecting media queries styles directly for navbar responsiveness */}
-      <style>{`
-        @media (min-width: 992px) {
-          .desktop-menu {
-            display: flex !important;
-          }
-          .mobile-toggle {
-            display: none !important;
-          }
-        }
-      `}</style>
+        ))}
+      </div>
     </nav>
   );
 };

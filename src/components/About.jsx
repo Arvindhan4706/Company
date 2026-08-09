@@ -1,135 +1,68 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Award, Wrench, Users } from 'lucide-react';
+"use client";
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+import TextReveal from './animations/TextReveal';
 
 const About = () => {
-  const pillars = [
-    {
-      icon: <ShieldCheck size={28} className="icon-emerald" />,
-      title: 'Reliability',
-      desc: 'Count on us for robust and fail-safe structures engineered to stand the test of time under the most demanding conditions.',
-    },
-    {
-      icon: <Award size={28} className="icon-emerald" />,
-      title: 'Quality Assurance',
-      desc: 'Adhering to strict international standards and comprehensive QA/QC inspection programs at every construction stage.',
-    },
-    {
-      icon: <Wrench size={28} className="icon-emerald" />,
-      title: 'Technical Expertise',
-      desc: 'Backed by specialized engineers and highly skilled craftsmen utilizing state-of-the-art machinery and methods.',
-    },
-    {
-      icon: <Users size={28} className="icon-emerald" />,
-      title: 'Customer Satisfaction',
-      desc: 'Fostering long-term partnerships through client-centric custom solutions, transparent reporting, and dedicated support.',
-    },
-  ];
+  const sectionRef = useRef(null);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
-    },
-  };
+  useGSAP(() => {
+    const elements = gsap.utils.toArray('.about-animate');
+    
+    gsap.fromTo(elements,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      }
+    );
+  }, { scope: sectionRef });
 
   return (
-    <section id="about" className="section section-bg-light">
-      <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3.5rem', alignItems: 'center' }} className="about-grid">
-          {/* Text content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8 }}
-            style={{ textAlign: 'left' }}
-          >
-            <div className="section-badge">Who We Are</div>
-            <h2 className="section-title">
-              Engineering Reliable Solutions <br />
-              <span style={{ color: 'var(--accent)' }}>for Industrial Growth</span>
-            </h2>
-            <p style={{ color: '#E2E8F0', fontSize: '1.1rem', marginBottom: '1.5rem', fontWeight: 500 }}>
-              Sterling Industrial Solutions LLP (established 2026) is a premier industrial engineering and infrastructure solutions partner.
-            </p>
-            <p style={{ color: '#94A3B8', marginBottom: '1.5rem' }}>
-              We provide comprehensive, end-to-end services across industrial fabrication, structural erection, power distribution networks, and critical medical infrastructure. We bridge the gap between architectural plans and structural reality, implementing reliable infrastructure across India's manufacturing and healthcare sectors.
-            </p>
-            <p style={{ color: '#94A3B8', fontStyle: 'italic', borderLeft: '3px solid var(--accent)', paddingLeft: '1rem', margin: '2rem 0' }}>
-              "Building Trust. Delivering Quality. Driving Progress." — This is our promise to every client and partner on every project we execute.
-            </p>
-          </motion.div>
-
-          {/* Pillars Cards */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-              gap: '1.5rem',
-            }}
-          >
-            {pillars.map((pillar, idx) => (
-              <motion.div
-                key={idx}
-                variants={cardVariants}
-                className="glass-panel hover-lift"
-                style={{
-                  padding: '2rem',
-                  textAlign: 'left',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1rem',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
-                  background: 'rgba(15, 23, 42, 0.4)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(16, 185, 129, 0.1)',
-                    marginBottom: '0.5rem',
-                  }}
-                >
-                  {pillar.icon}
-                </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>{pillar.title}</h3>
-                <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: 1.5 }}>{pillar.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+    <section ref={sectionRef} id="about" className="py-24 lg:py-32 bg-primary border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-8 max-w-4xl text-center">
+        
+        <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-8 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          Our Foundation
         </div>
-      </div>
+        
+        <h2 className="about-animate text-3xl md:text-5xl lg:text-6xl font-heading font-light text-white leading-tight tracking-tight mb-12">
+          Precision engineering for a <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-secondary">kinetic world</span>.
+        </h2>
 
-      <style>{`
-        .icon-emerald {
-          color: var(--accent);
-        }
-        @media (min-width: 992px) {
-          .about-grid {
-            grid-template-columns: 1fr 1.2fr !important;
-          }
-        }
-      `}</style>
+        <TextReveal 
+          as="p" 
+          delay={0.1}
+          className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-8 max-w-3xl mx-auto"
+        >
+          Sterling Industrial Solutions LLP is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.
+        </TextReveal>
+
+        <TextReveal 
+          as="p" 
+          delay={0.2}
+          className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-16 max-w-3xl mx-auto"
+        >
+          Our expertise spans end-to-end heavy metal fabrication, rigorous structural erection, high-voltage power distribution networks, and the integration of highly complex, compliant medical pipeline systems. We do not just build facilities; we engineer automated, fault-tolerant ecosystems designed to maximize uptime and operational efficiency for the most demanding industries.
+        </TextReveal>
+        
+        <div className="about-animate text-white text-base md:text-lg font-light uppercase tracking-widest border-y border-white/10 py-8 mt-16">
+          Building Trust. Delivering Quality. Driving Progress.
+        </div>
+
+      </div>
     </section>
   );
 };

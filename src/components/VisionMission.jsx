@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+
 import { motion } from 'framer-motion';
 import { Eye, Rocket } from 'lucide-react';
 
@@ -47,7 +48,7 @@ const VisionMission = () => {
             </h3>
             
             <p style={{ color: '#E2E8F0', fontSize: '1.05rem', lineHeight: 1.6, fontWeight: 400 }}>
-              "To become a trusted leader in industrial and infrastructure solutions through innovation, reliability, and excellence."
+              "To be the undisputed leader in next-generation industrial engineering, setting global benchmarks in mechanical precision, structural resilience, and automated infrastructure."
             </p>
           </motion.div>
 
@@ -85,7 +86,7 @@ const VisionMission = () => {
             </h3>
             
             <p style={{ color: '#E2E8F0', fontSize: '1.05rem', lineHeight: 1.6, fontWeight: 400 }}>
-              "To deliver cost-effective, reliable, and high-quality engineering solutions that exceed client expectations while fostering long-term partnerships."
+              "To architect and execute flawless heavy-mechanical solutions that drive our clients' operational success, ensuring absolute safety, zero-variance quality, and on-time delivery across every project phase."
             </p>
           </motion.div>
         </div>

@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from 'react';
+"use client";
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    quote: "Sterling Industrial Solutions executed our manufacturing plant erection project ahead of schedule. Their rigging safety protocols and technical precision in machinery alignment were outstanding.",
+    quote: "Sterling engineered the complete structural and electromechanical integration for our new automated assembly line. Their precision in heavy rigging and SCADA deployment reduced our baseline commissioning time by 22%. Unmatched mechatronics expertise.",
     name: "Rajesh K. Sharma",
-    role: "VP of Operations",
-    company: "Vanguard Chemical Industries",
+    role: "Chief Automation Officer",
+    company: "Vanguard Heavy Industries",
     rating: 5
   },
   {
-    quote: "We partnered with Sterling for our hospital expansion wing. The execution of certified Medical Gas Pipeline Systems (MGPS) was clean, code-compliant, and audited perfectly on the first pass.",
+    quote: "We required a zero-variance, ISO-certified Medical Gas Pipeline System (MGPS) for our surgical ICU wing. Sterling delivered flawless fluid-dynamics engineering with fully redundant safety architectures. They are the gold standard for clinical infrastructure.",
     name: "Dr. Amit Varma",
-    role: "Infrastructure Director",
+    role: "Director of Clinical Engineering",
     company: "Metro Care Healthcare Group",
     rating: 5
   },
   {
-    quote: "Their electrical team upgraded our primary high-voltage substations and cable tray grids with zero impact on our existing operations. Professional execution from start to finish.",
+    quote: "Executing a live switchover of our primary high-voltage substation required extreme coordination. Sterling's engineers mapped the grid topology and executed the switchover with exactly zero minutes of unplanned downtime. Exceptional technical rigor.",
     name: "Vikram Sengupta",
-    role: "Project Manager",
-    company: "Apex Automotive India",
+    role: "Lead Systems Integrator",
+    company: "Apex Automotive Automation",
     rating: 5
   }
 ];
 
 const Testimonials = () => {
-  const [index, setIndex] = useState(0);
+  const [[current, direction], setSlide] = useState([0, 0]);
 
-  const handleNext = () => {
-    setIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const handlePrev = () => {
-    setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const paginate = (newDirection) => {
+    setSlide(([prevCurrent]) => {
+      const nextIndex = (prevCurrent + newDirection + testimonials.length) % testimonials.length;
+      return [nextIndex, newDirection];
+    });
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
-      handleNext();
+      paginate(1);
     }, 6000);
     return () => clearInterval(timer);
   }, []);
@@ -61,12 +61,7 @@ const Testimonials = () => {
     })
   };
 
-  const [[current, direction], setSlide] = useState([0, 0]);
 
-  const paginate = (newDirection) => {
-    const nextIndex = (current + newDirection + testimonials.length) % testimonials.length;
-    setSlide([nextIndex, newDirection]);
-  };
 
   const activeTestimonial = testimonials[current];
 

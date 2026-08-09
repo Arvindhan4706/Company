@@ -1,15 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  /* Colors */
-  --primary: #0A1931;       /* Deep industrial dark blue */
-  --primary-light: #15305B; /* Secondary dark blue for cards/borders */
-  --secondary: #64748B;     /* Sleek steel grey */
-  --secondary-dark: #334155;
-  --accent: #10B981;        /* Modern energy green */
-  --accent-hover: #059669;
-  --neutral-dark: #070B13;  /* Ultimate body background */
-  --neutral-light: #F8FAFC; /* Light gray background for contrast */
+  /* Cinematic Dark Palette */
+  --primary: #000000;       /* Pitch black base */
+  --primary-light: #0a0a0a; /* Deep grey for section contrast */
+  --secondary: #a1a1aa;     /* Muted grey for secondary text */
+  --secondary-dark: #27272a;
+  --accent: #ffffff;        /* High contrast white for accents */
+  --accent-hover: #e4e4e7;
+  --neutral-dark: #000000;
+  --neutral-light: #09090b;
   --white: #FFFFFF;
   
   /* Statuses */
@@ -17,34 +21,36 @@
   --warning: #F59E0B;
   --error: #EF4444;
 
-  /* Typography */
-  --font-heading: 'Montserrat', 'Inter', sans-serif;
+  /* Cinematic Typography */
+  --font-heading: 'Space Grotesk', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  /* Spacing */
+  /* Cinematic Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
-  --spacing-md: 2rem;
-  --spacing-lg: 4rem;
-  --spacing-xl: 8rem;
+  --spacing-md: 2.5rem;
+  --spacing-lg: 6rem;
+  --spacing-xl: 12rem;
 
   /* Effects */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.25);
-  --shadow-accent: 0 4px 14px rgba(16, 185, 129, 0.3);
-  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8);
+  --shadow-accent: 0 0 20px rgba(255, 255, 255, 0.1);
+  --transition-fast: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
   
-  --backdrop-blur: blur(12px);
-  --glass-bg: rgba(10, 25, 49, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --backdrop-blur: blur(20px);
+  --glass-bg: rgba(0, 0, 0, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.05);
   
   scroll-behavior: smooth;
 }
+
+
 
 /* Base resets */
 * {
@@ -55,9 +61,9 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--neutral-dark);
-  color: #E2E8F0;
-  line-height: 1.6;
+  background-color: var(--primary);
+  color: #f4f4f5;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -73,8 +79,9 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--white);
-  font-weight: 700;
-  line-height: 1.25;
+  font-weight: 400; /* Thinner weights for cinematic feel */
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 a {
@@ -91,14 +98,15 @@ button, input, textarea, select {
 /* Layout Utilities */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 .section {
   padding: var(--spacing-lg) 0;
   position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -108,51 +116,59 @@ button, input, textarea, select {
 }
 
 .section-bg-dark {
-  background-color: var(--neutral-dark);
+  background-color: var(--primary);
 }
 
 .section-bg-light {
-  background-color: #0d1527; /* Darker blue-grey to contrast with absolute dark */
+  background-color: var(--primary-light);
 }
 
 /* Component Typography */
 .section-header {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 4rem auto;
+  max-width: 800px;
+  margin: 0 0 5rem 0; /* Left aligned for modern cinematic feel */
 }
 
 .section-badge {
   display: inline-block;
-  padding: 0.35rem 1rem;
-  background-color: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  color: var(--accent);
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-family: var(--font-heading);
+  position: relative;
+}
+
+.section-badge::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: 1rem;
+  width: 40px;
+  height: 1px;
+  background-color: var(--secondary-dark);
 }
 
 .section-title {
-  font-size: 2.25rem;
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.02em;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
 }
 
 @media (min-width: 768px) {
   .section-title {
-    font-size: 3rem;
+    font-size: 4.5rem;
   }
 }
 
 .section-subtitle {
   color: var(--secondary);
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 1.25rem;
+  font-weight: 300;
+  max-width: 600px;
 }
 
 /* Button UI */
@@ -160,26 +176,26 @@ button, input, textarea, select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.85rem 2rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  font-weight: 400;
+  border-radius: 100px; /* Pill shape for premium feel */
   cursor: pointer;
   transition: var(--transition-fast);
-  border: none;
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
 }
 
 .btn-primary {
-  background-color: var(--accent);
+  background-color: var(--white);
   color: var(--primary);
-  box-shadow: var(--shadow-accent);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
+  background-color: #e4e4e7;
+  transform: scale(1.02);
 }
 
 .btn-secondary {
@@ -190,8 +206,7 @@ button, input, textarea, select {
 
 .btn-secondary:hover {
   background-color: rgba(255, 255, 255, 0.05);
-  border-color: var(--white);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Glassmorphism Class */
@@ -203,35 +218,69 @@ button, input, textarea, select {
   border-radius: var(--radius-md);
 }
 
-/* Form Styles */
+/* Animations helpers */
+.hover-lift {
+  transition: var(--transition-normal);
+}
+.hover-lift:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Cinematic Utilities */
+.text-gradient {
+  background: linear-gradient(to right, #ffffff, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Forms */
 .form-group {
-  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  text-align: left;
 }
 
 .form-label {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  color: #94A3B8;
+  color: var(--secondary);
 }
 
-.form-control {
+.form-control, .input-field {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: rgba(15, 23, 42, 0.6);
+  padding: 0.875rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
   color: var(--white);
+  font-size: 1rem;
   transition: var(--transition-fast);
 }
 
-.form-control:focus {
+.form-control:focus, .input-field:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.form-control::placeholder, .input-field::placeholder {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 textarea.form-control {
@@ -239,42 +288,7 @@ textarea.form-control {
   resize: vertical;
 }
 
-/* Admin / Dashboard Specifics */
-.admin-card {
-  background-color: #0F172A;
-  border: 1px solid #1E293B;
-  border-radius: var(--radius-md);
-  padding: 2rem;
-  box-shadow: var(--shadow-md);
-}
-
-.admin-title {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #1E293B;
-  padding-bottom: 0.75rem;
-}
-
-/* Animations helpers */
-.hover-lift {
-  transition: var(--transition-normal);
-}
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--neutral-dark);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--primary-light);
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary);
+/* Fix global page padding under navbar */
+.page-wrapper {
+  padding-top: 100px;
 }

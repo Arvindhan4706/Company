@@ -1,15 +1,19 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+"use client";
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { CMSContext } from '../context/CMSContext';
-import { ArrowLeft, Save, Plus, Edit2, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { stats, projects, updateStats, addProject, editProject, deleteProject } = useContext(CMSContext);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return sessionStorage.getItem('adminAuth') === 'true';
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('adminAuth') === 'true';
+    }
+    return false;
   });
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
@@ -190,7 +194,7 @@ const AdminDashboard = () => {
           </form>
           
           <button
-            onClick={() => navigate('/')}
+            onClick={() => router.push('/')}
             style={{
               background: 'transparent',
               border: 'none',
@@ -219,7 +223,7 @@ const AdminDashboard = () => {
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', gap: '1rem' }}>
           <div>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => router.push('/')}
               style={{
                 display: 'flex',
                 alignItems: 'center',

@@ -1,146 +1,119 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Wrench, ArrowUpRight, Zap, HeartPulse, HardHat } from 'lucide-react';
+"use client";
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+import TextReveal from './animations/TextReveal';
 
 const Services = () => {
+  const sectionRef = useRef(null);
+
   const services = [
     {
-      icon: <Wrench size={32} style={{ color: 'var(--accent)' }} />,
-      title: 'Fabrication Works',
-      description: 'End-to-end heavy metal and structural steel fabrication services. We build custom-engineered building frameworks, industrial machinery platforms, heavy piping systems, ducting networks, and specialized metal enclosures. All components undergo rigorous ultrasonic and magnetic particle quality testing.',
-      bullets: ['Heavy Structural Steelwork', 'Custom Machinery Platforms', 'Piping & Vessel Fabrication', 'Pressure Vessel Welding']
+      id: '01',
+      title: 'Heavy Structural Fabrication',
+      description: 'End-to-end heavy metal and structural steel fabrication engineered for absolute structural integrity. We design, weld, and construct custom frameworks, industrial machinery platforms, and complex heavy piping systems tested to withstand extreme kinetic and thermal tolerances.',
+      features: ['CNC Precision Machining', 'Certified TIG/MIG Welding', 'Industrial Boiler & Tank Fabrication', 'Non-Destructive Testing (NDT)']
     },
     {
-      icon: <HardHat size={32} style={{ color: 'var(--accent)' }} />,
-      title: 'Erection & Installation Works',
-      description: 'Safe and precise onsite erection and alignment of heavy structural elements, overhead cranes, manufacturing equipment, and mechanical systems. Our rigging experts and engineers ensure that all equipment is placed, balanced, and secured to millwright-grade tolerances.',
-      bullets: ['Structural Columns & Trusses', 'Equipment & Machinery Rigging', 'Millwright Alignment Services', 'High-Rise Steel Erection']
+      id: '02',
+      title: 'Kinematic Erection & Installation',
+      description: 'Safe, millwright-grade precision for onsite erection and alignment of heavy structural elements, overhead cranes, and rotating mechanical systems. We execute complex rigging and heavy-lifting protocols to ensure zero-variance alignment.',
+      features: ['Heavy Machinery Rigging', 'Overhead Crane Alignment', 'Conveyor System Assembly', 'Vibration Analysis & Calibration']
     },
     {
-      icon: <Zap size={32} style={{ color: 'var(--accent)' }} />,
-      title: 'Electrical Works',
-      description: 'Comprehensive industrial and commercial electrical contracting. We install high-voltage and low-voltage substations, main distribution boards, motor control centers (MCC), cable tray grids, cable terminations, facility illumination, and state-of-the-art automation systems.',
-      bullets: ['Power Distribution Substations', 'Motor Control Centers (MCC)', 'Industrial Cable Trays & Routing', 'Emergency Generator Systems']
+      id: '03',
+      title: 'Mechatronics & Electrical Automation',
+      description: 'Complete high-voltage and low-voltage infrastructure solutions integrated with state-of-the-art industrial automation. We engineer power distribution networks designed to support heavy mechanical loads and autonomous robotics.',
+      features: ['PLC Automation & SCADA', 'Motor Control Centers (MCC)', 'HT/LT Substation Design', 'Fail-safe Backup Grids']
     },
     {
-      icon: <HeartPulse size={32} style={{ color: 'var(--accent)' }} />,
-      title: 'Medical Infrastructure Solutions',
-      description: 'Highly specialized, compliant clinical and healthcare engineering. We design and install certified Medical Gas Pipeline Systems (MGPS), medical-grade air Compressors, vacuum stations, modular ICU/OT cleanrooms, ceiling pendants, and backup nurse call electrical integration.',
-      bullets: ['Medical Gas Pipeline Systems (MGPS)', 'Sterile ICU & OT Cleanrooms', 'Anesthesia Scavenging Systems', 'Pendant & Ward Utilities Setup']
+      id: '04',
+      title: 'Medical & Cleanroom Infrastructure',
+      description: 'Highly specialized, clinically compliant engineering for healthcare environments. We deliver flawlessly audited fluid dynamics networks, ultra-sterile cleanrooms, and life-critical electrical integrations.',
+      features: ['Medical Gas Pipeline Systems (MGPS)', 'ISO-Certified Modular Cleanrooms', 'Critical Care HVAC & Ventilation', 'Redundant Life-Safety Power Systems']
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 }
-    }
-  };
+  useGSAP(() => {
+    // Header animation
+    gsap.fromTo('.services-header-badge',
+      { y: 50, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      }
+    );
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
+    // Staggered service rows
+    const rows = gsap.utils.toArray('.service-row');
+    rows.forEach((row, index) => {
+      gsap.fromTo(row,
+        { y: 50, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: row,
+            start: 'top 85%',
+          }
+        }
+      );
+    });
+  }, { scope: sectionRef });
 
   return (
-    <section id="services" className="section section-bg-dark">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-badge">Core Capabilities</span>
-          <h2 className="section-title">Professional Industrial Solutions</h2>
-          <p className="section-subtitle">
-            Providing integrated, engineering-led infrastructure and construction services across diverse industrial sectors.
-          </p>
+    <section ref={sectionRef} id="services" className="py-24 lg:py-40 bg-primary-light">
+      <div className="container mx-auto px-8 max-w-7xl">
+        
+        <div className="max-w-3xl mb-24">
+          <span className="services-header-badge inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Core Capabilities
+          </span>
+          <TextReveal as="h2" splitType="char" className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight">
+            Industrial Solutions
+          </TextReveal>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2rem'
-          }}
-        >
+        <div className="border-t border-white/5">
           {services.map((service, index) => (
-            <motion.div
+            <div
               key={index}
-              variants={cardVariants}
-              className="glass-panel hover-lift"
-              style={{
-                padding: '2.5rem',
-                textAlign: 'left',
-                background: 'rgba(21, 48, 91, 0.15)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                position: 'relative',
-                overflow: 'hidden'
-              }}
+              className="service-row group py-16 border-b border-white/5 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 hover:bg-white/[0.02] transition-colors duration-500"
             >
-              {/* Top accent line */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '3px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)'
-              }} className="card-top-accent" />
-
-              <div>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(16, 185, 129, 0.07)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '1.5rem',
-                  border: '1px solid rgba(16, 185, 129, 0.15)'
-                }}>
-                  {service.icon}
-                </div>
-
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div className="flex gap-6 items-baseline px-4">
+                <span className="font-heading text-lg text-secondary-dark font-light transition-colors duration-500 group-hover:text-white/20">
+                  {service.id}
+                </span>
+                <h3 className="text-3xl md:text-4xl font-heading font-light text-white tracking-tight">
                   {service.title}
                 </h3>
-
-                <p style={{ color: '#94A3B8', fontSize: '0.925rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              </div>
+              
+              <div className="px-4 lg:px-0">
+                <p className="text-secondary text-lg font-light leading-relaxed mb-8 max-w-xl">
                   {service.description}
                 </p>
-              </div>
-
-              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '1rem', marginTop: 'auto' }}>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                  {service.bullets.map((bullet, idx) => (
-                    <li key={idx} style={{ color: '#E2E8F0', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--accent)' }} />
-                      {bullet}
+                
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {service.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center gap-3 text-white text-sm font-light">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                      {feature}
                     </li>
                   ))}
                 </ul>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </div>
+        </div>
 
-      <style>{`
-        .glass-panel:hover .card-top-accent {
-          background-color: var(--accent) !important;
-          transition: all 0.3s ease;
-        }
-      `}</style>
+      </div>
     </section>
   );
 };

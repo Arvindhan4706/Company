@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+"use client";
+import { useState, useRef } from "react";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+  const containerRef = useRef(null);
+  
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -41,7 +48,7 @@ const Contact = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
@@ -50,90 +57,108 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-    // Simulate backend submission delay
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({
-        fullName: '',
-        companyName: '',
-        email: '',
-        phone: '',
-        serviceRequired: 'Fabrication Works',
-        projectDetails: ''
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          company: formData.companyName,
+          message: formData.projectDetails,
+          service: formData.serviceRequired
+        })
       });
-    }, 1500);
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({
+          fullName: '',
+          companyName: '',
+          email: '',
+          phone: '',
+          serviceRequired: 'Fabrication Works',
+          projectDetails: ''
+        });
+      }
+    } catch (error) {
+      console.error('Network error', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  useGSAP(() => {
+    gsap.fromTo('.contact-left',
+      { opacity: 0, x: -30 },
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
+    );
+    gsap.fromTo('.contact-right',
+      { opacity: 0, x: 30 },
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.out', delay: 0.2, scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
+    );
+  }, { scope: containerRef });
+
   return (
-    <section id="contact" className="section section-bg-light">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-badge">Get In Touch</span>
-          <h2 className="section-title">Let's Build Together</h2>
-          <p className="section-subtitle">
+    <section ref={containerRef} id="contact" className="py-24 lg:py-32 bg-primary-light border-y border-white/5">
+      <div className="container mx-auto px-8 max-w-7xl">
+        <div className="max-w-3xl mb-16">
+          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Get In Touch
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-6">
+            Let's Build Together
+          </h2>
+          <p className="text-lg text-secondary font-light leading-relaxed max-w-2xl">
             Contact our project management team to discuss your engineering layouts, fabrication timelines, or request an initial project estimate.
           </p>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '3rem',
-            alignItems: 'start'
-          }}
-          className="contact-layout"
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Contact Details & Map */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem', textAlign: 'left' }}
-          >
+          <div className="contact-left flex flex-col gap-12">
             <div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--white)' }}>
+              <h3 className="text-2xl font-light text-white mb-8">
                 Sterling Industrial Solutions LLP
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
-                  <MapPin size={20} style={{ color: 'var(--accent)', marginTop: '0.25rem' }} />
+              <div className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <MapPin size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 style={{ fontSize: '0.9rem', color: '#64748B', fontWeight: 600 }}>ADDRESS</h4>
-                    <p style={{ color: '#E2E8F0', fontSize: '0.95rem' }}>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">ADDRESS</h4>
+                    <p className="text-white/80 text-sm font-light leading-relaxed">
                       Plot No. 45, Industrial Suburb, 2nd Phase,<br />
                       Peenya Industrial Area, Bengaluru, KA 560058
                     </p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
-                  <Phone size={20} style={{ color: 'var(--accent)', marginTop: '0.25rem' }} />
+                <div className="flex items-start gap-4">
+                  <Phone size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 style={{ fontSize: '0.9rem', color: '#64748B', fontWeight: 600 }}>PHONE</h4>
-                    <p style={{ color: '#E2E8F0', fontSize: '0.95rem' }}>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">PHONE</h4>
+                    <p className="text-white/80 text-sm font-light leading-relaxed">
                       +91 80 4928 3000 / +91 98450 12345
                     </p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
-                  <Mail size={20} style={{ color: 'var(--accent)', marginTop: '0.25rem' }} />
+                <div className="flex items-start gap-4">
+                  <Mail size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 style={{ fontSize: '0.9rem', color: '#64748B', fontWeight: 600 }}>EMAIL</h4>
-                    <p style={{ color: '#E2E8F0', fontSize: '0.95rem' }}>
-                      info@sterlingindustrial.com / projects@sterlingindustrial.com
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">EMAIL</h4>
+                    <p className="text-white/80 text-sm font-light leading-relaxed">
+                      info@sterlingindustrial.com<br/>projects@sterlingindustrial.com
                     </p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
-                  <Clock size={20} style={{ color: 'var(--accent)', marginTop: '0.25rem' }} />
+                <div className="flex items-start gap-4">
+                  <Clock size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 style={{ fontSize: '0.9rem', color: '#64748B', fontWeight: 600 }}>BUSINESS HOURS</h4>
-                    <p style={{ color: '#E2E8F0', fontSize: '0.95rem' }}>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">BUSINESS HOURS</h4>
+                    <p className="text-white/80 text-sm font-light leading-relaxed">
                       Monday – Saturday: 08:30 AM – 06:00 PM (IST)
                     </p>
                   </div>
@@ -142,17 +167,7 @@ const Contact = () => {
             </div>
 
             {/* Styled Map Container */}
-            <div
-              style={{
-                width: '100%',
-                height: '250px',
-                borderRadius: 'var(--radius-md)',
-                overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                position: 'relative'
-              }}
-            >
-              {/* Using a clean dark styled OpenStreetMap iframe */}
+            <div className="w-full h-64 border border-white/5 overflow-hidden filter grayscale contrast-125 opacity-80">
               <iframe
                 title="Sterling Industrial Location Map"
                 width="100%"
@@ -162,141 +177,92 @@ const Contact = () => {
                 marginHeight="0"
                 marginWidth="0"
                 src="https://maps.google.com/maps?width=100%25&amp;height=250&amp;hl=en&amp;q=Peenya%20Industrial%20Area,%20Bengaluru+(Sterling%20Industrial%20Solutions%20LLP)&amp;t=m&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                style={{ filter: 'invert(90%) hue-rotate(180deg) contrast(120%)' }}
+                className="invert hue-rotate-180"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6 }}
-            className="glass-panel"
-            style={{
-              padding: '2.5rem',
-              background: 'rgba(21, 48, 91, 0.12)',
-              border: '1px solid rgba(255, 255, 255, 0.04)'
-            }}
-          >
+          <div className="contact-right p-8 lg:p-12 bg-white/[0.02] border border-white/5">
             {isSubmitted ? (
-              <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-                <div style={{ display: 'inline-flex', color: 'var(--accent)', marginBottom: '1.5rem' }}>
-                  <CheckCircle size={64} />
+              <div className="text-center py-16">
+                <div className="inline-flex text-accent mb-6">
+                  <CheckCircle size={64} strokeWidth={1} />
                 </div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Inquiry Submitted Successfully</h3>
-                <p style={{ color: '#94A3B8', fontSize: '0.95rem', marginBottom: '2rem' }}>
+                <h3 className="text-2xl font-light text-white mb-4">Inquiry Submitted Successfully</h3>
+                <p className="text-secondary text-sm font-light mb-8">
                   Thank you for contacting Sterling Industrial Solutions. Our regional project estimator will review your parameters and get in touch with your team shortly.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="btn btn-secondary"
-                  style={{ fontSize: '0.9rem' }}
+                  className="px-6 py-3 border border-white/20 text-white font-heading text-xs tracking-widest uppercase hover:bg-white hover:text-primary transition-colors duration-300"
                 >
                   Send Another Inquiry
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '1.5rem', color: 'var(--white)' }}>
-                  Request a Quote / Consultation
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+                <h3 className="text-2xl font-light text-white mb-2">
+                  Request a Quote
                 </h3>
 
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '1.25rem',
-                    marginBottom: '1.5rem'
-                  }}
-                  className="form-grid-2"
-                >
-                  <div className="form-group">
-                    <label className="form-label">Full Name *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Full Name *</label>
                     <input
                       type="text"
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className="form-control"
+                      className={`w-full bg-white/5 border ${formErrors.fullName ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. John Doe"
-                      style={{ borderColor: formErrors.fullName ? 'var(--error)' : '' }}
                     />
-                    {formErrors.fullName && (
-                      <span style={{ color: 'var(--error)', fontSize: '0.75rem' }}>{formErrors.fullName}</span>
-                    )}
                   </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Company Name</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Company</label>
                     <input
                       type="text"
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
-                      className="form-control"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
                       placeholder="e.g. Acme Corp"
                     />
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '1.25rem',
-                    marginBottom: '1.5rem'
-                  }}
-                  className="form-grid-2"
-                >
-                  <div className="form-group">
-                    <label className="form-label">Email Address *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Email Address *</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="form-control"
+                      className={`w-full bg-white/5 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. john@acme.com"
-                      style={{ borderColor: formErrors.email ? 'var(--error)' : '' }}
                     />
-                    {formErrors.email && (
-                      <span style={{ color: 'var(--error)', fontSize: '0.75rem' }}>{formErrors.email}</span>
-                    )}
                   </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Phone Number *</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Phone *</label>
                     <input
                       type="text"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="form-control"
+                      className={`w-full bg-white/5 border ${formErrors.phone ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. +91 98450 12345"
-                      style={{ borderColor: formErrors.phone ? 'var(--error)' : '' }}
                     />
-                    {formErrors.phone && (
-                      <span style={{ color: 'var(--error)', fontSize: '0.75rem' }}>{formErrors.phone}</span>
-                    )}
                   </div>
                 </div>
 
-                <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                  <label className="form-label">Service Required</label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Service Required</label>
                   <select
                     name="serviceRequired"
                     value={formData.serviceRequired}
                     onChange={handleChange}
-                    className="form-control"
-                    style={{
-                      appearance: 'none',
-                      backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2394A3B8\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'/%3E%3C/svg%3E")',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'right 1rem center',
-                      backgroundSize: '1.25em'
-                    }}
+                    className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none"
                   >
                     <option value="Fabrication Works">Fabrication Works</option>
                     <option value="Erection Works">Erection & Installation Works</option>
@@ -307,54 +273,34 @@ const Contact = () => {
                   </select>
                 </div>
 
-                <div className="form-group" style={{ marginBottom: '2rem' }}>
-                  <label className="form-label">Project Details & Requirements *</label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Requirements *</label>
                   <textarea
                     name="projectDetails"
                     value={formData.projectDetails}
                     onChange={handleChange}
-                    className="form-control"
+                    rows="4"
+                    className={`w-full bg-white/5 border ${formErrors.projectDetails ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm resize-y`}
                     placeholder="Briefly describe your required work parameters, schedules, or specifications..."
-                    style={{ borderColor: formErrors.projectDetails ? 'var(--error)' : '' }}
                   />
-                  {formErrors.projectDetails && (
-                    <span style={{ color: 'var(--error)', fontSize: '0.75rem' }}>{formErrors.projectDetails}</span>
-                  )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn btn-primary"
-                  style={{ width: '100%', padding: '1rem', justifyContent: 'center' }}
+                  className="w-full py-4 mt-4 bg-white text-primary font-heading tracking-widest uppercase text-sm font-medium flex items-center justify-center gap-3 hover:bg-white/90 transition-colors duration-300"
                 >
-                  {isSubmitting ? (
-                    'Processing Inquiry...'
-                  ) : (
+                  {isSubmitting ? 'Processing...' : (
                     <>
-                      Submit Request
-                      <Send size={16} />
+                      Submit Request <Send size={16} />
                     </>
                   )}
                 </button>
               </form>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
-
-      <style>{`
-        @media (min-width: 768px) {
-          .form-grid-2 {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-        @media (min-width: 992px) {
-          .contact-layout {
-            grid-template-columns: 1fr 1.25fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };

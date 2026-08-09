@@ -1,80 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+"use client";
 import { ArrowUp } from 'lucide-react';
+import Link from 'next/link';
 
 const Footer = () => {
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleNavClick = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <footer
-      style={{
-        backgroundColor: '#070B13',
-        color: '#94A3B8',
-        padding: '5rem 0 2rem 0',
-        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-        textAlign: 'left'
-      }}
-    >
-      <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '3rem',
-            marginBottom: '4rem'
-          }}
-        >
+    <footer className="bg-primary pt-24 pb-8 border-t border-white/5 text-left">
+      <div className="container px-8 mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Info */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <img
-                src="/images/logo.jpg"
-                alt="Sterling Industrial Solutions LLP Logo"
-                style={{
-                  height: '52px',
-                  borderRadius: '4px',
-                  backgroundColor: '#FFFFFF',
-                  padding: '4px',
-                  border: '1px solid rgba(255,255,255,0.1)'
-                }}
-              />
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-heading font-light tracking-widest text-2xl text-white uppercase">
+                Sterling
+              </span>
             </div>
-            <p style={{ fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            <p className="text-sm text-secondary font-light leading-relaxed mb-6">
               Engineering reliable solutions for industrial growth. Serving fabrication, erection, power distribution, and clinical medical utility setups across India.
             </p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
+            <div className="flex gap-4">
               <a
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255,255,255,0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#94A3B8',
-                  transition: 'var(--transition-fast)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  e.currentTarget.style.color = 'var(--primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
-                  e.currentTarget.style.color = '#94A3B8';
-                }}
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
               </a>
@@ -82,176 +34,98 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255,255,255,0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#94A3B8',
-                  transition: 'var(--transition-fast)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  e.currentTarget.style.color = 'var(--primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
-                  e.currentTarget.style.color = '#94A3B8';
-                }}
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255,255,255,0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#94A3B8',
-                  transition: 'var(--transition-fast)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  e.currentTarget.style.color = 'var(--primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
-                  e.currentTarget.style.color = '#94A3B8';
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 style={{ color: 'var(--white)', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
-              Navigation Links
+            <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
+              Navigation
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.875rem' }}>
+            <ul className="flex flex-col gap-3 text-sm font-light">
               <li>
-                <button onClick={() => handleNavClick('about')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/about" className="text-secondary hover:text-white transition-colors duration-300">
                   About Company
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('services')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
                   Core Services
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('why-choose-us')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
-                  Why Choose Us
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNavClick('industries')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/industries" className="text-secondary hover:text-white transition-colors duration-300">
                   Industries We Serve
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('projects')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/projects" className="text-secondary hover:text-white transition-colors duration-300">
                   Featured Projects
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Industry Services */}
           <div>
-            <h4 style={{ color: 'var(--white)', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
-              Services Details
+            <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
+              Services
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.875rem' }}>
+            <ul className="flex flex-col gap-3 text-sm font-light">
               <li>
-                <button onClick={() => handleNavClick('services')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
                   Industrial Fabrication
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('services')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
                   Equipment Erection
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('services')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
                   Electrical Systems
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('services')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+                <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
                   Medical Piping Works
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNavClick('quality-safety')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
-                  Quality & Safety Audits
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Certifications */}
           <div>
-            <h4 style={{ color: 'var(--white)', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
-              Regulatory Indices
+            <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
+              Regulatory
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.8rem' }}>
-              <div style={{ padding: '0.5rem 0.85rem', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '4px' }}>
-                <div style={{ color: 'var(--white)', fontWeight: 600 }}>ISO 9001:2015</div>
-                <div>Quality Management Certified</div>
+            <div className="flex flex-col gap-4 text-xs font-light">
+              <div className="px-4 py-3 bg-white/5 border border-white/10 rounded">
+                <div className="text-white font-medium tracking-wide mb-1">ISO 9001:2015</div>
+                <div className="text-secondary">Quality Management Certified</div>
               </div>
-              <div style={{ padding: '0.5rem 0.85rem', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '4px' }}>
-                <div style={{ color: 'var(--white)', fontWeight: 600 }}>ISO 45001:2018</div>
-                <div>Occupational Health & Safety</div>
+              <div className="px-4 py-3 bg-white/5 border border-white/10 rounded">
+                <div className="text-white font-medium tracking-wide mb-1">ISO 45001:2018</div>
+                <div className="text-secondary">Occupational Health & Safety</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div
-          style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-            paddingTop: '2rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            fontSize: '0.8rem'
-          }}
-        >
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-secondary font-light">
           <div>
-            &copy; {new Date().getFullYear()} Sterling Industrial Solutions LLP. All rights reserved. Registered Office Peenya, Bengaluru.
+            &copy; {new Date().getFullYear()} Sterling Industrial Solutions LLP. All rights reserved.
           </div>
           <button
             onClick={handleScrollToTop}
-            style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              color: 'var(--white)',
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'var(--transition-fast)'
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
+            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-300"
+            aria-label="Scroll to top"
           >
             <ArrowUp size={16} />
           </button>

@@ -1,65 +1,54 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+"use client";
+import { useContext, useEffect, useRef } from 'react';
 import { CMSContext } from '../context/CMSContext';
-import { motion, useInView } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CounterItem = ({ targetValue, label, suffix = '' }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const countRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!isInView) return;
-
-    let start = 0;
     const end = parseInt(targetValue, 10) || 0;
     if (end === 0) return;
 
-    // Adjust duration based on value size
-    const duration = 2; // seconds
-    const totalFrames = 60 * duration;
-    let frame = 0;
+    const obj = { val: 0 };
 
-    const counter = setInterval(() => {
-      frame++;
-      const progress = frame / totalFrames;
-      // Ease out quad formula: progress * (2 - progress)
-      const currentCount = Math.round(end * (progress * (2 - progress)));
-      
-      setCount(currentCount);
-
-      if (frame >= totalFrames) {
-        setCount(end);
-        clearInterval(counter);
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to(obj, {
+          val: end,
+          duration: 2,
+          ease: 'power2.out',
+          onUpdate: () => {
+            if (countRef.current) {
+              countRef.current.innerText = Math.round(obj.val) + suffix;
+            }
+          }
+        });
+        
+        gsap.fromTo(containerRef.current,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+        );
       }
-    }, 1000 / 60);
-
-    return () => clearInterval(counter);
-  }, [targetValue, isInView]);
+    });
+  }, [targetValue, suffix]);
 
   return (
-    <div ref={ref} style={{ textAlign: 'center', padding: '1rem' }}>
+    <div ref={containerRef} className="text-center p-4 opacity-0">
       <div
-        style={{
-          fontSize: 'clamp(2.5rem, 4.5vw, 4rem)',
-          fontWeight: 800,
-          color: 'var(--accent)',
-          fontFamily: 'var(--font-heading)',
-          lineHeight: 1.1,
-          marginBottom: '0.5rem',
-        }}
+        ref={countRef}
+        className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white leading-tight mb-2"
       >
-        {count}
-        {suffix}
+        0{suffix}
       </div>
-      <div
-        style={{
-          fontSize: '0.9rem',
-          fontWeight: 600,
-          color: '#94A3B8',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-        }}
-      >
+      <div className="text-sm font-heading uppercase tracking-widest text-secondary font-semibold">
         {label}
       </div>
     </div>
@@ -79,23 +68,10 @@ const Stats = () => {
   return (
     <section
       id="statistics"
-      className="section"
-      style={{
-        background: 'linear-gradient(180deg, #070B13 0%, #0d1527 100%)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.04)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-        padding: '5rem 0',
-      }}
+      className="py-24 lg:py-32 bg-primary border-y border-white/5"
     >
-      <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '3rem',
-            alignItems: 'center',
-          }}
-        >
+      <div className="container mx-auto px-8 max-w-7xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 items-center">
           {statsItems.map((item) => (
             <CounterItem
               key={item.key}

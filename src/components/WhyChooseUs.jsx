@@ -1,126 +1,133 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+"use client";
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CheckCircle, ShieldAlert, Users, Calendar, Heart, Lightbulb } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
+import TextReveal from './animations/TextReveal';
+
 const WhyChooseUs = () => {
+  const containerRef = useRef(null);
+  const bgRef = useRef(null);
+
   const reasons = [
     {
-      icon: <CheckCircle size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'Quality-Driven Execution',
-      desc: 'Zero tolerance for substandard workmanship. We deploy strict in-house inspection standards and structural verification procedures.'
+      icon: <CheckCircle size={20} className="text-white" />,
+      title: 'Zero-Variance Quality',
+      desc: 'We deploy strict Six Sigma inspection protocols and continuous Non-Destructive Testing (NDT) to ensure every weld, joint, and circuit operates flawlessly under maximum stress.'
     },
     {
-      icon: <ShieldAlert size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'Safety-First Approach',
-      desc: 'All projects are strictly planned and overseen under rigorous health and safety directives to ensure accident-free jobsites.'
+      icon: <ShieldAlert size={20} className="text-white" />,
+      title: 'ISO-Certified Safety',
+      desc: 'Our kinematic jobsites are governed by strict ISO 45001 occupational health directives. We mandate predictive safety analysis to guarantee accident-free operational zones.'
     },
     {
-      icon: <Users size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'Skilled Workforce',
-      desc: 'Our staff consists of certified riggers, coded welders, electrical supervisors, and engineers trained in specialized services.'
+      icon: <Users size={20} className="text-white" />,
+      title: 'Elite Engineering Teams',
+      desc: 'Our workforce consists of elite mechanical engineers, certified Master Riggers, coded TIG welders, and PLC automation specialists trained for critical environments.'
     },
     {
-      icon: <Calendar size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'On-Time Project Delivery',
-      desc: 'Utilizing strict CPM/PERT scheduling and real-time reporting to guarantee construction milestones are hit right on target.'
+      icon: <Calendar size={20} className="text-white" />,
+      title: 'Synchronized Delivery',
+      desc: 'Leveraging advanced CPM/PERT algorithmic scheduling and real-time telemetry, we synchronize multi-disciplinary workflows to guarantee milestones are hit with absolute precision.'
     },
     {
-      icon: <Heart size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'Customer-Centric Solutions',
-      desc: 'We tailor our layouts, material specifications, and installation workflows to align with our clients budgetary and schedule goals.'
+      icon: <Heart size={20} className="text-white" />,
+      title: 'Tailored Mechatronics',
+      desc: 'We do not offer off-the-shelf solutions. We custom-engineer layouts, material specifications, and autonomous workflows to perfectly match your facilitys operational demands.'
     },
     {
-      icon: <Lightbulb size={24} style={{ color: 'var(--accent)' }} />,
-      title: 'Innovative Engineering',
-      desc: 'Leveraging structural software planning, modular pre-fabrication, and advanced electrical/medical test equipment.'
+      icon: <Lightbulb size={20} className="text-white" />,
+      title: 'Advanced Automation',
+      desc: 'We integrate legacy heavy machinery with modern IoT sensor grids, smart electrical panels, and predictive maintenance algorithms to future-proof your infrastructure.'
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
+  useGSAP(() => {
+    // Parallax Background
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top bottom',
+      end: 'bottom top',
+      animation: gsap.fromTo(bgRef.current, { y: '-10%' }, { y: '15%', ease: 'none' }),
+      scrub: true,
+    });
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
+    // Staggered reveals for badge and subtitle
+    gsap.fromTo('.wcu-header-element',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.15,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+        }
+      }
+    );
+
+    // Staggered reveals for cards
+    gsap.fromTo('.wcu-card',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.wcu-grid',
+          start: 'top 85%',
+        }
+      }
+    );
+  }, { scope: containerRef });
 
   return (
-    <section id="why-choose-us" className="section section-bg-light">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-badge">Why Choose Sterling</span>
-          <h2 className="section-title">Partnering in Professionalism</h2>
-          <p className="section-subtitle">
+    <section ref={containerRef} id="why-choose-us" className="relative py-24 lg:py-40 bg-primary overflow-hidden">
+      {/* Parallax Radial Glow Background */}
+      <div 
+        ref={bgRef}
+        className="absolute inset-0 z-0 pointer-events-none opacity-40 scale-150"
+        style={{ background: 'radial-gradient(circle at center, rgba(30, 58, 138, 0.15) 0%, transparent 60%)' }}
+      />
+
+      <div className="container relative z-10 mx-auto px-8 max-w-7xl">
+        <div className="max-w-3xl mb-20">
+          <span className="wcu-header-element inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Why Choose Sterling
+          </span>
+          <div className="mb-8">
+            <TextReveal as="h2" splitType="word" className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-2">
+              Partnering in
+            </TextReveal>
+            <TextReveal as="h2" splitType="char" delay={0.2} className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight italic font-serif opacity-90">
+              Professionalism
+            </TextReveal>
+          </div>
+          <p className="wcu-header-element text-lg text-secondary font-light leading-relaxed max-w-2xl">
             We deliver on our commitments. Our clients rely on our safety protocols, engineering excellence, and transparent client engagement.
           </p>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '1.5rem'
-          }}
-        >
+        <div className="wcu-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {reasons.map((reason, index) => (
-            <motion.div
+            <div
               key={index}
-              variants={itemVariants}
-              className="glass-panel"
-              style={{
-                display: 'flex',
-                gap: '1.25rem',
-                padding: '2rem',
-                textAlign: 'left',
-                background: 'rgba(15, 23, 42, 0.3)',
-                border: '1px solid rgba(255, 255, 255, 0.03)',
-                transition: 'var(--transition-normal)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
-                e.currentTarget.style.transform = 'translateY(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              className="wcu-card group p-8 bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 flex flex-col gap-6"
             >
-              <div style={{
-                flexShrink: 0,
-                width: '44px',
-                height: '44px',
-                borderRadius: '8px',
-                backgroundColor: 'rgba(16, 185, 129, 0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-white/10 group-hover:border-white/20 transition-colors duration-500">
                 {reason.icon}
               </div>
               <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--white)' }}>
+                <h3 className="text-xl font-heading font-light text-white mb-3 tracking-wide">
                   {reason.title}
                 </h3>
-                <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: 1.5 }}>
+                <p className="text-secondary text-sm font-light leading-relaxed">
                   {reason.desc}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

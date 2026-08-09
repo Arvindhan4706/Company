@@ -1,66 +1,78 @@
-import React, { useContext, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+"use client";
+import { useContext, useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { CMSContext } from '../context/CMSContext';
-import { ExternalLink, Calendar, Briefcase, User } from 'lucide-react';
+import { Calendar, User } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ProjectsGallery = () => {
   const { projects } = useContext(CMSContext);
   const [activeFilter, setActiveFilter] = useState('All');
+  const containerRef = useRef(null);
+  const gridRef = useRef(null);
 
-  // Categories derived dynamically from project data
   const categories = ['All', 'Fabrication Works', 'Erection Works', 'Electrical Works', 'Medical Infrastructure', 'Industrial Maintenance'];
 
   const filteredProjects = activeFilter === 'All'
     ? projects
     : projects.filter(p => p.category === activeFilter);
 
+  useGSAP(() => {
+    // Header Animation
+    gsap.fromTo('.gallery-header',
+      { y: 30, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.15,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%'
+        }
+      }
+    );
+  }, { scope: containerRef });
+
+  // Handle filtering animation
+  useEffect(() => {
+    if (gridRef.current) {
+      const cards = gridRef.current.children;
+      gsap.fromTo(cards,
+        { opacity: 0, scale: 0.95, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
+      );
+    }
+  }, [activeFilter]);
+
   return (
-    <section id="projects" className="section section-bg-light">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-badge">Our Portfolio</span>
-          <h2 className="section-title">Featured Engineering Projects</h2>
-          <p className="section-subtitle">
+    <section ref={containerRef} id="projects" className="py-24 lg:py-32 bg-primary border-t border-white/5">
+      <div className="container mx-auto px-8 max-w-7xl">
+        <div className="gallery-header max-w-3xl mb-16">
+          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Our Portfolio
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-8">
+            Featured Projects
+          </h2>
+          <p className="text-lg text-secondary font-light leading-relaxed max-w-2xl">
             Explore our recently executed contracts. Filter projects by engineering discipline to inspect our work quality and execution compliance.
           </p>
         </div>
 
         {/* Filter Buttons */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: '0.75rem',
-            marginBottom: '3rem'
-          }}
-        >
+        <div className="flex flex-wrap gap-3 mb-16">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className="btn"
-              style={{
-                padding: '0.6rem 1.25rem',
-                fontSize: '0.85rem',
-                borderRadius: '50px',
-                backgroundColor: activeFilter === cat ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-                color: activeFilter === cat ? 'var(--primary)' : '#94A3B8',
-                border: `1px solid ${activeFilter === cat ? 'var(--accent)' : 'rgba(255,255,255,0.08)'}`,
-                transition: 'var(--transition-fast)'
-              }}
-              onMouseEnter={(e) => {
-                if (activeFilter !== cat) {
-                  e.target.style.borderColor = 'var(--white)';
-                  e.target.style.color = 'var(--white)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (activeFilter !== cat) {
-                  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
-                  e.target.style.color = '#94A3B8';
-                }
-              }}
+              className={`px-6 py-2.5 rounded-full text-sm font-heading tracking-widest uppercase transition-all duration-300 ${
+                activeFilter === cat 
+                  ? 'bg-white text-primary border border-white' 
+                  : 'bg-transparent text-secondary border border-white/10 hover:border-white/30 hover:text-white'
+              }`}
             >
               {cat}
             </button>
@@ -68,124 +80,68 @@ const ProjectsGallery = () => {
         </div>
 
         {/* Projects Grid */}
-        <motion.div
-          layout
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: '2rem'
-          }}
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                key={project.id}
-                className="glass-panel"
-                style={{
-                  background: 'rgba(15, 23, 42, 0.4)',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden',
-                  textAlign: 'left',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%'
-                }}
-              >
-                {/* Project Image Wrapper */}
-                <div style={{ position: 'relative', overflow: 'hidden', height: '220px', background: '#0F172A' }}>
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'transform 0.5s ease'
-                    }}
-                    onError={(e) => {
-                      // Fallback if generated images are loading
-                      e.target.onerror = null;
-                      e.target.src = '/images/hero-bg.png';
-                    }}
-                    onMouseEnter={(e) => (e.target.style.transform = 'scale(1.08)')}
-                    onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
-                  />
-                  {/* Category Badge overlay */}
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      left: '1rem',
-                      background: 'var(--primary)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      color: 'var(--white)',
-                      padding: '0.25rem 0.75rem',
-                      borderRadius: '50px',
-                      fontSize: '0.75rem',
-                      fontWeight: 600
-                    }}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProjects.map((project) => (
+            <div
+              key={project.id}
+              className="group flex flex-col bg-white/[0.02] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-colors duration-500"
+            >
+              {/* Project Image Wrapper with Clip Path Reveal logic (handled via simple hover for now) */}
+              <div className="relative h-64 overflow-hidden bg-primary-light">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover object-center transform transition-transform duration-700 group-hover:scale-110"
+                />
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 backdrop-blur-sm">
+                  <Link 
+                    href={`/projects/${project.id}`} 
+                    className="px-8 py-3 bg-white text-primary font-heading uppercase tracking-widest text-sm rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 hover:scale-105"
                   >
-                    {project.category}
-                  </span>
-                  
-                  {/* Status Badge overlay */}
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      right: '1rem',
-                      background: project.status === 'Completed' ? 'rgba(16, 185, 129, 0.9)' : 'rgba(245, 158, 11, 0.9)',
-                      color: 'var(--primary)',
-                      padding: '0.25rem 0.75rem',
-                      borderRadius: '50px',
-                      fontSize: '0.75rem',
-                      fontWeight: 700
-                    }}
-                  >
-                    {project.status}
-                  </span>
+                    View Project
+                  </Link>
                 </div>
+                
+                {/* Category Badge */}
+                <span className="absolute top-4 left-4 bg-primary/90 border border-white/10 text-white px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md">
+                  {project.category}
+                </span>
+                
+                {/* Status Badge */}
+                <span className={`absolute top-4 right-4 px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md text-primary font-bold ${
+                  project.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
+                }`}>
+                  {project.status}
+                </span>
+              </div>
 
-                {/* Project Details */}
-                <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--white)' }}>
-                    {project.title}
-                  </h3>
-                  <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '1.5rem', flexGrow: 1 }}>
-                    {project.description}
-                  </p>
+              {/* Project Details */}
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="text-xl font-heading font-light text-white mb-3">
+                  {project.title}
+                </h3>
+                <p className="text-secondary text-sm font-light leading-relaxed mb-8 flex-grow">
+                  {project.description}
+                </p>
 
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '1rem',
-                      paddingTop: '1rem',
-                      borderTop: '1px solid rgba(255,255,255,0.05)',
-                      fontSize: '0.8rem',
-                      color: '#64748B'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <User size={14} style={{ color: 'var(--accent)' }} />
-                      <span>{project.client}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <Calendar size={14} style={{ color: 'var(--accent)' }} />
-                      <span>{project.year}</span>
-                    </div>
+                <div className="flex flex-wrap gap-6 pt-6 border-t border-white/5 text-xs text-secondary font-light">
+                  <div className="flex items-center gap-2">
+                    <User size={14} className="text-white" />
+                    <span>{project.client}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar size={14} className="text-white" />
+                    <span>{project.year}</span>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

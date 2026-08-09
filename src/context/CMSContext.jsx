@@ -1,4 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+"use client";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect } from 'react';
 
 export const CMSContext = createContext();
 
@@ -9,11 +11,11 @@ const INITIAL_STATS = {
   safetyCompliance: 100
 };
 
-const INITIAL_PROJECTS = [
+export const INITIAL_PROJECTS = [
   {
     id: '1',
-    title: 'Industrial Fabrication Project',
-    description: 'Heavy structural steel fabrication for a major warehouse facility, ensuring maximum load tolerance and compliance with international standards.',
+    title: 'Autonomous Robotics Assembly Line',
+    description: 'Engineered and fabricated a highly rigid structural framework to support dynamic loads from 6-axis robotic arms. Integrated precision alignment plates and automated conveyor systems with a tolerance of ±0.5mm to ensure seamless kinematic synchronization.',
     category: 'Fabrication Works',
     image: '/images/project-fabrication.png',
     status: 'Completed',
@@ -22,38 +24,38 @@ const INITIAL_PROJECTS = [
   },
   {
     id: '2',
-    title: 'Manufacturing Plant Installation',
-    description: 'Complete assembly, erection, and mechanical installation of multi-stage processing machinery, steel conveyor trusses, and piping networks.',
-    category: 'Erection Works',
-    image: '/images/project-erection.png',
+    title: 'Heavy Substation & SCADA Integration',
+    description: 'Full-scale erection and mechanical installation of multi-stage transformers, high-tension cabling, and smart telemetry panels. Integrated a closed-loop SCADA system for predictive failure analysis and remote grid switching capabilities.',
+    category: 'Electrical Works',
+    image: '/images/project-electrical.png',
     status: 'Completed',
-    client: 'Vanguard Chemicals',
+    client: 'Vanguard Heavy Industries',
     year: '2026'
   },
   {
     id: '3',
-    title: 'Electrical Infrastructure Upgrade',
-    description: 'Design and installation of high-voltage substations, main power distribution panels, cabling tray systems, and emergency backup generators.',
-    category: 'Electrical Works',
-    image: '/images/project-electrical.png',
+    title: 'Precision Medical Gas Dynamics',
+    description: 'Deployed an ultra-sterile, ISO-compliant Medical Gas Pipeline System (MGPS) spanning 15,000 sq ft. Utilized orbital TIG welding for zero-contamination joints, integrated with real-time pressure monitoring and redundant zone-valve boxes.',
+    category: 'Medical Infrastructure',
+    image: '/images/project-medical.png',
     status: 'Completed',
-    client: 'Apex Automotives',
+    client: 'Metro Care Healthcare Group',
     year: '2026'
   },
   {
     id: '4',
-    title: 'Healthcare Facility Development',
-    description: 'Specialized installation of medical gas piping, ICU ventilation networks, sterile cleanrooms, and ceiling pendants for hospital infrastructure.',
-    category: 'Medical Infrastructure',
-    image: '/images/project-medical.png',
+    title: 'Turbine Rigging & Shaft Alignment',
+    description: 'Executed the kinematic erection of a 40-ton industrial turbine. Utilized laser-guided shaft alignment and dynamic balancing protocols to eliminate rotational vibration, achieving a sub-micron operational tolerance.',
+    category: 'Erection Works',
+    image: '/images/project-erection.png',
     status: 'Completed',
-    client: 'Metro Care Hospital',
+    client: 'Apex Automotive Automation',
     year: '2026'
   },
   {
     id: '5',
-    title: 'Industrial Maintenance & Overhaul',
-    description: 'Turnaround maintenance, piping replacements, pump rebuilds, and structural reinforcement of processing towers during an active shutdown.',
+    title: 'Automated Foundry Overhaul',
+    description: 'Turnaround maintenance and complete mechatronic overhaul of a high-temperature processing foundry. Upgraded legacy hydraulic actuators to advanced servo-driven mechanisms and re-welded structural blast shields.',
     category: 'Industrial Maintenance',
     image: '/images/project-maintenance.png',
     status: 'Completed',
@@ -62,12 +64,12 @@ const INITIAL_PROJECTS = [
   },
   {
     id: '6',
-    title: 'Commercial Infrastructure Project',
-    description: 'Structural column erection, steel decking installation, and perimeter safety systems setup for a modern multi-story tech park.',
-    category: 'Erection Works',
+    title: 'Cleanroom HVAC & Filtration Facility',
+    description: 'Engineered a Class 100 modular cleanroom environment. Installed highly sophisticated laminar flow HEPA systems, synchronized differential pressure controls, and fully automated building management sensors.',
+    category: 'Medical Infrastructure',
     image: '/images/project-commercial.png',
     status: 'In Progress',
-    client: 'Horizon Developers',
+    client: 'Horizon Biopharma',
     year: '2026'
   }
 ];
@@ -76,13 +78,19 @@ export const CMSProvider = ({ children }) => {
   const [introState, setIntroState] = useState('playing'); // 'playing' | 'minimizing' | 'done'
 
   const [stats, setStats] = useState(() => {
-    const saved = localStorage.getItem('sterling_stats');
-    return saved ? JSON.parse(saved) : INITIAL_STATS;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sterling_stats');
+      if (saved) return JSON.parse(saved);
+    }
+    return INITIAL_STATS;
   });
 
   const [projects, setProjects] = useState(() => {
-    const saved = localStorage.getItem('sterling_projects');
-    return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sterling_projects');
+      if (saved) return JSON.parse(saved);
+    }
+    return INITIAL_PROJECTS;
   });
 
   useEffect(() => {

@@ -1,11 +1,11 @@
 import ProjectsGallery from '../../components/ProjectsGallery';
-import Stats from '../../components/Stats';
+import TrustSection from '../../components/TrustSection';
 
 export default function ProjectsPage() {
   return (
     <div className="page-wrapper">
       <ProjectsGallery />
-      <Stats />
+      <TrustSection />
     </div>
   );
 }

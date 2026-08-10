@@ -31,7 +31,7 @@ const CounterItem = ({ targetValue, label, suffix = '' }) => {
             }
           }
         });
-        
+
         gsap.fromTo(containerRef.current,
           { opacity: 0, y: 30 },
           { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
@@ -46,7 +46,7 @@ const CounterItem = ({ targetValue, label, suffix = '' }) => {
         ref={countRef}
         className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white leading-tight mb-2"
       >
-        0{suffix}
+        {parseInt(targetValue, 10) || 0}{suffix}
       </div>
       <div className="text-sm font-heading uppercase tracking-widest text-secondary font-semibold">
         {label}

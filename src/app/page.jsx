@@ -1,13 +1,19 @@
 import Hero from '../components/Hero';
-import Stats from '../components/Stats';
-import Testimonials from '../components/Testimonials';
+import TrustSection from '../components/TrustSection';
+import Services from '../components/Services';
+import ProcessTimeline from '../components/ProcessTimeline';
+import Industries from '../components/Industries';
+import ProjectsGallery from '../components/ProjectsGallery';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Stats />
-      <Testimonials />
+      <TrustSection />
+      <Services />
+      <ProcessTimeline />
+      <Industries />
+      <ProjectsGallery />
     </>
   );
 }

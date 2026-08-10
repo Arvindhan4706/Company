@@ -1,9 +1,9 @@
 "use client";
 import { useState, useRef } from 'react';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,43 +13,38 @@ gsap.registerPlugin(ScrollTrigger);
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
   const navRef = useRef(null);
   const menuDrawerRef = useRef(null);
 
   const navLinks = [
-    { name: t('nav.home', 'Home'), id: '' },
-    { name: t('nav.about', 'About'), id: 'about' },
-    { name: t('nav.services', 'Services'), id: 'services' },
-    { name: t('nav.industries', 'Industries'), id: 'industries' },
-    { name: t('nav.projects', 'Projects'), id: 'projects' },
-    { name: t('nav.contact', 'Contact Us'), id: 'contact' },
+    { name: 'Home', id: '' },
+    { name: 'About', id: 'about' },
+    { name: 'Services', id: 'services' },
+    { name: 'Industries', id: 'industries' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Contact', id: 'contact' },
   ];
-
-  const changeLanguage = (e) => {
-    i18n.changeLanguage(e.target.value);
-  };
 
   useGSAP(() => {
     // Entrance animation
-    gsap.fromTo(navRef.current, 
+    gsap.fromTo(navRef.current,
       { y: -100, opacity: 0 },
       { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.5 }
     );
 
-    // Scroll effect (transparent to glassmorphism)
+    // Scroll effect (transparent to dark solid/blurred background)
     ScrollTrigger.create({
       start: 'top -50',
       end: 99999,
       onEnter: () => {
         if (navRef.current) {
-          navRef.current.classList.add('bg-primary/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+          navRef.current.classList.add('bg-primary/90', 'backdrop-blur-xl', 'border-b', 'border-white/5');
           gsap.to(navRef.current, { padding: '1rem 0', duration: 0.5, ease: 'power2.out' });
         }
       },
       onLeaveBack: () => {
         if (navRef.current) {
-          navRef.current.classList.remove('bg-primary/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+          navRef.current.classList.remove('bg-primary/90', 'backdrop-blur-xl', 'border-b', 'border-white/5');
           gsap.to(navRef.current, { padding: '2rem 0', duration: 0.5, ease: 'power2.out' });
         }
       }
@@ -77,42 +72,35 @@ const Navbar = () => {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     >
       <div className="container flex items-center justify-between mx-auto px-8">
         <Link href="/" className="flex items-center gap-3">
-          <span className="font-heading font-light tracking-widest text-xl text-white uppercase">
+          <span className="font-heading font-light tracking-widest text-2xl text-white uppercase">
             Sterling
           </span>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-12">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.id}
               href={`/${link.id}`}
               className="relative group text-sm uppercase tracking-widest"
             >
-              <span className={`transition-colors duration-300 ${pathname === `/${link.id}` ? 'text-white' : 'text-secondary hover:text-white'}`}>
+              <span className={`transition-colors duration-300 ${pathname === `/${link.id}` ? 'text-white' : 'text-secondary-300 hover:text-white'}`}>
                 {link.name}
               </span>
               <span className={`absolute -bottom-2 left-0 w-full h-[1px] bg-white transform origin-left transition-transform duration-300 ${pathname === `/${link.id}` ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></span>
             </Link>
           ))}
-          
-          <div className="flex items-center gap-2 pl-6 border-l border-white/10 text-white">
-            <Globe size={16} />
-            <select 
-              value={i18n.language} 
-              onChange={changeLanguage}
-              className="bg-transparent text-white border-none outline-none cursor-pointer text-sm font-light focus:ring-0 uppercase tracking-widest"
-            >
-              <option value="en" className="text-black">EN</option>
-              <option value="es" className="text-black">ES</option>
-              <option value="de" className="text-black">DE</option>
-            </select>
-          </div>
+
+          {/* Request a Quote Button */}
+          <Link href="/contact" className="flex items-center gap-3 px-6 py-3 bg-white text-primary font-heading tracking-widest uppercase text-sm rounded-full hover:bg-white/90 transition-all duration-500">
+            REQUEST A QUOTE
+            <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-1" />
+          </Link>
         </div>
 
         {/* Mobile Menu Icon */}
@@ -140,9 +128,14 @@ const Navbar = () => {
             {link.name}
           </Link>
         ))}
+        {/* Request a Quote Button in Mobile Menu */}
+        <Link href="/contact" className="w-flex items-center justify-center px-6 py-4 bg-white text-primary font-heading tracking-widest uppercase text-sm rounded-full hover:bg-white/90 transition-all duration-500">
+          REQUEST A QUOTE
+        </Link>
       </div>
     </nav>
   );
 };
 
+// Navbar component for Sterling Industrial Solutions
 export default Navbar;

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, Upload, Calendar } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,34 +9,75 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const containerRef = useRef(null);
-  
+
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
     email: '',
     phone: '',
+    projectLocation: '',
     serviceRequired: 'Fabrication Works',
-    projectDetails: ''
+    projectDescription: '',
+    expectedTimeline: '',
+    documentUpload: null
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+
+  // File validation constants
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.fullName.trim()) errors.fullName = 'Full Name is required';
+
+    // Full Name
+    if (!formData.fullName.trim()) {
+      errors.fullName = 'Full Name is required';
+    }
+
+    // Company
+    if (!formData.companyName.trim()) {
+      errors.companyName = 'Company is required';
+    }
+
+    // Email
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'Email address is invalid';
     }
+
+    // Phone
     if (!formData.phone.trim()) {
       errors.phone = 'Phone number is required';
     } else if (!/^[0-9+\s-]{8,15}$/.test(formData.phone)) {
       errors.phone = 'Invalid phone number format';
     }
-    if (!formData.projectDetails.trim()) errors.projectDetails = 'Project details are required';
+
+    // Project Location
+    if (!formData.projectLocation.trim()) {
+      errors.projectLocation = 'Project location is required';
+    }
+
+    // Service Required
+    if (!formData.serviceRequired) {
+      errors.serviceRequired = 'Service is required';
+    }
+
+    // Project Description
+    if (!formData.projectDescription.trim()) {
+      errors.projectDescription = 'Project description is required';
+    }
+
+    // Expected Timeline
+    if (!formData.expectedTimeline.trim()) {
+      errors.expectedTimeline = 'Expected timeline is required';
+    }
+
     return errors;
   };
 
@@ -45,6 +86,26 @@ const Contact = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        setUploadError(`File size must be less than ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
+        return;
+      }
+
+      // Validate file type
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        setUploadError('Only PDF, JPG, PNG, DOC, and DOCX files are allowed');
+        return;
+      }
+
+      setFormData(prev => ({ ...prev, documentUpload: file }));
+      setUploadError('');
     }
   };
 
@@ -57,18 +118,27 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-    
+    setUploadError('');
+
     try {
+      // Create FormData for file upload
+      const formDataObj = new FormData();
+      formDataObj.append('fullName', formData.fullName);
+      formDataObj.append('companyName', formData.companyName);
+      formDataObj.append('email', formData.email);
+      formDataObj.append('phone', formData.phone);
+      formDataObj.append('projectLocation', formData.projectLocation);
+      formDataObj.append('serviceRequired', formData.serviceRequired);
+      formDataObj.append('projectDescription', formData.projectDescription);
+      formDataObj.append('expectedTimeline', formData.expectedTimeline);
+
+      if (formData.documentUpload) {
+        formDataObj.append('documentUpload', formData.documentUpload);
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.fullName,
-          email: formData.email,
-          company: formData.companyName,
-          message: formData.projectDetails,
-          service: formData.serviceRequired
-        })
+        body: formDataObj
       });
 
       if (response.ok) {
@@ -78,12 +148,19 @@ const Contact = () => {
           companyName: '',
           email: '',
           phone: '',
+          projectLocation: '',
           serviceRequired: 'Fabrication Works',
-          projectDetails: ''
+          projectDescription: '',
+          expectedTimeline: '',
+          documentUpload: null
         });
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit form');
       }
     } catch (error) {
-      console.error('Network error', error);
+      console.error('Contact form error:', error);
+      // Don't set form submitted on error - keep form active for correction
     } finally {
       setIsSubmitting(false);
     }
@@ -105,13 +182,13 @@ const Contact = () => {
       <div className="container mx-auto px-8 max-w-7xl">
         <div className="max-w-3xl mb-16">
           <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
-            Get In Touch
+            Start Your Industrial Project
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-6">
-            Let's Build Together
+            REQUEST A QUOTE
           </h2>
           <p className="text-lg text-secondary font-light leading-relaxed max-w-2xl">
-            Contact our project management team to discuss your engineering layouts, fabrication timelines, or request an initial project estimate.
+            Tell us about your requirements and our team will review your project.
           </p>
         </div>
 
@@ -126,10 +203,9 @@ const Contact = () => {
                 <div className="flex items-start gap-4">
                   <MapPin size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">ADDRESS</h4>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">HEADQUARTERS</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Plot No. 45, Industrial Suburb, 2nd Phase,<br />
-                      Peenya Industrial Area, Bengaluru, KA 560058
+                      Bengaluru, India
                     </p>
                   </div>
                 </div>
@@ -137,9 +213,9 @@ const Contact = () => {
                 <div className="flex items-start gap-4">
                   <Phone size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">PHONE</h4>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">CONTACT NUMBER</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      +91 80 4928 3000 / +91 98450 12345
+                      Available upon request through form submission
                     </p>
                   </div>
                 </div>
@@ -147,9 +223,9 @@ const Contact = () => {
                 <div className="flex items-start gap-4">
                   <Mail size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">EMAIL</h4>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">EMAIL ADDRESS</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      info@sterlingindustrial.com<br/>projects@sterlingindustrial.com
+                      Contact via secure website form
                     </p>
                   </div>
                 </div>
@@ -157,9 +233,9 @@ const Contact = () => {
                 <div className="flex items-start gap-4">
                   <Clock size={20} className="text-accent mt-1" />
                   <div>
-                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">BUSINESS HOURS</h4>
+                    <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">OPERATIONS</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Monday – Saturday: 08:30 AM – 06:00 PM (IST)
+                      Standard business hours
                     </p>
                   </div>
                 </div>
@@ -189,23 +265,24 @@ const Contact = () => {
                 <div className="inline-flex text-accent mb-6">
                   <CheckCircle size={64} strokeWidth={1} />
                 </div>
-                <h3 className="text-2xl font-light text-white mb-4">Inquiry Submitted Successfully</h3>
+                <h3 className="text-2xl font-light text-white mb-4">REQUEST RECEIVED</h3>
                 <p className="text-secondary text-sm font-light mb-8">
-                  Thank you for contacting Sterling Industrial Solutions. Our regional project estimator will review your parameters and get in touch with your team shortly.
+                  Thank you. Our engineering team will review your requirements and contact you shortly.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
                   className="px-6 py-3 border border-white/20 text-white font-heading text-xs tracking-widest uppercase hover:bg-white hover:text-primary transition-colors duration-300"
                 >
-                  Send Another Inquiry
+                  Submit Another Request
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
                 <h3 className="text-2xl font-light text-white mb-2">
-                  Request a Quote
+                  REQUEST A QUOTE
                 </h3>
 
+                {/* Row 1: Full Name and Company */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Full Name *</label>
@@ -217,9 +294,10 @@ const Contact = () => {
                       className={`w-full bg-white/5 border ${formErrors.fullName ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. John Doe"
                     />
+                    {formErrors.fullName && <p className="text-red-500 text-xs mt-1">{formErrors.fullName}</p>}
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Company</label>
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Company *</label>
                     <input
                       type="text"
                       name="companyName"
@@ -228,9 +306,11 @@ const Contact = () => {
                       className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
                       placeholder="e.g. Acme Corp"
                     />
+                    {formErrors.companyName && <p className="text-red-500 text-xs mt-1">{formErrors.companyName}</p>}
                   </div>
                 </div>
 
+                {/* Row 2: Email and Phone */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Email Address *</label>
@@ -242,6 +322,7 @@ const Contact = () => {
                       className={`w-full bg-white/5 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. john@acme.com"
                     />
+                    {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Phone *</label>
@@ -253,44 +334,108 @@ const Contact = () => {
                       className={`w-full bg-white/5 border ${formErrors.phone ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
                       placeholder="e.g. +91 98450 12345"
                     />
+                    {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Service Required</label>
-                  <select
-                    name="serviceRequired"
-                    value={formData.serviceRequired}
-                    onChange={handleChange}
-                    className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none"
-                  >
-                    <option value="Fabrication Works">Fabrication Works</option>
-                    <option value="Erection Works">Erection & Installation Works</option>
-                    <option value="Electrical Works">Electrical Works</option>
-                    <option value="Medical Infrastructure">Medical Infrastructure Solutions</option>
-                    <option value="Industrial Maintenance">Industrial Maintenance & Overhaul</option>
-                    <option value="Other">Other Solutions</option>
-                  </select>
+                {/* Row 3: Project Location and Service Required */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Project Location *</label>
+                    <input
+                      type="text"
+                      name="projectLocation"
+                      value={formData.projectLocation}
+                      onChange={handleChange}
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      placeholder="e.g. Mumbai, Maharashtra"
+                    />
+                    {formErrors.projectLocation && <p className="text-red-500 text-xs mt-1">{formErrors.projectLocation}</p>}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Service Required *</label>
+                    <select
+                      name="serviceRequired"
+                      value={formData.serviceRequired}
+                      onChange={handleChange}
+                      className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none"
+                    >
+                      <option value="">Select Service Required</option>
+                      <option value="Fabrication Works">Fabrication Works</option>
+                      <option value="Erection Works">Erection & Installation Works</option>
+                      <option value="Electrical Works">Electrical Works</option>
+                      <option value="Medical Infrastructure">Medical Infrastructure Solutions</option>
+                      <option value="Industrial Maintenance">Industrial Maintenance & Overhaul</option>
+                      <option value="Other">Other Solutions</option>
+                    </select>
+                    {formErrors.serviceRequired && <p className="text-red-500 text-xs mt-1">{formErrors.serviceRequired}</p>}
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Requirements *</label>
-                  <textarea
-                    name="projectDetails"
-                    value={formData.projectDetails}
-                    onChange={handleChange}
-                    rows="4"
-                    className={`w-full bg-white/5 border ${formErrors.projectDetails ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm resize-y`}
-                    placeholder="Briefly describe your required work parameters, schedules, or specifications..."
-                  />
+                {/* Row 4: Expected Timeline and Document Upload */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Expected Timeline *</label>
+                    <input
+                      type="text"
+                      name="expectedTimeline"
+                      value={formData.expectedTimeline}
+                      onChange={handleChange}
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      placeholder="e.g. 3-4 months"
+                    />
+                    {formErrors.expectedTimeline && <p className="text-red-500 text-xs mt-1">{formErrors.expectedTimeline}</p>}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Document Upload (Optional)</label>
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="file"
+                        id="documentUpload"
+                        name="documentUpload"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        onChange={handleFileChange}
+                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      />
+                      {uploadError && <p className="text-red-500 text-xs mt-1">{uploadError}</p>}
+                      <p className="text-secondary text-xs font-light">
+                        Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB)
+                      </p>
+                      {formData.documentUpload && (
+                        <p className="text-secondary text-xs font-light mt-1">
+                          Selected: {formData.documentUpload.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
+
+                {/* Project Description (Full width) */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Project Description *</label>
+                  <textarea
+                    name="projectDescription"
+                    value={formData.projectDescription}
+                    onChange={handleChange}
+                    rows="6"
+                    className={`w-full bg-white/5 border ${formErrors.projectDetails ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm resize-y`}
+                    placeholder="Describe your project requirements, scope, specifications, and any special considerations..."
+                  />
+                  {formErrors.projectDescription && <p className="text-red-500 text-xs mt-1">{formErrors.projectDescription}</p>}
+                </div>
+
+                {uploadError && <p className="text-red-500 text-xs mt-4">{uploadError}</p>}
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full py-4 mt-4 bg-white text-primary font-heading tracking-widest uppercase text-sm font-medium flex items-center justify-center gap-3 hover:bg-white/90 transition-colors duration-300"
                 >
-                  {isSubmitting ? 'Processing...' : (
+                  {isSubmitting ? (
+                    <>
+                      Submitting... <Send size={16} />
+                    </>
+                  ) : (
                     <>
                       Submit Request <Send size={16} />
                     </>

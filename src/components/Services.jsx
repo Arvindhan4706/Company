@@ -3,10 +3,10 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
-
-import TextReveal from './animations/TextReveal';
 
 const Services = () => {
   const sectionRef = useRef(null);
@@ -14,27 +14,47 @@ const Services = () => {
   const services = [
     {
       id: '01',
-      title: 'Heavy Structural Fabrication',
-      description: 'End-to-end heavy metal and structural steel fabrication engineered for absolute structural integrity. We design, weld, and construct custom frameworks, industrial machinery platforms, and complex heavy piping systems tested to withstand extreme kinetic and thermal tolerances.',
-      features: ['CNC Precision Machining', 'Certified TIG/MIG Welding', 'Industrial Boiler & Tank Fabrication', 'Non-Destructive Testing (NDT)']
+      title: 'Structural Fabrication',
+      description: 'Heavy structural steel fabrication, precision machining and custom industrial assemblies.',
+      capabilities: [
+        'CNC Machining',
+        'MIG/TIG Welding',
+        'Structural Steel',
+        'Industrial Assemblies'
+      ]
     },
     {
       id: '02',
-      title: 'Kinematic Erection & Installation',
-      description: 'Safe, millwright-grade precision for onsite erection and alignment of heavy structural elements, overhead cranes, and rotating mechanical systems. We execute complex rigging and heavy-lifting protocols to ensure zero-variance alignment.',
-      features: ['Heavy Machinery Rigging', 'Overhead Crane Alignment', 'Conveyor System Assembly', 'Vibration Analysis & Calibration']
+      title: 'Equipment Erection',
+      description: 'Mechanical installation, alignment, erection and commissioning of industrial equipment.',
+      capabilities: [
+        'Machine Installation',
+        'Equipment Alignment',
+        'Rigging',
+        'Commissioning'
+      ]
     },
     {
       id: '03',
-      title: 'Mechatronics & Electrical Automation',
-      description: 'Complete high-voltage and low-voltage infrastructure solutions integrated with state-of-the-art industrial automation. We engineer power distribution networks designed to support heavy mechanical loads and autonomous robotics.',
-      features: ['PLC Automation & SCADA', 'Motor Control Centers (MCC)', 'HT/LT Substation Design', 'Fail-safe Backup Grids']
+      title: 'Electrical & Automation',
+      description: 'Industrial electrical systems, control panels and automation integration.',
+      capabilities: [
+        'PLC',
+        'SCADA',
+        'Control Panels',
+        'Industrial Networking'
+      ]
     },
     {
       id: '04',
-      title: 'Medical & Cleanroom Infrastructure',
-      description: 'Highly specialized, clinically compliant engineering for healthcare environments. We deliver flawlessly audited fluid dynamics networks, ultra-sterile cleanrooms, and life-critical electrical integrations.',
-      features: ['Medical Gas Pipeline Systems (MGPS)', 'ISO-Certified Modular Cleanrooms', 'Critical Care HVAC & Ventilation', 'Redundant Life-Safety Power Systems']
+      title: 'Medical Infrastructure',
+      description: 'Specialized infrastructure for healthcare and controlled environments.',
+      capabilities: [
+        'MGPS',
+        'Cleanroom Infrastructure',
+        'HVAC',
+        'Medical Systems'
+      ]
     }
   ];
 
@@ -68,51 +88,58 @@ const Services = () => {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} id="services" className="py-24 lg:py-40 bg-primary-light">
+    <section ref={sectionRef} id="services" className="py-24 lg:py-32 bg-primary border-t border-white/5">
       <div className="container mx-auto px-8 max-w-7xl">
-        
-        <div className="max-w-3xl mb-24">
+        <div className="max-w-3xl mb-20 text-center">
           <span className="services-header-badge inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
-            Core Capabilities
+            Our Capabilities
           </span>
-          <TextReveal as="h2" splitType="char" className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight">
-            Industrial Solutions
-          </TextReveal>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-light text-white tracking-tight">
+            Precision Engineered Solutions
+          </h2>
+          <p className="text-lg text-secondary font-light leading-relaxed max-w-2xl mx-auto">
+            Comprehensive industrial engineering services designed for demanding environments
+          </p>
         </div>
 
-        <div className="border-t border-white/5">
+        <div className="grid gap-12">
           {services.map((service, index) => (
             <div
               key={index}
-              className="service-row group py-16 border-b border-white/5 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 hover:bg-white/[0.02] transition-colors duration-500"
+              className="service-row group flex flex-col bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-500"
             >
-              <div className="flex gap-6 items-baseline px-4">
-                <span className="font-heading text-lg text-secondary-dark font-light transition-colors duration-500 group-hover:text-white/20">
+              {/* Service Header */}
+              <div className="flex gap-4 items-start p-6">
+                <span className="font-heading text-lg text-secondary-dark font-light flex-shrink-0">
                   {service.id}
                 </span>
-                <h3 className="text-3xl md:text-4xl font-heading font-light text-white tracking-tight">
-                  {service.title}
-                </h3>
-              </div>
-              
-              <div className="px-4 lg:px-0">
-                <p className="text-secondary text-lg font-light leading-relaxed mb-8 max-w-xl">
-                  {service.description}
-                </p>
-                
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-3 text-white text-sm font-light">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex-1">
+                  <h3 className="text-3xl font-heading font-light text-white tracking-tight mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-secondary text-base font-light leading-relaxed mb-5">
+                    {service.description}
+                  </p>
+
+                  {/* Capability Tags */}
+                  <div className="flex flex-wrap gap-3 mb-6">
+                    {service.capabilities.map((capability, idx) => (
+                      <span key={idx} className="px-3 py-1 text-xs font-heading tracking-widest uppercase bg-white/[0.03] border border-white/10 rounded">
+                        {capability}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA with Arrow */}
+                  <Link href="#contact" className="flex items-center gap-3 text-secondary-dark font-heading text-sm tracking-widest uppercase hover:text-white transition-colors duration-500">
+                    Learn More
+                    <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-1" />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

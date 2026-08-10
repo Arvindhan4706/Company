@@ -13,7 +13,7 @@ const About = () => {
 
   useGSAP(() => {
     const elements = gsap.utils.toArray('.about-animate');
-    
+
     gsap.fromTo(elements,
       { y: 40, opacity: 0 },
       {
@@ -33,31 +33,145 @@ const About = () => {
   return (
     <section ref={sectionRef} id="about" className="py-24 lg:py-32 bg-primary border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-8 max-w-4xl text-center">
-        
+
         <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-8 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
           Our Foundation
         </div>
-        
+
         <h2 className="about-animate text-3xl md:text-5xl lg:text-6xl font-heading font-light text-white leading-tight tracking-tight mb-12">
           Precision engineering for a <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-secondary">kinetic world</span>.
         </h2>
 
-        <TextReveal 
-          as="p" 
+        <TextReveal
+          as="p"
           delay={0.1}
           className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-8 max-w-3xl mx-auto"
         >
           Sterling Industrial Solutions LLP is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.
         </TextReveal>
 
-        <TextReveal 
-          as="p" 
+        <TextReveal
+          as="p"
           delay={0.2}
           className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-16 max-w-3xl mx-auto"
         >
           Our expertise spans end-to-end heavy metal fabrication, rigorous structural erection, high-voltage power distribution networks, and the integration of highly complex, compliant medical pipeline systems. We do not just build facilities; we engineer automated, fault-tolerant ecosystems designed to maximize uptime and operational efficiency for the most demanding industries.
         </TextReveal>
-        
+
+        {/* Enhanced Sections per Master Prompt */}
+        <div className="text-left mb-20">
+          {/* Who We Are */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Who We Are
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Industrial Engineering Excellence
+          </h3>
+          <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-2xl">
+            Sterling Industrial Solutions delivers integrated fabrication, installation and automation solutions for industrial environments. Our team of certified engineers and skilled technicians provides end-to-end project execution from concept to commissioning.
+          </p>
+
+          {/* Our Capabilities */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Our Capabilities
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Engineering Disciplines
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Mechanical Engineering</h4>
+              <p className="text-secondary text-sm font-light">Structural analysis, machine design, and fabrication processes</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Electrical Engineering</h4>
+              <p className="text-secondary text-sm font-light">Power distribution, control systems, and automation integration</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Automation</h4>
+              <p className="text-secondary text-sm font-light">PLC programming, SCADA systems, and robotic integration</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Fabrication</h4>
+              <p className="text-secondary text-sm font-light">Precision welding, CNC machining, and structural assembly</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Installation</h4>
+              <p className="text-secondary text-sm font-light">Equipment erection, mechanical alignment, and system commissioning</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-lg text-white mb-3">Project Management</h4>
+              <p className="text-secondary text-sm font-light">CPM scheduling, resource allocation, and quality control</p>
+            </div>
+          </div>
+
+          {/* Our Values */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Our Values
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Guiding Principles
+          </h3>
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <div className="text-left">
+              <h4 className="font-heading text-xl text-white mb-2">PRECISION</h4>
+              <p className="text-secondary text-sm font-light">Exact measurements and tight tolerances in all work</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-xl text-white mb-2">SAFETY</h4>
+              <p className="text-secondary text-sm font-light">Zero-harm culture with certified safety protocols</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-xl text-white mb-2">ACCOUNTABILITY</h4>
+              <p className="text-secondary text-sm font-light">Full transparency and ownership of project outcomes</p>
+            </div>
+            <div className="text-left">
+              <h4 className="font-heading text-xl text-white mb-2">DELIVERY</h4>
+              <p className="text-secondary text-sm font-light">On-time completion with verified performance</p>
+            </div>
+          </div>
+
+          {/* Leadership */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Leadership
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Experienced Engineering Team
+          </h3>
+          <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-3xl">
+            Our leadership team consists of certified professional engineers with decades of combined experience in industrial fabrication, automation, and infrastructure projects. We maintain a policy of using only verified team member information and do not publish individual profiles without explicit consent.
+          </p>
+
+          {/* Certifications */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Certifications
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Verified Standards Compliance
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
+              <h4 className="font-heading text-lg text-white mb-3">ISO 9001:2015</h4>
+              <p className="text-secondary text-sm font-light">Quality Management Systems</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
+              <h4 className="font-heading text-lg text-white mb-3">ISO 45001:2018</h4>
+              <p className="text-secondary text-sm font-light">Occupational Health and Safety</p>
+            </div>
+          </div>
+
+          {/* Company Timeline */}
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+            Company Timeline
+          </div>
+          <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
+            Established Engineering Practice
+          </h3>
+          <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-2xl">
+            Sterling Industrial Solutions has been providing integrated engineering solutions to industrial clients since its establishment. We focus on delivering verified project outcomes rather than publishing speculative timelines.
+          </p>
+        </div>
+
         <div className="about-animate text-white text-base md:text-lg font-light uppercase tracking-widest border-y border-white/10 py-8 mt-16">
           Building Trust. Delivering Quality. Driving Progress.
         </div>

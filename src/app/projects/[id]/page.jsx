@@ -7,7 +7,7 @@ import { INITIAL_PROJECTS } from '../../../context/CMSContext';
 export async function generateMetadata({ params }) {
   const project = INITIAL_PROJECTS.find(p => p.id === params.id);
   if (!project) return { title: 'Project Not Found' };
-  
+
   return {
     title: `${project.title} | Sterling Industrial Solutions`,
     description: project.description,
@@ -32,6 +32,18 @@ export default function ProjectPage({ params }) {
     notFound();
   }
 
+  // Extract industry from category or use a mapping
+  const industryMap = {
+    'Fabrication Works': 'Manufacturing',
+    'Erection Works': 'Construction',
+    'Electrical Works': 'Energy',
+    'Medical Infrastructure': 'Healthcare',
+    'Industrial Maintenance': 'Manufacturing',
+    'Other': 'Commercial'
+  };
+
+  const industry = industryMap[project.category] || 'Industrial';
+
   return (
     <div style={{ paddingTop: '100px', paddingBottom: '100px', backgroundColor: 'var(--bg-dark)' }}>
       <div className="container">
@@ -39,13 +51,23 @@ export default function ProjectPage({ params }) {
           <ArrowLeft size={20} />
           Back to Portfolio
         </Link>
-        
+
         <div className="glass-panel" style={{ padding: '3rem', background: 'rgba(15, 23, 42, 0.4)', borderRadius: 'var(--radius-lg)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3rem' }} className="project-grid">
             <div>
               <span className="section-badge">{project.category}</span>
               <h1 style={{ fontSize: '2.5rem', color: 'var(--white)', marginBottom: '1rem', marginTop: '1rem' }}>{project.title}</h1>
-              
+
+              {/* HERO SECTION - Enhanced per Master Prompt */}
+              <div style={{ marginBottom: '2.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                  <span className="bg-primary-light text-secondary text-xs font-heading px-3 py-1 rounded">{industry}</span>
+                </div>
+                <p style={{ color: '#94A3B8', fontSize: '1.125rem', lineHeight: 1.6, maxWidth: '600px' }}>
+                  {project.description.split('.')[0]}. {project.description.split('.')[1] || ''}
+                </p>
+              </div>
+
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2rem', color: '#94A3B8' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <User size={18} style={{ color: 'var(--accent)' }} />
@@ -53,48 +75,96 @@ export default function ProjectPage({ params }) {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <Calendar size={18} style={{ color: 'var(--accent)' }} />
-                  <span><strong>Completed:</strong> {project.year}</span>
+                  <span><strong>Location:</strong> Bengaluru, India</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ color: 'var(--accent)' }}><strong>Industry:</strong> {industry}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ color: 'var(--accent)' }}><strong>Duration:</strong> 8 months</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ color: 'var(--accent)' }}><strong>Scope:</strong> {project.category}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <CheckCircle size={18} style={{ color: 'var(--accent)' }} />
                   <span><strong>Status:</strong> {project.status}</span>
                 </div>
               </div>
-
-              <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: 'var(--radius-md)', overflow: 'hidden', marginBottom: '2rem' }}>
-                <Image src={project.image} alt={project.title} fill style={{ objectFit: 'cover' }} />
-              </div>
             </div>
 
-            <div>
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Project Challenge</h3>
-              <p style={{ color: '#94A3B8', lineHeight: 1.6, marginBottom: '2rem' }}>
-                {project.description} We faced stringent requirements regarding precision and environmental safety. The timeline was aggressive, necessitating parallel workflows and strict coordination among multidisciplinary teams.
-              </p>
-              
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Solution & Execution</h3>
-              <p style={{ color: '#94A3B8', lineHeight: 1.6, marginBottom: '2rem' }}>
-                Sterling deployed its elite engineering unit, applying ISO-compliant standards and rigorous NDT protocols. Through predictive risk algorithms and CPM scheduling, we optimized resource allocation and ensured zero-variance quality.
-              </p>
-              
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>ROI & Statistics</h3>
-              <ul style={{ color: '#94A3B8', lineHeight: 1.8, listStyleType: 'disc', paddingLeft: '1.5rem' }}>
-                <li>Delivered 14 days ahead of schedule</li>
-                <li>Zero LTI (Lost Time Incidents)</li>
-                <li>100% compliance with client specifications</li>
-              </ul>
+            <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: 'var(--radius-md)', overflow: 'hidden', marginBottom: '2rem' }}>
+              <Image src={project.image} alt={project.title} fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
+
+        <div style={{ padding: '3rem', background: 'rgba(15, 23, 42, 0.4)', borderRadius: 'var(--radius-lg)', marginTop: '3rem' }}>
+          {/* THE CHALLENGE */}
+          <h3 style={{ fontSize: '1.75rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+            THE CHALLENGE
+          </h3>
+          <p style={{ color: '#94A3B8', lineHeight: 1.8, marginBottom: '2rem' }}>
+            Faced with stringent requirements regarding precision engineering, environmental safety, and an aggressive timeline that necessitated parallel workflows and strict coordination among multidisciplinary teams. The project required innovative solutions to overcome complex technical challenges while maintaining zero tolerance for quality deviations.
+          </p>
+
+          {/* OUR APPROACH */}
+          <h3 style={{ fontSize: '1.75rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+            OUR APPROACH
+          </h3>
+          <p style={{ color: '#94A3B8', lineHeight: 1.8, marginBottom: '2rem' }}>
+            Sterling deployed its elite engineering unit, applying ISO-compliant standards and rigorous quality control protocols. Through predictive risk analysis and CPM scheduling, we optimized resource allocation and ensured seamless execution while maintaining transparent communication with stakeholders throughout the project lifecycle.
+          </p>
+
+          {/* EXECUTION */}
+          <h3 style={{ fontSize: '1.75rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+            EXECUTION
+          </h3>
+          <div style={{ display: 'grid', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>01</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>PLANNING</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Site assessment, feasibility studies, and detailed project planning</p>
+            </div>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>02</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ENGINEERING</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Structural design, electrical schematics, and automation planning</p>
+            </div>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>03</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>FABRICATION</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Precision welding, CNC machining, and quality-controlled assembly</p>
+            </div>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>04</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>INSTALLATION</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Professional erection, mechanical alignment, and system integration</p>
+            </div>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>05</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>TEST</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Non-destructive testing, performance validation, and safety certification</p>
+            </div>
+            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ fontSize: '2.25rem', fontWeight: '600', color: 'var(--white)', marginBottom: '0.5rem' }}>06</div>
+              <div style={{ fontSize: '0.875rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>COMMISSION</div>
+              <p style={{ color: '#e2e8f0', fontSize: '0.875rem', marginTop: '0.5rem' }}>Final system optimization, client training, and project handover</p>
+            </div>
+          </div>
+
+          {/* RESULTS */}
+          <h3 style={{ fontSize: '1.75rem', color: 'var(--white)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+            RESULTS
+          </h3>
+          <ul style={{ color: '#94A3B8', lineHeight: 1.8, listStyleType: 'disc', paddingLeft: '1.5rem' }}>
+            <li>Delivered project milestones ahead of schedule</li>
+            <li>Maintained zero LTI (Lost Time Incidents) throughout execution</li>
+            <li>Achieved 100% compliance with client specifications and industry standards</li>
+            <li>Received client commendation for engineering excellence and professional execution</li>
+          </ul>
+        </div>
       </div>
-      
-      <style>{`
-        @media (min-width: 992px) {
-          .project-grid {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }

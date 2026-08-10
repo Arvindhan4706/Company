@@ -16,13 +16,13 @@ const WhyChooseUs = () => {
   const reasons = [
     {
       icon: <CheckCircle size={20} className="text-white" />,
-      title: 'Zero-Variance Quality',
-      desc: 'We deploy strict Six Sigma inspection protocols and continuous Non-Destructive Testing (NDT) to ensure every weld, joint, and circuit operates flawlessly under maximum stress.'
+      title: 'Precision Quality Control',
+      desc: 'We deploy strict Six Sigma inspection protocols and continuous Non-Destructive Testing (NDT) to ensure every weld, joint, and circuit operates reliably under maximum stress.'
     },
     {
       icon: <ShieldAlert size={20} className="text-white" />,
-      title: 'ISO-Certified Safety',
-      desc: 'Our kinematic jobsites are governed by strict ISO 45001 occupational health directives. We mandate predictive safety analysis to guarantee accident-free operational zones.'
+      title: 'Safety-Focused Approach',
+      desc: 'Our kinematic jobsites follow ISO 45001 occupational health guidelines. We utilize predictive safety analysis to enhance safety in operational zones.'
     },
     {
       icon: <Users size={20} className="text-white" />,
@@ -31,13 +31,13 @@ const WhyChooseUs = () => {
     },
     {
       icon: <Calendar size={20} className="text-white" />,
-      title: 'Synchronized Delivery',
-      desc: 'Leveraging advanced CPM/PERT algorithmic scheduling and real-time telemetry, we synchronize multi-disciplinary workflows to guarantee milestones are hit with absolute precision.'
+      title: 'Coordinated Delivery',
+      desc: 'We use CPM/PERT algorithmic scheduling and real-time telemetry to coordinate multi-disciplinary workflows and track project milestones.'
     },
     {
       icon: <Heart size={20} className="text-white" />,
-      title: 'Tailored Mechatronics',
-      desc: 'We do not offer off-the-shelf solutions. We custom-engineer layouts, material specifications, and autonomous workflows to perfectly match your facilitys operational demands.'
+      title: 'Customized Solutions',
+      desc: 'We engineer layouts, select materials, and design workflows specifically matched to your facility\'s operational requirements.'
     },
     {
       icon: <Lightbulb size={20} className="text-white" />,

@@ -48,7 +48,7 @@ const VisionMission = () => {
             </h3>
             
             <p style={{ color: '#E2E8F0', fontSize: '1.05rem', lineHeight: 1.6, fontWeight: 400 }}>
-              "To be the undisputed leader in next-generation industrial engineering, setting global benchmarks in mechanical precision, structural resilience, and automated infrastructure."
+              "To advance industrial engineering excellence through mechanical precision, structural resilience, and automated infrastructure solutions."
             </p>
           </motion.div>
 
@@ -86,7 +86,7 @@ const VisionMission = () => {
             </h3>
             
             <p style={{ color: '#E2E8F0', fontSize: '1.05rem', lineHeight: 1.6, fontWeight: 400 }}>
-              "To architect and execute flawless heavy-mechanical solutions that drive our clients' operational success, ensuring absolute safety, zero-variance quality, and on-time delivery across every project phase."
+              "To architect and execute heavy-mechanical solutions that support our clients' operational success, with focus on safety, quality, and reliable delivery across every project phase."
             </p>
           </motion.div>
         </div>

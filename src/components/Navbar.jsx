@@ -96,11 +96,6 @@ const Navbar = () => {
             </Link>
           ))}
 
-          {/* Request a Quote Button */}
-          <Link href="/contact" className="flex items-center gap-3 px-6 py-3 bg-white text-primary font-heading tracking-widest uppercase text-sm rounded-full hover:bg-white/90 transition-all duration-500">
-            REQUEST A QUOTE
-            <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-1" />
-          </Link>
         </div>
 
         {/* Mobile Menu Icon */}
@@ -128,10 +123,6 @@ const Navbar = () => {
             {link.name}
           </Link>
         ))}
-        {/* Request a Quote Button in Mobile Menu */}
-        <Link href="/contact" className="w-flex items-center justify-center px-6 py-4 bg-white text-primary font-heading tracking-widest uppercase text-sm rounded-full hover:bg-white/90 transition-all duration-500">
-          REQUEST A QUOTE
-        </Link>
       </div>
     </nav>
   );

@@ -113,7 +113,7 @@ const Hero = () => {
         <div className="mb-8">
           <div
             ref={(el) => (textRefs.current[0] = el)}
-            className="font-heading uppercase tracking-wider text-sm text-secondary-dark"
+            className="font-heading uppercase tracking-wider text-sm text-white"
           >
             Sterling Industrial Solutions
           </div>
@@ -133,7 +133,7 @@ const Hero = () => {
         <div className="mb-10">
           <p
             ref={(el) => (textRefs.current[3] = el)}
-            className="text-base md:text-lg text-secondary-dark max-w-2xl mx-auto font-light leading-relaxed"
+            className="text-base md:text-lg text-white max-w-2xl mx-auto font-light leading-relaxed"
           >
             Precision fabrication, industrial automation, equipment erection and infrastructure solutions engineered for demanding environments.
           </p>
@@ -144,7 +144,7 @@ const Hero = () => {
           {/* Primary CTA: Request a Quote */}
           <Link
             href="/contact"
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-accent-blue/90 border border-accent-blue/80 text-white font-body tracking-widest uppercase text-sm rounded-full overflow-hidden hover:bg-accent/100 transition-all duration-500 hero-cta-primary"
+            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-white font-body tracking-widest uppercase text-sm rounded-xl overflow-hidden hover:bg-white/20 hover:border-white/50 hover:shadow-[0_8px_32px_rgba(255,255,255,0.1)] transition-all duration-500 hero-cta-primary"
           >
             <span className="relative z-10">REQUEST A QUOTE</span>
             <ArrowRight size={16} strokeWidth={1.5} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500" />
@@ -153,7 +153,7 @@ const Hero = () => {
           {/* Secondary CTA: Explore Projects */}
           <Link
             href="/projects"
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white font-body tracking-widest uppercase text-sm rounded-full overflow-hidden hover:border-white/40 transition-all duration-500"
+            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-black/20 backdrop-blur-sm border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] text-white/90 font-body tracking-widest uppercase text-sm rounded-xl overflow-hidden hover:bg-white/10 hover:border-white/30 hover:text-white transition-all duration-500"
           >
             <span className="relative z-10">EXPLORE PROJECTS</span>
             <ArrowRight size={16} strokeWidth={1.5} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500" />

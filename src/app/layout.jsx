@@ -46,17 +46,6 @@ export default function RootLayout({ children }) {
               <main className="flex-grow">{children}</main>
               <Footer />
               {/* Floating CTA */}
-              <div className="fixed right-6 bottom-6 lg:hidden z-50">
-                <a href="/contact" className="w-14 h-14 flex items-center justify-center bg-white text-primary font-heading tracking-widest uppercase text-xs rounded-full shadow-lg hover:bg-white/90 transition-all duration-500">
-                  REQUEST<br/>QUOTE
-                </a>
-              </div>
-              <div className="fixed right-6 bottom-6 lg:block z-50">
-                <a href="/contact" className="px-6 py-3 bg-white text-primary font-heading tracking-widest uppercase text-sm rounded-full shadow-lg hover:bg-white/90 transition-all duration-500 flex items-center gap-3">
-                  REQUEST A QUOTE
-                  <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500" />
-                </a>
-              </div>
             </CMSProvider>
           </SmoothScroller>
         </I18nProvider>

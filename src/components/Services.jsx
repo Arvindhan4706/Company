@@ -78,6 +78,17 @@ const services = [
 const Services = () => {
   const sectionRef = useRef(null);
   const [hoveredId, setHoveredId] = useState(null);
+  const [expandedIds, setExpandedIds] = useState(new Set());
+
+  const toggleExpand = (id, e) => {
+    e.preventDefault();
+    setExpandedIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return newSet;
+    });
+  };
 
   useGSAP(() => {
     gsap.fromTo('.svc-eyebrow',
@@ -129,61 +140,77 @@ const Services = () => {
         </div>
 
         {/* Services List */}
-        <div className="svc-list flex flex-col">
+        <div className="svc-list grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-col gap-6 lg:gap-0">
           {services.map((service, index) => {
             const Icon = service.icon;
             const isHovered = hoveredId === service.id;
+            const isExpanded = expandedIds.has(service.id);
             return (
               <div
                 key={service.id}
-                className="svc-row group border-t border-white/5 last:border-b opacity-0"
+                className="svc-row group border border-white/5 lg:border-0 lg:border-t lg:border-white/5 lg:last:border-b opacity-0 bg-white/[0.02] lg:bg-transparent rounded-lg lg:rounded-none overflow-hidden relative"
                 onMouseEnter={() => setHoveredId(service.id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
-                <div className="flex flex-col md:flex-row items-start md:items-stretch gap-5 md:gap-0 py-6 md:py-7 transition-all duration-500">
+                {/* Mobile Ghost Number */}
+                <div className="absolute top-0 right-4 text-[80px] font-heading font-bold text-white/[0.02] select-none pointer-events-none lg:hidden leading-none pt-4">
+                  {service.id}
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-5 lg:gap-0 py-6 px-6 lg:px-0 lg:py-7 transition-all duration-500 relative z-10">
                   
-                  <div className="flex items-center gap-4 md:contents">
-                    {/* Number */}
-                    <div className="w-auto md:w-16 flex-shrink-0 flex items-start pt-1">
+                  <div className="flex items-center gap-4 lg:contents">
+                    {/* Number - Desktop only */}
+                    <div className="hidden lg:flex w-auto lg:w-16 flex-shrink-0 items-start pt-1">
                       <span className="text-xs font-heading text-white/20 group-hover:text-white/50 transition-colors duration-500 tracking-widest">
                         {service.id}
                       </span>
                     </div>
 
                     {/* Icon */}
-                    <div className="w-auto md:w-12 flex-shrink-0 flex items-start pt-0.5">
-                      <div className="w-9 h-9 flex items-center justify-center border border-white/8 group-hover:border-white/25 bg-white/[0.02] group-hover:bg-white/[0.06] transition-all duration-500">
-                        <Icon size={15} className="text-white/35 group-hover:text-white/80 transition-colors duration-500" />
+                    <div className="w-auto lg:w-12 flex-shrink-0 flex items-start pt-0.5">
+                      <div className="w-10 h-10 lg:w-9 lg:h-9 flex items-center justify-center border border-white/8 group-hover:border-white/25 bg-white/[0.04] group-hover:bg-white/[0.06] transition-all duration-500 rounded-sm">
+                        <Icon size={16} className="text-white/35 group-hover:text-accent transition-colors duration-500" />
                       </div>
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 flex flex-col md:flex-row md:items-start gap-5 md:gap-12 w-full">
+                  <div className="flex-1 flex flex-col lg:flex-row lg:items-start gap-5 lg:gap-12 w-full">
                     <div className="flex-1">
-                      <h3 className="text-xl md:text-2xl font-heading font-light text-white/70 group-hover:text-white tracking-tight mb-2 transition-colors duration-500">
+                      <h3 className="text-xl lg:text-2xl font-heading font-light text-white/90 lg:text-white/70 group-hover:text-white tracking-tight mb-2 transition-colors duration-500 pr-8 lg:pr-0">
                         {service.title}
                       </h3>
-                      <p className="text-sm text-white/30 group-hover:text-white/55 font-light leading-relaxed max-w-lg transition-colors duration-500">
+                      <p className="text-sm text-white/50 lg:text-white/30 group-hover:text-white/55 font-light leading-relaxed max-w-lg transition-colors duration-500">
                         {service.description}
                       </p>
                     </div>
 
-                    {/* Tags — always show on mobile, hover on desktop */}
-                    <div className={`flex flex-wrap gap-2 items-start w-full md:w-auto md:max-w-xs transition-all duration-500 md:opacity-0 group-hover:opacity-100 ${isHovered ? 'md:opacity-100' : ''}`}>
-                      {service.capabilities.map((cap) => (
-                        <span key={cap} className="px-2.5 py-1 text-[10px] font-heading tracking-widest uppercase border border-white/10 text-white/40">
-                          {cap}
-                        </span>
-                      ))}
+                    {/* Tags — toggle on mobile, hover on desktop */}
+                    <div className={`flex flex-col gap-3 w-full lg:w-auto lg:max-w-xs transition-all duration-500 ${isExpanded ? 'h-auto mt-2 lg:mt-0 opacity-100' : 'h-0 overflow-hidden lg:h-auto lg:overflow-visible lg:opacity-0 group-hover:opacity-100'} ${isHovered ? 'lg:opacity-100' : ''}`}>
+                      <div className="flex flex-wrap gap-2 items-start">
+                        {service.capabilities.map((cap) => (
+                          <span key={cap} className="px-2.5 py-1 text-[10px] font-heading tracking-widest uppercase border border-white/10 text-white/40 bg-black/20 lg:bg-transparent">
+                            {cap}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Arrow CTA */}
-                  <div className="flex-shrink-0 flex items-center pl-0 md:pl-8 mt-2 md:mt-0 w-full md:w-auto justify-end md:justify-start">
+                  {/* Arrow CTA & Details Toggle */}
+                  <div className="flex-shrink-0 flex items-center justify-between w-full lg:w-auto mt-4 lg:mt-0 pt-4 border-t border-white/5 lg:border-0 lg:pt-0 lg:pl-8">
+                    
+                    <button 
+                      onClick={(e) => toggleExpand(service.id, e)}
+                      className="lg:hidden text-[10px] font-heading tracking-[0.2em] uppercase text-accent/80 hover:text-accent flex items-center gap-2 px-2 py-2 -ml-2"
+                    >
+                      {isExpanded ? 'Hide Details' : 'View Details'}
+                    </button>
+
                     <Link
                       href="/contact"
-                      className={`flex items-center justify-center w-10 h-10 border border-white/10 group-hover:border-white/40 group-hover:bg-white group-hover:text-black text-white/30 transition-all duration-500`}
+                      className={`flex items-center justify-center w-10 h-10 border border-white/10 group-hover:border-white/40 group-hover:bg-white group-hover:text-black text-white/30 transition-all duration-500 rounded-sm ml-auto lg:ml-0`}
                     >
                       <ArrowRight size={15} />
                     </Link>

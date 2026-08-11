@@ -146,13 +146,16 @@ const Navbar = () => {
         style={{ display: isOpen ? 'flex' : 'none', pointerEvents: isOpen ? 'auto' : 'none' }}
       >
         <div className="flex flex-col gap-6 w-full max-w-sm mx-auto">
-          {navLinks.map((link) => (
+          {navLinks.map((link, index) => (
             <Link
               key={link.id}
               href={`/${link.id}`}
               onClick={() => toggleMenu()}
-              className="mobile-nav-link text-white font-heading font-light text-3xl md:text-4xl tracking-wider uppercase border-b border-white/10 pb-4"
+              className="mobile-nav-link group flex items-baseline gap-4 text-white font-heading font-light text-3xl md:text-4xl tracking-wider uppercase border-b border-white/10 pb-4 pl-4 border-l-2 border-l-transparent hover:border-l-accent hover:pl-6 hover:text-white/90 transition-all duration-300"
             >
+              <span className="text-sm text-white/30 font-medium mt-1 transition-colors duration-300 group-hover:text-accent/60">
+                {String(index + 1).padStart(2, '0')}
+              </span>
               {link.name}
             </Link>
           ))}
@@ -165,6 +168,11 @@ const Navbar = () => {
             Request a Service
             <ArrowRight size={18} />
           </Link>
+
+          <div className="mobile-nav-link mt-4 pt-6 border-t border-white/10 flex flex-col gap-1.5 opacity-60">
+            <span className="text-white text-[10px] font-heading tracking-[0.25em] uppercase">MECELFAB Industrial Solutions</span>
+            <span className="text-white/50 text-[10px] font-heading tracking-[0.2em] uppercase italic">Precision Engineering Excellence</span>
+          </div>
         </div>
       </div>
     </>

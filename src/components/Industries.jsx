@@ -111,24 +111,31 @@ const Industries = () => {
 
         <div className="ind-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-16 border-t border-white/5 pt-16">
           {industries.map((ind, index) => (
-            <div key={index} className="ind-card group flex flex-col bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-500">
+            <div key={index} className="ind-card group flex flex-col bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-500 relative">
+              {/* Tablet Glass Shimmer */}
+              <div className="absolute inset-0 hidden md:block lg:hidden bg-gradient-to-b from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+              <div className="absolute inset-x-0 top-0 h-[1px] hidden md:block lg:hidden bg-gradient-to-r from-transparent via-accent/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
+
               {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-primary-light">
+              <div className="relative h-48 sm:h-56 overflow-hidden bg-primary-light">
                 <Image
                   src={ind.image}
                   alt={`${ind.title} industry`}
                   fill
                   className="object-cover object-center transform transition-transform duration-700 group-hover:scale-105"
                 />
+                {/* Mobile cinematic gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-black/40 to-transparent lg:hidden z-10" />
+                
                 {/* Category Badge */}
-                <span className="absolute top-4 left-4 bg-primary/90 border border-white/10 text-white px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md">
+                <span className="absolute top-4 left-4 bg-primary/90 border border-white/10 text-white px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md shadow-lg">
                   {ind.id}
                 </span>
               </div>
 
               {/* Details */}
-              <div className="p-5 sm:p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-heading font-light text-white mb-3">
+              <div className="p-5 sm:p-6 flex flex-col flex-grow relative z-20">
+                <h3 className="text-xl font-heading font-light text-white mb-3 drop-shadow-md">
                   {ind.title}
                 </h3>
                 <p className="text-secondary text-sm flex-grow leading-relaxed mb-4">

@@ -8,9 +8,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-primary pt-24 pb-8 border-t border-white/5 text-left">
+    <footer className="bg-primary pt-24 pb-8 relative">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
       <div className="container px-4 sm:px-6 md:px-8 mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-10 lg:gap-12 mb-12 md:mb-16">
           {/* Brand Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
@@ -41,8 +42,22 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Combined Navigation & Services - Pill Strip on Mobile, Columns on Desktop */}
+          <div className="sm:hidden col-span-1 pt-6 border-t border-white/5">
+            <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
+              Explore
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/about" className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-heading tracking-widest uppercase text-secondary hover:text-white transition-colors">About</Link>
+              <Link href="/services" className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-heading tracking-widest uppercase text-secondary hover:text-white transition-colors">Services</Link>
+              <Link href="/industries" className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-heading tracking-widest uppercase text-secondary hover:text-white transition-colors">Industries</Link>
+              <Link href="/projects" className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-heading tracking-widest uppercase text-secondary hover:text-white transition-colors">Projects</Link>
+              <Link href="/contact" className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-heading tracking-widest uppercase text-secondary hover:text-white transition-colors">Contact</Link>
+            </div>
+          </div>
+
+          {/* Quick Links (Hidden on Mobile) */}
+          <div className="hidden sm:block">
             <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
               Navigation
             </h4>
@@ -70,8 +85,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Industry Services */}
-          <div>
+          {/* Industry Services (Hidden on Mobile) */}
+          <div className="hidden sm:block">
             <h4 className="text-white text-sm font-heading tracking-widest uppercase mb-6">
               Services
             </h4>

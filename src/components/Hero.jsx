@@ -157,39 +157,47 @@ const Hero = () => {
       {/* ─── Main content ─────────────────────────────────────── */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-16 py-16">
 
+        {/* Mobile ISO Badge */}
+        <div className="md:hidden flex items-center justify-center mb-6 opacity-0 hero-tagline">
+          <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/60 text-[9px] font-heading tracking-[0.25em] uppercase backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.02)]">
+            ISO 9001 Certified • Made in India
+          </span>
+        </div>
+
         {/* Company name — the hero wordmark */}
-        <div className="overflow-hidden mb-3">
+        <div className="overflow-hidden mb-3 md:border-l-[3px] md:border-accent/80 md:pl-6 md:-ml-[27px] flex flex-col items-center md:items-start text-center md:text-left relative">
           <h1
-            className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase"
-            style={{ fontSize: 'clamp(2.5rem, 11vw, 13rem)', lineHeight: 0.9 }}
+            className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase w-full"
+            style={{ fontSize: 'clamp(3.5rem, 15vw, 13rem)', lineHeight: 0.9 }}
           >
             MECELFAB
           </h1>
+          <div className="w-32 h-[2px] bg-gradient-to-r from-accent/0 via-accent to-accent/0 mt-6 md:hidden opacity-0 hero-tagline"></div>
         </div>
 
         {/* Full legal name + tagline */}
-        <div className="hero-tagline flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-8 opacity-0">
-          <span className="text-white/35 text-[10px] md:text-sm font-heading tracking-[0.25em] uppercase">
+        <div className="hero-tagline flex flex-col md:flex-row items-center md:items-baseline gap-2 md:gap-x-4 mb-8 opacity-0 text-center md:text-left mt-5 md:mt-0">
+          <span className="text-white/40 text-[11px] md:text-sm font-heading tracking-[0.25em] uppercase">
             Industrial Solutions Pvt. Ltd.
           </span>
-          <div className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-          <span className="text-white/50 text-[10px] md:text-sm font-heading tracking-[0.2em] uppercase italic">
+          <div className="w-[1px] h-3 bg-white/20 hidden md:block" />
+          <span className="text-white/60 text-[11px] md:text-sm font-heading tracking-[0.2em] uppercase italic">
             Precision Engineering Excellence
           </span>
         </div>
 
         {/* Description */}
-        <p className="hero-desc text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
+        <p className="hero-desc text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0 text-center md:text-left mx-auto md:mx-0">
           Industrial erection, heavy fabrication, generator services, hydraulic &amp; pneumatic
           overhauling, AMC, and equipment rental — delivered with zero-compromise precision
           across India.
         </p>
 
         {/* Horizontal rule */}
-        <div className="hero-rule w-full max-w-2xl h-[1px] bg-gradient-to-r from-white/25 to-transparent mb-10 opacity-0" />
+        <div className="hero-rule w-full max-w-2xl h-[1px] bg-gradient-to-r from-white/25 to-transparent mb-10 opacity-0 hidden md:block" />
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-5 mb-16">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-5 mb-16 mx-auto md:mx-0 w-full max-w-sm sm:max-w-none">
 
           {/* Primary — Get a Free Quote */}
           <Link
@@ -234,22 +242,24 @@ const Hero = () => {
         </div>
 
         {/* Service pillars — suits a new company */}
-        <div className="grid grid-cols-2 md:flex md:flex-wrap items-start gap-6 md:gap-14">
-          {[
-            { label: '8 Industrial Services', sub: 'End-to-End Capability' },
-            { label: 'Pan-India Operations', sub: 'Project Site Coverage' },
-            { label: 'ISO 9001 Certified', sub: 'Quality Management' },
-            { label: 'Zero-Compromise', sub: 'Safety-Led Execution' },
-          ].map(({ label, sub }) => (
-            <div key={label} className="hero-stat flex flex-col gap-1.5 opacity-0">
-              <div className="text-base md:text-lg font-heading font-light text-white tracking-tight">
-                {label}
+        <div className="hero-stat-container overflow-x-auto md:overflow-visible pb-6 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="flex md:flex-wrap items-start gap-8 md:gap-14 min-w-max md:min-w-0">
+            {[
+              { label: '8 Industrial Services', sub: 'End-to-End Capability' },
+              { label: 'Pan-India Operations', sub: 'Project Site Coverage' },
+              { label: 'ISO 9001 Certified', sub: 'Quality Management' },
+              { label: 'Zero-Compromise', sub: 'Safety-Led Execution' },
+            ].map(({ label, sub }) => (
+              <div key={label} className="hero-stat flex flex-col gap-1.5 opacity-0 pr-8 md:pr-0 border-r border-white/10 md:border-r-0 last:border-r-0">
+                <div className="text-[15px] sm:text-base md:text-lg font-heading font-light text-white tracking-tight whitespace-nowrap md:whitespace-normal">
+                  {label}
+                </div>
+                <div className="text-[9px] md:text-[10px] text-white/40 font-heading tracking-[0.25em] uppercase whitespace-nowrap md:whitespace-normal">
+                  {sub}
+                </div>
               </div>
-              <div className="text-[10px] text-white/35 font-heading tracking-[0.25em] uppercase">
-                {sub}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 

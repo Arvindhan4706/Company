@@ -259,7 +259,7 @@ const Contact = ({ services = [] }) => {
           </div>
 
           {/* Contact Form */}
-          <div className="contact-right p-5 sm:p-8 lg:p-12 bg-white/[0.02] border border-white/5">
+          <div className="contact-right p-0 md:p-8 lg:p-12 bg-transparent md:bg-white/[0.02] border-none md:border border-white/5 mt-8 md:mt-0">
             {isSubmitted ? (
               <div className="text-center py-16">
                 <div className="inline-flex text-accent mb-6">
@@ -278,12 +278,12 @@ const Contact = ({ services = [] }) => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
-                <h3 className="text-2xl font-light text-white mb-2">
+                <h3 className="text-2xl font-light text-white mb-4 md:mb-2">
                   REQUEST A QUOTE
                 </h3>
 
                 {/* Row 1: Full Name and Company */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Full Name *</label>
                     <input
@@ -311,7 +311,7 @@ const Contact = ({ services = [] }) => {
                 </div>
 
                 {/* Row 2: Email and Phone */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Email Address *</label>
                     <input
@@ -339,7 +339,7 @@ const Contact = ({ services = [] }) => {
                 </div>
 
                 {/* Row 3: Project Location and Service Required */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Project Location *</label>
                     <input

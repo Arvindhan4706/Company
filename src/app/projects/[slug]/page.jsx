@@ -5,11 +5,11 @@ import { ArrowLeft, Calendar, User, CheckCircle } from 'lucide-react';
 import { INITIAL_PROJECTS } from '../../../context/CMSContext';
 
 export async function generateMetadata({ params }) {
-  const project = INITIAL_PROJECTS.find(p => p.id === params.id);
+  const project = INITIAL_PROJECTS.find(p => p.slug === params.slug);
   if (!project) return { title: 'Project Not Found' };
 
   return {
-    title: `${project.title} | Sterling Industrial Solutions`,
+    title: `${project.title} | MECELFAB Industrial Solutions`,
     description: project.description,
     openGraph: {
       title: project.title,
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default function ProjectPage({ params }) {
-  const project = INITIAL_PROJECTS.find(p => p.id === params.id);
+  const project = INITIAL_PROJECTS.find(p => p.slug === params.slug);
 
   if (!project) {
     notFound();
@@ -113,7 +113,7 @@ export default function ProjectPage({ params }) {
             OUR APPROACH
           </h3>
           <p style={{ color: '#94A3B8', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Sterling deployed its elite engineering unit, applying ISO-compliant standards and rigorous quality control protocols. Through predictive risk analysis and CPM scheduling, we optimized resource allocation and ensured seamless execution while maintaining transparent communication with stakeholders throughout the project lifecycle.
+            MECELFAB deployed its elite engineering unit, applying ISO-compliant standards and rigorous quality control protocols. Through predictive risk analysis and CPM scheduling, we optimized resource allocation and ensured seamless execution while maintaining transparent communication with stakeholders throughout the project lifecycle.
           </p>
 
           {/* EXECUTION */}

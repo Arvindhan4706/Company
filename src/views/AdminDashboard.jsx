@@ -141,7 +141,7 @@ const AdminDashboard = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (passwordInput === 'sterling123') {
+    if (passwordInput === 'MECELFAB123') {
       setIsAuthenticated(true);
       sessionStorage.setItem('adminAuth', 'true');
       setAuthError('');
@@ -532,3 +532,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

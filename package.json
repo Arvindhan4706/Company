@@ -17,6 +17,7 @@
     "@tsparticles/slim": "^3.9.1",
     "animejs": "^4.4.1",
     "autoprefixer": "^10.5.4",
+    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
@@ -35,12 +36,18 @@
     "three": "^0.185.0"
   },
   "devDependencies": {
+    "@auth/prisma-adapter": "^2.11.3",
     "@eslint/js": "^10.0.1",
+    "@prisma/client": "^5.22.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.6.0"
+    "globals": "^17.6.0",
+    "prisma": "^5.22.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

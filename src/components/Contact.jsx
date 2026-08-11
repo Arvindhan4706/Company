@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Contact = () => {
+const Contact = ({ services = [] }) => {
   const containerRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -197,7 +197,7 @@ const Contact = () => {
           <div className="contact-left flex flex-col gap-12">
             <div>
               <h3 className="text-2xl font-light text-white mb-8">
-                Sterling Industrial Solutions LLP
+                MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED
               </h3>
               <div className="flex flex-col gap-6">
                 <div className="flex items-start gap-4">
@@ -245,14 +245,14 @@ const Contact = () => {
             {/* Styled Map Container */}
             <div className="w-full h-64 border border-white/5 overflow-hidden filter grayscale contrast-125 opacity-80">
               <iframe
-                title="Sterling Industrial Location Map"
+                title="MECELFAB Industrial Location Map"
                 width="100%"
                 height="100%"
                 frameBorder="0"
                 scrolling="no"
                 marginHeight="0"
                 marginWidth="0"
-                src="https://maps.google.com/maps?width=100%25&amp;height=250&amp;hl=en&amp;q=Peenya%20Industrial%20Area,%20Bengaluru+(Sterling%20Industrial%20Solutions%20LLP)&amp;t=m&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                src="https://maps.google.com/maps?width=100%25&amp;height=250&amp;hl=en&amp;q=Peenya%20Industrial%20Area,%20Bengaluru+(MECELFAB%20Industrial%20Solutions%20LLP)&amp;t=m&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
                 className="invert hue-rotate-180"
               />
             </div>
@@ -361,11 +361,22 @@ const Contact = () => {
                       className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none"
                     >
                       <option value="">Select Service Required</option>
-                      <option value="Fabrication Works">Fabrication Works</option>
-                      <option value="Erection Works">Erection & Installation Works</option>
-                      <option value="Electrical Works">Electrical Works</option>
-                      <option value="Medical Infrastructure">Medical Infrastructure Solutions</option>
-                      <option value="Industrial Maintenance">Industrial Maintenance & Overhaul</option>
+                      {services.length > 0 ? (
+                        services.map((service, index) => (
+                          <option key={index} value={service.title}>{service.title}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Industrial Erection">Industrial Erection</option>
+                          <option value="Industrial Fabrication">Industrial Fabrication</option>
+                          <option value="Hydraulic & Pneumatic System Overhauling">Hydraulic & Pneumatic System Overhauling</option>
+                          <option value="Industrial Generator Spare Parts">Industrial Generator Spare Parts</option>
+                          <option value="AMC — Annual Maintenance Contract">AMC — Annual Maintenance Contract</option>
+                          <option value="Industrial Generator Rental">Industrial Generator Rental</option>
+                          <option value="Air Compressor Rental">Air Compressor Rental</option>
+                          <option value="Turbocharger Services">Turbocharger Services</option>
+                        </>
+                      )}
                       <option value="Other">Other Solutions</option>
                     </select>
                     {formErrors.serviceRequired && <p className="text-red-500 text-xs mt-1">{formErrors.serviceRequired}</p>}

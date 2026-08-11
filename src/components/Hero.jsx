@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,159 +9,266 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+
 const Hero = () => {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
-  const textRefs = useRef([]);
-
-  const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   useGSAP(() => {
-    // Parallax background
+    const tl = gsap.timeline({ delay: 0.05 });
+
+    // Background image — slow zoom in from scale 1.1
+    tl.fromTo(bgRef.current,
+      { scale: 1.12, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 2.8, ease: 'power2.out' },
+      0
+    );
+
+    // Top strip — slide in from top
+    tl.fromTo('.hero-topstrip',
+      { y: -40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+      0.4
+    );
+
+    // MECELFAB — reveal each letter from below clip
+    tl.fromTo('.hero-wordmark',
+      { y: '110%' },
+      { y: '0%', duration: 1.4, ease: 'power4.out' },
+      0.55
+    );
+
+    // Tagline — slide up
+    tl.fromTo('.hero-tagline',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+      1.1
+    );
+
+    // Description paragraph
+    tl.fromTo('.hero-desc',
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+      1.35
+    );
+
+    // Horizontal rule
+    tl.fromTo('.hero-rule',
+      { scaleX: 0, opacity: 0 },
+      { scaleX: 1, opacity: 1, duration: 1, ease: 'power3.out', transformOrigin: 'left' },
+      1.5
+    );
+
+    // CTAs
+    tl.fromTo('.hero-cta-btn',
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' },
+      1.6
+    );
+
+    // Pillars
+    tl.fromTo('.hero-stat',
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' },
+      1.75
+    );
+
+    // Bottom strip
+    tl.fromTo('.hero-bottomstrip',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+      1.9
+    );
+
+
+
+    // Parallax on scroll
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: 'top top',
       end: 'bottom top',
-      animation: gsap.to(bgRef.current, { y: '20%', ease: 'none' }),
+      animation: gsap.to(bgRef.current, { y: '22%', ease: 'none' }),
       scrub: true,
     });
 
-    // Text Reveal Masking Animation for headline and subtext
-    gsap.fromTo(
-      textRefs.current,
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.4,
-        stagger: 0.2,
-        ease: 'power4.out',
-        delay: 0.3,
-      }
-    );
+    // MECELFAB outline text parallax
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: 'bottom top',
+      animation: gsap.to('.hero-outline-text', { y: '-8%', ease: 'none' }),
+      scrub: 1.5,
+    });
 
-    // Subtle floating particles (less intense than before)
-    if (bgRef.current) {
-      const particleCount = 20;
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'absolute rounded-full bg-white/10 blur-[0.5px]';
-        particle.style.left = `${gsap.utils.random(0, 100)}%`;
-        particle.style.top = `${gsap.utils.random(0, 100)}%`;
-        particle.style.width = `${gsap.utils.random(1, 3)}px`;
-        particle.style.height = `${gsap.utils.random(1, 3)}px`;
-
-        bgRef.current.appendChild(particle);
-
-        gsap.to(particle, {
-          y: `-=${gsap.utils.random(80, 150)}`,
-          x: `+=${gsap.utils.random(-40, 40)}`,
-          rotation: gsap.utils.random(-30, 30),
-          opacity: gsap.utils.random(0.05, 0.2),
-          duration: gsap.utils.random(8, 15),
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          delay: gsap.utils.random(0, 5),
-        });
-      }
-    }
-
-    // CTA button pulse animation
-    gsap.fromTo('.hero-cta-primary',
-      { scale: 0.95, opacity: 0.8 },
-      { scale: 1, opacity: 1, duration: 1.2, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1.5 }
-    );
-
-    // Scroll indicator line
-    gsap.fromTo('.scroll-indicator',
-      { height: 0, opacity: 0 },
-      { height: 100, opacity: 0.7, duration: 1.5, delay: 1.8, ease: 'power3.out' }
-    );
   }, { scope: containerRef });
 
   return (
     <section
       id="hero"
       ref={containerRef}
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-primary"
+      className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-black"
     >
-      {/* Industrial Background Image */}
-      <div
-        ref={bgRef}
-        className="absolute top-0 left-0 right-0 bottom-0 z-0"
-      >
+      {/* ─── Background ──────────────────────────────────────── */}
+      <div ref={bgRef} className="absolute inset-0 z-0 will-change-transform opacity-0">
         <Image
           src="/images/hero-bg.png"
-          alt="Industrial engineering background"
+          alt="MECELFAB Industrial Operations"
           fill
           priority
           className="object-cover object-center"
+          sizes="100vw"
         />
-
-        {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 bg-black/40" />
+        {/* dark gradient: heavy left, lighter right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
+        {/* bottom fade for clean transition */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25" />
       </div>
 
-      <div className="container relative z-10 flex flex-col items-center text-center px-6 max-w-4xl mx-auto">
-        {/* Subheadline / Intro */}
-        <div className="mb-8">
-          <div
-            ref={(el) => (textRefs.current[0] = el)}
-            className="font-heading uppercase tracking-wider text-sm text-white"
+      {/* ─── Decorative giant outline watermark ──────────────── */}
+      <div className="hero-outline-text absolute inset-0 z-[1] flex items-center justify-center pointer-events-none overflow-hidden select-none">
+        <span
+          className="text-white font-heading font-bold uppercase tracking-tighter whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(6rem, 22vw, 22rem)',
+            WebkitTextStroke: '1px rgba(255,255,255,0.04)',
+            color: 'transparent',
+            lineHeight: 1,
+          }}
+        >
+          MECELFAB
+        </span>
+      </div>
+
+      {/* ─── Top strip ───────────────────────────────────────── */}
+      <div className="hero-topstrip relative z-10 flex items-center justify-between px-8 md:px-16 pt-28 opacity-0">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-[1px] bg-white/40" />
+          <span className="text-white/40 text-[10px] font-heading tracking-[0.35em] uppercase">
+            Est. India
+          </span>
+        </div>
+        <div className="hidden md:flex items-center gap-6">
+          <span className="text-white/30 text-[10px] font-heading tracking-[0.25em] uppercase">ISO 9001:2015</span>
+          <div className="w-[1px] h-3 bg-white/20" />
+          <span className="text-white/30 text-[10px] font-heading tracking-[0.25em] uppercase">ISO 45001:2018</span>
+        </div>
+      </div>
+
+      {/* ─── Main content ─────────────────────────────────────── */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-16 py-16">
+
+        {/* Company name — the hero wordmark */}
+        <div className="overflow-hidden mb-3">
+          <h1
+            className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase"
+            style={{ fontSize: 'clamp(4.5rem, 13vw, 13rem)', lineHeight: 0.9 }}
           >
-            Sterling Industrial Solutions
-          </div>
+            MECELFAB
+          </h1>
         </div>
 
-        {/* Main Headline */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight tracking-tighter mb-6 mb-8 leading-[1.1]">
-          <div className="overflow-hidden">
-            <span ref={(el) => (textRefs.current[1] = el)} className="block">ENGINEERING</span>
-          </div>
-          <div className="overflow-hidden">
-            <span ref={(el) => (textRefs.current[2] = el)} className="block">BUILT TO PERFORM.</span>
-          </div>
-        </h1>
-
-        {/* Supporting Text */}
-        <div className="mb-10">
-          <p
-            ref={(el) => (textRefs.current[3] = el)}
-            className="text-base md:text-lg text-white max-w-2xl mx-auto font-light leading-relaxed"
-          >
-            Precision fabrication, industrial automation, equipment erection and infrastructure solutions engineered for demanding environments.
-          </p>
+        {/* Full legal name + tagline */}
+        <div className="hero-tagline flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-8 opacity-0">
+          <span className="text-white/35 text-xs md:text-sm font-heading tracking-[0.25em] uppercase">
+            Industrial Solutions Pvt. Ltd.
+          </span>
+          <div className="w-[1px] h-3 bg-white/20 hidden md:block" />
+          <span className="text-white/50 text-xs md:text-sm font-heading tracking-[0.2em] uppercase italic">
+            Precision Engineering Excellence
+          </span>
         </div>
+
+        {/* Description */}
+        <p className="hero-desc text-white/55 text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
+          Industrial erection, heavy fabrication, generator services, hydraulic &amp; pneumatic
+          overhauling, AMC, and equipment rental — delivered with zero-compromise precision
+          across India.
+        </p>
+
+        {/* Horizontal rule */}
+        <div className="hero-rule w-full max-w-2xl h-[1px] bg-gradient-to-r from-white/25 to-transparent mb-10 opacity-0" />
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-6 justify-center">
-          {/* Primary CTA: Request a Quote */}
+        <div className="flex flex-wrap items-center gap-5 mb-16">
+
+          {/* Primary — Get a Free Quote */}
           <Link
             href="/contact"
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-white font-body tracking-widest uppercase text-sm rounded-xl overflow-hidden hover:bg-white/20 hover:border-white/50 hover:shadow-[0_8px_32px_rgba(255,255,255,0.1)] transition-all duration-500 hero-cta-primary"
+            className="hero-cta-btn group relative inline-flex items-center gap-4 overflow-hidden opacity-0"
+            style={{ textDecoration: 'none' }}
           >
-            <span className="relative z-10">REQUEST A QUOTE</span>
-            <ArrowRight size={16} strokeWidth={1.5} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500" />
+            <span className="relative z-10 flex items-center gap-4 px-8 py-4 bg-white text-black font-heading font-semibold text-sm tracking-[0.18em] uppercase transition-all duration-500 group-hover:bg-transparent group-hover:text-white border border-white">
+              {/* shimmer sweep on hover */}
+              <span
+                className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
+                }}
+              />
+              <span className="relative">Get a Free Quote</span>
+              <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-black/10 group-hover:bg-white/10 transition-colors duration-300">
+                <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+              </span>
+            </span>
           </Link>
 
-          {/* Secondary CTA: Explore Projects */}
+          {/* Secondary — Our Services */}
           <Link
-            href="/projects"
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 bg-black/20 backdrop-blur-sm border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] text-white/90 font-body tracking-widest uppercase text-sm rounded-xl overflow-hidden hover:bg-white/10 hover:border-white/30 hover:text-white transition-all duration-500"
+            href="/services"
+            className="hero-cta-btn group relative inline-flex items-center gap-4 opacity-0"
+            style={{ textDecoration: 'none' }}
           >
-            <span className="relative z-10">EXPLORE PROJECTS</span>
-            <ArrowRight size={16} strokeWidth={1.5} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500" />
+            {/* animated border glow */}
+            <span
+              className="absolute inset-0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.08)' }}
+            />
+            <span className="relative z-10 flex items-center gap-4 px-8 py-4 border border-white/20 text-white/60 font-heading text-sm tracking-[0.18em] uppercase group-hover:border-white/40 group-hover:text-white transition-all duration-400">
+              <span>Our Services</span>
+              <span className="relative flex items-center justify-center w-6 h-6 border border-white/20 group-hover:border-white/50 transition-colors duration-300 rounded-sm">
+                <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+              </span>
+            </span>
           </Link>
+
         </div>
 
-        {/* Scroll indicator line */}
-        <div className="scroll-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-white/50 to-transparent z-20" />
+        {/* Service pillars — suits a new company */}
+        <div className="flex flex-wrap items-start gap-8 md:gap-14">
+          {[
+            { label: '8 Industrial Services', sub: 'End-to-End Capability' },
+            { label: 'Pan-India Operations', sub: 'Project Site Coverage' },
+            { label: 'ISO 9001 Certified', sub: 'Quality Management' },
+            { label: 'Zero-Compromise', sub: 'Safety-Led Execution' },
+          ].map(({ label, sub }) => (
+            <div key={label} className="hero-stat flex flex-col gap-1.5 opacity-0">
+              <div className="text-base md:text-lg font-heading font-light text-white tracking-tight">
+                {label}
+              </div>
+              <div className="text-[10px] text-white/35 font-heading tracking-[0.25em] uppercase">
+                {sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── Bottom strip ─────────────────────────────────────── */}
+      <div className="hero-bottomstrip relative z-10 flex items-center justify-between px-8 md:px-16 pb-10 opacity-0">
+        {/* Service tags — left aligned, untouched */}
+        <div className="hidden md:flex items-center gap-5 text-xs text-white/55 font-heading tracking-[0.18em] uppercase">
+          <span>Fabrication</span>
+          <span className="text-white/20">·</span>
+          <span>Erection</span>
+          <span className="text-white/20">·</span>
+          <span>Generator Services</span>
+          <span className="text-white/20">·</span>
+          <span>Hydraulic Systems</span>
+          <span className="text-white/20">·</span>
+          <span>AMC</span>
+          <span className="text-white/20">·</span>
+          <span>Rentals</span>
+        </div>
       </div>
     </section>
   );

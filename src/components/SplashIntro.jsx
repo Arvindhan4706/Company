@@ -51,7 +51,7 @@ const SplashIntro = () => {
           }}>
             <motion.img
               src="/images/logo.jpg"
-              alt="Sterling Industrial Solutions Logo"
+              alt="MECELFAB Industrial Solutions Logo"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -71,3 +71,4 @@ const SplashIntro = () => {
 };
 
 export default SplashIntro;
+

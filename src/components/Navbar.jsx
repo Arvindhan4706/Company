@@ -77,7 +77,7 @@ const Navbar = () => {
       <div className="container flex items-center justify-between mx-auto px-8">
         <Link href="/" className="flex items-center gap-3">
           <span className="font-heading font-light tracking-widest text-2xl text-white uppercase">
-            Sterling
+            MECELFAB
           </span>
         </Link>
 
@@ -128,5 +128,5 @@ const Navbar = () => {
   );
 };
 
-// Navbar component for Sterling Industrial Solutions
+// Navbar component for MECELFAB Industrial Solutions
 export default Navbar;

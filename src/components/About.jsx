@@ -47,7 +47,7 @@ const About = () => {
           delay={0.1}
           className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-8 max-w-3xl mx-auto"
         >
-          Sterling Industrial Solutions LLP is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.
+          MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.
         </TextReveal>
 
         <TextReveal
@@ -68,7 +68,7 @@ const About = () => {
             Industrial Engineering Excellence
           </h3>
           <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-2xl">
-            Sterling Industrial Solutions delivers integrated fabrication, installation and automation solutions for industrial environments. Our team of certified engineers and skilled technicians provides end-to-end project execution from concept to commissioning.
+            MECELFAB Industrial Solutions delivers integrated fabrication, installation and automation solutions for industrial environments. Our team of certified engineers and skilled technicians provides end-to-end project execution from concept to commissioning.
           </p>
 
           {/* Our Capabilities */}
@@ -168,7 +168,7 @@ const About = () => {
             Established Engineering Practice
           </h3>
           <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-2xl">
-            Sterling Industrial Solutions has been providing integrated engineering solutions to industrial clients since its establishment. We focus on delivering verified project outcomes rather than publishing speculative timelines.
+            MECELFAB Industrial Solutions has been providing integrated engineering solutions to industrial clients since its establishment. We focus on delivering verified project outcomes rather than publishing speculative timelines.
           </p>
         </div>
 

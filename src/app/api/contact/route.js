@@ -1,20 +1,42 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const body = await request.json();
-    const { name, email, company, message } = body;
+    const formData = await req.formData();
+    
+    const name = formData.get('fullName');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+    const company = formData.get('companyName');
+    const service = formData.get('serviceRequired');
+    const projectLocation = formData.get('projectLocation');
+    const expectedTimeline = formData.get('expectedTimeline');
+    const projectDescription = formData.get('projectDescription');
+    
+    // Concatenate extra fields into the message body
+    const message = `
+Project Location: ${projectLocation || 'N/A'}
+Expected Timeline: ${expectedTimeline || 'N/A'}
+Description: 
+${projectDescription}
+    `.trim();
 
-    // Here you would integrate with Resend, EmailJS, SendGrid, etc.
-    // For now, we simulate a successful email send.
-    console.log(`Sending email from ${name} (${email}) at ${company}: ${message}`);
+    await db.inquiry.create({
+      data: {
+        name,
+        email,
+        phone: phone || null,
+        company: company || null,
+        service: service || null,
+        message,
+        status: 'NEW'
+      }
+    });
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    return NextResponse.json({ success: true, message: 'Message sent successfully.' }, { status: 200 });
+    return NextResponse.json({ success: true, message: 'Inquiry received' });
   } catch (error) {
-    console.error('Contact form error:', error);
-    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
+    console.error('Contact API Error:', error);
+    return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }
 }

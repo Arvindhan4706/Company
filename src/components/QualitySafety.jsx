@@ -90,7 +90,7 @@ const QualitySafety = () => {
               Committed to <br/> Quality & Safety <span className="italic font-serif opacity-90">Excellence</span>
             </h2>
             <p className="qs-text text-lg text-white/90 font-light leading-relaxed mb-6">
-              At Sterling Industrial Solutions LLP, quality execution and industrial health and safety are core corporate values, not optional checkboxes.
+              At MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED, quality execution and industrial health and safety are core corporate values, not optional checkboxes.
             </p>
             <p className="qs-text text-base text-secondary font-light leading-relaxed mb-12">
               We enforce an environment of high discipline across fabrication yards and field job sites. Our engineers work hand-in-hand with safety inspectors to ensure all construction works conform to safety indices, reducing risk exposure and ensuring perfect structural compliance.
@@ -135,3 +135,4 @@ const QualitySafety = () => {
 };
 
 export default QualitySafety;
+

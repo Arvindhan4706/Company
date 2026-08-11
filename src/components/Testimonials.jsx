@@ -3,31 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
-const testimonials = [
-  {
-    quote: "Sterling engineered the complete structural and electromechanical integration for our new automated assembly line. Their precision in heavy rigging and SCADA deployment significantly improved our commissioning timeline. Their mechatronics expertise is exceptional.",
-    name: "Rajesh K. Sharma",
-    role: "Chief Automation Officer",
-    company: "Vanguard Heavy Industries",
-    rating: 5
-  },
-  {
-    quote: "We required an ISO-certified Medical Gas Pipeline System (MGPS) for our surgical ICU wing. Sterling delivered reliable fluid-dynamics engineering with robust safety architectures. They have proven to be a trusted partner for clinical infrastructure projects.",
-    name: "Dr. Amit Varma",
-    role: "Director of Clinical Engineering",
-    company: "Metro Care Healthcare Group",
-    rating: 5
-  },
-  {
-    quote: "Executing a live switchover of our primary high-voltage substation required extreme coordination. Sterling's engineers mapped the grid topology and executed the switchover successfully. Their technical approach was thorough and reliable.",
-    name: "Vikram Sengupta",
-    role: "Lead Systems Integrator",
-    company: "Apex Automotive Automation",
-    rating: 5
-  }
-];
-
-const Testimonials = () => {
+const Testimonials = ({ testimonials = [] }) => {
   const [[current, direction], setSlide] = useState([0, 0]);
 
   const paginate = (newDirection) => {
@@ -60,6 +36,8 @@ const Testimonials = () => {
       transition: { duration: 0.5, ease: 'easeIn' }
     })
   };
+
+  if (testimonials.length === 0) return null;
 
 
 
@@ -217,3 +195,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+

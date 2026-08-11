@@ -7,7 +7,7 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('sterling_theme') || 'dark';
+    const savedTheme = localStorage.getItem('MECELFAB_theme') || 'dark';
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
@@ -15,7 +15,7 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-    localStorage.setItem('sterling_theme', newTheme);
+    localStorage.setItem('MECELFAB_theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
@@ -25,3 +25,4 @@ export const ThemeProvider = ({ children }) => {
     </ThemeContext.Provider>
   );
 };
+

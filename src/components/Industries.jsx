@@ -15,74 +15,58 @@ const Industries = () => {
   const industries = [
     {
       id: '01',
-      title: 'Manufacturing',
+      title: 'Industrial Manufacturing',
       desc: 'Precision fabrication, machine foundations, automation and industrial infrastructure.',
-      image: '/images/project-fabrication.png', // Using fabrication project image as representative
+      image: '/images/project-fabrication.png',
       capabilities: [
-        'Precision Fabrication',
+        'Equipment Erection',
         'Machine Foundations',
-        'Automation',
-        'Industrial Infrastructure'
+        'Structural Fabrication'
       ]
     },
     {
       id: '02',
-      title: 'Energy',
-      desc: 'Industrial structures, equipment installation and supporting infrastructure.',
-      image: '/images/project-electrical.png', // Using electrical project image
+      title: 'Construction & Infrastructure',
+      desc: 'Structural fabrication and mechanical infrastructure support.',
+      image: '/images/project-erection.png',
       capabilities: [
-        'Substation Erection',
-        'Transmission Lines',
-        'Power Distribution',
-        'Renewable Energy Structures'
+        'Structural Steel Erection',
+        'Mechanical Installation',
+        'Site Support'
       ]
     },
     {
       id: '03',
-      title: 'Healthcare',
-      desc: 'Medical infrastructure, cleanroom systems and specialized installations.',
-      image: '/images/project-medical.png', // Using medical project image
+      title: 'Power & Energy',
+      desc: 'Generator installations, spare parts and power systems.',
+      image: '/images/project-electrical.png',
       capabilities: [
-        'Medical Gas Systems',
-        'Cleanroom Installation',
-        'HVAC for Healthcare',
-        'Pipeline Systems'
+        'Generator Services',
+        'Spare Parts',
+        'Temporary Power'
       ]
     },
     {
       id: '04',
-      title: 'Construction',
-      desc: 'Structural fabrication and mechanical/electrical infrastructure.',
-      image: '/images/project-erection.png', // Using erection project image
+      title: 'Industrial Maintenance',
+      desc: 'Overhauling and annual maintenance contracts for mechanical systems.',
+      image: '/images/project-maintenance.png',
       capabilities: [
-        'Structural Steel Erection',
-        'Roof Trusses',
-        'Modular Construction',
-        'Mechanical Installation'
+        'Hydraulic Systems',
+        'Pneumatic Systems',
+        'Turbocharger Servicing',
+        'AMC Support'
       ]
     },
     {
       id: '05',
-      title: 'Logistics',
-      desc: 'Industrial facilities, equipment installation and warehouse infrastructure.',
-      image: '/images/project-maintenance.png', // Using maintenance project image (logistics facilities)
+      title: 'Commercial / Temporary Power',
+      desc: 'Rental solutions for generators and air compressors.',
+      image: '/images/project-commercial.png',
       capabilities: [
-        'Warehouse Structures',
-        'Racking Systems',
-        'Portal Frames',
-        'Material Handling Systems'
-      ]
-    },
-    {
-      id: '06',
-      title: 'Commercial',
-      desc: 'Specialized engineering and infrastructure solutions.',
-      image: '/images/project-commercial.png', // Using commercial project image
-      capabilities: [
-        'Architectural Steel',
-        'Glass Support Systems',
-        'Facade Engineering',
-        'Custom Fabrication'
+        'Generator Rental',
+        'Air Compressor Rental',
+        'Event Power'
       ]
     }
   ];

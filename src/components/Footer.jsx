@@ -15,11 +15,11 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="font-heading font-light tracking-widest text-2xl text-white uppercase">
-                Sterling
+                MECELFAB
               </span>
             </div>
             <p className="text-sm text-secondary font-light leading-relaxed mb-6">
-              Engineering reliable solutions for industrial growth. Serving fabrication, erection, power distribution, and clinical medical utility setups across India.
+              Engineering reliable solutions for industrial growth. Serving fabrication, erection, power distribution, and heavy industrial utility setups across India.
             </p>
             <div className="flex gap-4">
               <a
@@ -93,7 +93,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link href="/services" className="text-secondary hover:text-white transition-colors duration-300">
-                  Medical Piping Works
+                  Hydraulic Systems
                 </Link>
               </li>
             </ul>
@@ -120,7 +120,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-secondary font-light">
           <div>
-            &copy; {new Date().getFullYear()} Sterling Industrial Solutions LLP. All rights reserved.
+            &copy; {new Date().getFullYear()} MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED. All rights reserved.
           </div>
           <button
             onClick={handleScrollToTop}
@@ -136,3 +136,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

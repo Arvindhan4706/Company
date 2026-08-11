@@ -2,7 +2,7 @@
 import { useContext, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CMSContext } from '../context/CMSContext';
+
 import { Calendar, User } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,13 +10,12 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ProjectsGallery = () => {
-  const { projects } = useContext(CMSContext);
+const ProjectsGallery = ({ projects = [] }) => {
   const [activeFilter, setActiveFilter] = useState('All');
   const containerRef = useRef(null);
   const gridRef = useRef(null);
 
-  const categories = ['All', 'Fabrication Works', 'Erection Works', 'Electrical Works', 'Medical Infrastructure', 'Industrial Maintenance'];
+  const categories = ['All', 'Erection', 'Fabrication', 'Hydraulic & Pneumatic', 'Generator Services', 'AMC', 'Rental', 'Turbocharger'];
 
   const filteredProjects = activeFilter === 'All'
     ? projects
@@ -80,68 +79,79 @@ const ProjectsGallery = () => {
         </div>
 
         {/* Projects Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="group flex flex-col bg-white/[0.02] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-colors duration-500"
-            >
-              {/* Project Image Wrapper with Clip Path Reveal logic (handled via simple hover for now) */}
-              <div className="relative h-64 overflow-hidden bg-primary-light">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover object-center transform transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 backdrop-blur-sm">
-                  <Link 
-                    href={`/projects/${project.id}`} 
-                    className="px-8 py-3 bg-white text-primary font-heading uppercase tracking-widest text-sm rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 hover:scale-105"
-                  >
-                    View Project
-                  </Link>
-                </div>
-                
-                {/* Category Badge */}
-                <span className="absolute top-4 left-4 bg-primary/90 border border-white/10 text-white px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md">
-                  {project.category}
-                </span>
-                
-                {/* Status Badge */}
-                <span className={`absolute top-4 right-4 px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md text-primary font-bold ${
-                  project.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
-                }`}>
-                  {project.status}
-                </span>
-              </div>
-
-              {/* Project Details */}
-              <div className="p-8 flex flex-col flex-grow">
-                <h3 className="text-xl font-heading font-light text-white mb-3">
-                  {project.title}
-                </h3>
-                <p className="text-secondary text-sm font-light leading-relaxed mb-8 flex-grow">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-6 pt-6 border-t border-white/5 text-xs text-secondary font-light">
-                  <div className="flex items-center gap-2">
-                    <User size={14} className="text-white" />
-                    <span>{project.client}</span>
+        {filteredProjects.length > 0 ? (
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                className="group flex flex-col bg-white/[0.02] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-colors duration-500"
+              >
+                {/* Project Image Wrapper with Clip Path Reveal logic (handled via simple hover for now) */}
+                <div className="relative h-64 overflow-hidden bg-primary-light">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover object-center transform transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 backdrop-blur-sm">
+                    <Link 
+                      href={`/projects/${project.slug}`} 
+                      className="px-8 py-3 bg-white text-primary font-heading uppercase tracking-widest text-sm rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 hover:scale-105"
+                    >
+                      View Project
+                    </Link>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-white" />
-                    <span>{project.year}</span>
+                  
+                  {/* Category Badge */}
+                  <span className="absolute top-4 left-4 bg-primary/90 border border-white/10 text-white px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md">
+                    {project.category}
+                  </span>
+                  
+                  {/* Status Badge */}
+                  <span className={`absolute top-4 right-4 px-3 py-1 text-xs font-heading tracking-widest uppercase z-20 backdrop-blur-md text-primary font-bold ${
+                    project.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
+                  }`}>
+                    {project.status}
+                  </span>
+                </div>
+
+                {/* Project Details */}
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="text-xl font-heading font-light text-white mb-3">
+                    {project.title}
+                  </h3>
+                  <p className="text-secondary text-sm font-light leading-relaxed mb-8 flex-grow">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-6 pt-6 border-t border-white/5 text-xs text-secondary font-light">
+                    <div className="flex items-center gap-2">
+                      <User size={14} className="text-white" />
+                      <span>{project.client}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar size={14} className="text-white" />
+                      <span>{project.year}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 bg-white/[0.02] border border-white/5 rounded-lg text-center">
+            <h3 className="text-2xl md:text-3xl font-heading font-light text-white mb-4">
+              PROJECTS COMING SOON
+            </h3>
+            <p className="text-secondary font-light max-w-lg mx-auto">
+              Our project portfolio is currently being updated with our latest industrial executions. Check back soon for verified case studies.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

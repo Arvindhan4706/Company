@@ -1,0 +1,263 @@
+"use client";
+
+import { useState } from 'react';
+import { Plus, Edit, Trash2, X, Image as ImageIcon } from 'lucide-react';
+import { createProject, updateProject, deleteProject } from '@/app/actions/admin';
+import Image from 'next/image';
+
+export default function ProjectList({ initialProjects }) {
+  const [projects, setProjects] = useState(initialProjects);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    slug: '',
+    category: 'Erection',
+    status: 'Completed',
+    client: '',
+    year: new Date().getFullYear().toString(),
+    description: '',
+    image: '',
+  });
+
+  const categories = ['Erection', 'Fabrication', 'Hydraulic & Pneumatic', 'Generator Services', 'AMC', 'Rental', 'Turbocharger'];
+  const statuses = ['Completed', 'In Progress', 'DISABLED'];
+
+  const handleOpenModal = (project = null) => {
+    if (project) {
+      setEditingProject(project);
+      setFormData({
+        title: project.title,
+        slug: project.slug,
+        category: project.category,
+        status: project.status,
+        client: project.client || '',
+        year: project.year || '',
+        description: project.description,
+        image: project.image || '',
+      });
+    } else {
+      setEditingProject(null);
+      setFormData({
+        title: '',
+        slug: '',
+        category: 'Erection',
+        status: 'Completed',
+        client: '',
+        year: new Date().getFullYear().toString(),
+        description: '',
+        image: '',
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingProject(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+      // Auto-generate slug from title if we're not editing
+      ...(name === 'title' && !editingProject && { slug: value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') })
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formDataObj = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataObj.append(key, value);
+    });
+
+    try {
+      if (editingProject) {
+        await updateProject(editingProject.id, formDataObj);
+        setProjects(projects.map(p => p.id === editingProject.id ? { ...p, ...formData } : p));
+      } else {
+        await createProject(formDataObj);
+        // We trigger a hard refresh or update local state. For simplicity, we just reload the page to get the new list with IDs.
+        window.location.reload();
+      }
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save project. Ensure you are an Admin.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      try {
+        await deleteProject(id);
+        setProjects(projects.filter(p => p.id !== id));
+      } catch (error) {
+        alert('Failed to delete project.');
+      }
+    }
+  };
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 p-8 rounded-lg">
+      <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+        <h2 className="text-xl font-heading font-light text-white">
+          All Projects
+        </h2>
+        <button 
+          onClick={() => handleOpenModal()}
+          className="flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
+        >
+          <Plus size={16} /> New Project
+        </button>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-white/10 text-secondary text-xs uppercase tracking-widest font-heading">
+              <th className="pb-4 font-normal">Project</th>
+              <th className="pb-4 font-normal">Category</th>
+              <th className="pb-4 font-normal">Client</th>
+              <th className="pb-4 font-normal">Status</th>
+              <th className="pb-4 font-normal text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.map((project) => (
+              <tr key={project.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <td className="py-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 relative">
+                      {project.image ? (
+                        <Image src={project.image} alt={project.title} fill className="object-cover" />
+                      ) : (
+                        <ImageIcon size={20} className="text-secondary" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-white font-medium">{project.title}</div>
+                      <div className="text-xs text-secondary">{project.slug}</div>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-4 text-sm text-secondary">{project.category}</td>
+                <td className="py-4 text-sm text-secondary">{project.client}</td>
+                <td className="py-4">
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    project.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
+                    project.status === 'In Progress' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 
+                    'bg-red-500/10 text-red-400 border border-red-500/20'
+                  }`}>
+                    {project.status}
+                  </span>
+                </td>
+                <td className="py-4 text-right">
+                  <div className="flex items-center justify-end gap-3">
+                    <button onClick={() => handleOpenModal(project)} className="text-secondary hover:text-white transition-colors">
+                      <Edit size={16} />
+                    </button>
+                    <button onClick={() => handleDelete(project.id)} className="text-red-400 hover:text-red-300 transition-colors">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {projects.length === 0 && (
+              <tr>
+                <td colSpan="5" className="py-8 text-center text-secondary italic">
+                  No projects found. Create one to get started.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#111] border border-white/10 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center p-6 border-b border-white/10 sticky top-0 bg-[#111] z-10">
+              <h3 className="text-xl font-heading text-white">
+                {editingProject ? 'Edit Project' : 'Create Project'}
+              </h3>
+              <button onClick={handleCloseModal} className="text-secondary hover:text-white transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Title</label>
+                  <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none" />
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Slug</label>
+                  <input type="text" name="slug" required value={formData.slug} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Category</label>
+                  <select name="category" value={formData.category} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none">
+                    {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Status</label>
+                  <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none">
+                    {statuses.map(st => <option key={st} value={st}>{st}</option>)}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Client</label>
+                  <input type="text" name="client" value={formData.client} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none" />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Year</label>
+                  <input type="text" name="year" value={formData.year} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none" />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Description</label>
+                  <textarea name="description" required rows="3" value={formData.description} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none"></textarea>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">Feature Image URL</label>
+                  <input type="text" name="image" value={formData.image} onChange={handleChange} placeholder="/uploads/example.png" className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:border-accent outline-none" />
+                  <p className="text-xs text-secondary mt-2">Enter an image URL or use the Media Library to upload one.</p>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4 border-t border-white/10">
+                <button type="button" onClick={handleCloseModal} className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" disabled={loading} className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-white hover:text-black transition-colors disabled:opacity-50">
+                  {loading ? 'Saving...' : 'Save Project'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

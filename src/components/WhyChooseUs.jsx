@@ -3,130 +3,134 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CheckCircle, ShieldAlert, Users, Calendar, Heart, Lightbulb } from 'lucide-react';
+import { CheckCircle, ShieldAlert, Lightbulb, Calendar } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-import TextReveal from './animations/TextReveal';
+const reasons = [
+  {
+    icon: CheckCircle,
+    num: '01',
+    title: 'Industrial Experience',
+    desc: 'Decades of hands-on industrial service capability across heavy manufacturing and power sectors.',
+  },
+  {
+    icon: ShieldAlert,
+    num: '02',
+    title: 'Mechanical Expertise',
+    desc: 'Deep expertise in fabrication, precision erection and end-to-end mechanical system delivery.',
+  },
+  {
+    icon: Lightbulb,
+    num: '03',
+    title: 'Equipment Support',
+    desc: 'Complete generator and compressor rental, spare-part supply and breakdown response.',
+  },
+  {
+    icon: Calendar,
+    num: '04',
+    title: 'Planned Maintenance',
+    desc: 'Structured AMC programs keep equipment running efficiently, minimising unplanned downtime.',
+  },
+];
 
 const WhyChooseUs = () => {
   const containerRef = useRef(null);
-  const bgRef = useRef(null);
-
-  const reasons = [
-    {
-      icon: <CheckCircle size={20} className="text-white" />,
-      title: 'Precision Quality Control',
-      desc: 'We deploy strict Six Sigma inspection protocols and continuous Non-Destructive Testing (NDT) to ensure every weld, joint, and circuit operates reliably under maximum stress.'
-    },
-    {
-      icon: <ShieldAlert size={20} className="text-white" />,
-      title: 'Safety-Focused Approach',
-      desc: 'Our kinematic jobsites follow ISO 45001 occupational health guidelines. We utilize predictive safety analysis to enhance safety in operational zones.'
-    },
-    {
-      icon: <Users size={20} className="text-white" />,
-      title: 'Elite Engineering Teams',
-      desc: 'Our workforce consists of elite mechanical engineers, certified Master Riggers, coded TIG welders, and PLC automation specialists trained for critical environments.'
-    },
-    {
-      icon: <Calendar size={20} className="text-white" />,
-      title: 'Coordinated Delivery',
-      desc: 'We use CPM/PERT algorithmic scheduling and real-time telemetry to coordinate multi-disciplinary workflows and track project milestones.'
-    },
-    {
-      icon: <Heart size={20} className="text-white" />,
-      title: 'Customized Solutions',
-      desc: 'We engineer layouts, select materials, and design workflows specifically matched to your facility\'s operational requirements.'
-    },
-    {
-      icon: <Lightbulb size={20} className="text-white" />,
-      title: 'Advanced Automation',
-      desc: 'We integrate legacy heavy machinery with modern IoT sensor grids, smart electrical panels, and predictive maintenance algorithms to future-proof your infrastructure.'
-    }
-  ];
 
   useGSAP(() => {
-    // Parallax Background
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: 'top bottom',
-      end: 'bottom top',
-      animation: gsap.fromTo(bgRef.current, { y: '-10%' }, { y: '15%', ease: 'none' }),
-      scrub: true,
-    });
-
-    // Staggered reveals for badge and subtitle
-    gsap.fromTo('.wcu-header-element',
-      { opacity: 0, y: 30 },
+    gsap.fromTo('.wcu-left',
+      { opacity: 0, x: -40 },
       {
-        opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.15,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        }
+        opacity: 1, x: 0, duration: 1.1, ease: 'power3.out',
+        scrollTrigger: { trigger: containerRef.current, start: 'top 78%' },
       }
     );
-
-    // Staggered reveals for cards
     gsap.fromTo('.wcu-card',
-      { opacity: 0, y: 40 },
+      { opacity: 0, y: 36 },
       {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.wcu-grid',
-          start: 'top 85%',
-        }
+        opacity: 1, y: 0, duration: 0.85, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.wcu-grid', start: 'top 82%' },
       }
     );
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="why-choose-us" className="relative py-24 lg:py-40 bg-primary overflow-hidden">
-      {/* Parallax Radial Glow Background */}
-      <div 
-        ref={bgRef}
-        className="absolute inset-0 z-0 pointer-events-none opacity-40 scale-150"
-        style={{ background: 'radial-gradient(circle at center, rgba(30, 58, 138, 0.15) 0%, transparent 60%)' }}
-      />
+    <section
+      ref={containerRef}
+      id="why-choose-us"
+      className="relative py-28 lg:py-36 bg-[#060606] border-t border-white/5 overflow-hidden"
+    >
+      {/* Background diagonal rule */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-white/5 to-transparent"
+          style={{ left: '55%' }}
+        />
+      </div>
 
       <div className="container relative z-10 mx-auto px-8 max-w-7xl">
-        <div className="max-w-3xl mb-20">
-          <span className="wcu-header-element inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
-            Why Choose Sterling
-          </span>
-          <div className="mb-8">
-            <TextReveal as="h2" splitType="word" className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-2">
-              Partnering in
-            </TextReveal>
-            <TextReveal as="h2" splitType="char" delay={0.2} className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight italic font-serif opacity-90">
-              Professionalism
-            </TextReveal>
-          </div>
-          <p className="wcu-header-element text-lg text-secondary font-light leading-relaxed max-w-2xl">
-            We deliver on our commitments. Our clients rely on our safety protocols, engineering excellence, and transparent client engagement.
-          </p>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-20 lg:gap-28 items-start">
 
-        <div className="wcu-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {reasons.map((reason, index) => (
-            <div
-              key={index}
-              className="wcu-card group p-8 bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 flex flex-col gap-6"
-            >
-              <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-white/10 group-hover:border-white/20 transition-colors duration-500">
-                {reason.icon}
-              </div>
-              <div>
-                <h3 className="text-xl font-heading font-light text-white mb-3 tracking-wide">
-                  {reason.title}
-                </h3>
-                <p className="text-secondary text-sm font-light leading-relaxed">
-                  {reason.desc}
-                </p>
-              </div>
+          {/* Left — headline + CTA */}
+          <div className="wcu-left opacity-0">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-5 h-[1px] bg-white/30" />
+              <span className="text-white/40 text-[10px] font-heading tracking-[0.3em] uppercase">Why MECELFAB</span>
             </div>
-          ))}
+
+            <h2 className="text-4xl md:text-5xl font-heading font-light text-white tracking-tight leading-tight mb-8">
+              Built on Trust.<br />
+              <span className="text-white/30 italic font-serif">Driven by Results.</span>
+            </h2>
+
+            <p className="text-sm md:text-base text-white/45 font-light leading-relaxed mb-10 max-w-sm">
+              We deliver on every commitment — from precision fabrication and safe erection to rapid-response maintenance and flexible equipment rental.
+            </p>
+
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-3 px-6 py-3.5 bg-white text-black font-heading font-semibold text-xs tracking-[0.2em] uppercase hover:bg-white/90 transition-colors duration-300"
+            >
+              Work With Us
+              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </div>
+
+          {/* Right — reason cards */}
+          <div className="wcu-grid grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5">
+            {reasons.map(({ icon: Icon, num, title, desc }) => (
+              <div
+                key={num}
+                className="wcu-card group relative bg-[#060606] p-8 flex flex-col gap-6 hover:bg-white/[0.03] transition-colors duration-500 opacity-0"
+              >
+                {/* top row */}
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 flex items-center justify-center border border-white/8 group-hover:border-white/25 bg-white/[0.02] transition-all duration-500">
+                    <Icon size={16} className="text-white/40 group-hover:text-white/80 transition-colors duration-500" />
+                  </div>
+                  <span className="text-xs font-heading text-white/15 group-hover:text-white/30 tracking-widest transition-colors duration-500">
+                    {num}
+                  </span>
+                </div>
+
+                {/* content */}
+                <div>
+                  <h3 className="text-lg font-heading font-light text-white/70 group-hover:text-white tracking-tight mb-2 transition-colors duration-500">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-white/30 group-hover:text-white/55 font-light leading-relaxed transition-colors duration-500">
+                    {desc}
+                  </p>
+                </div>
+
+                {/* bottom accent line */}
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-white/20 transition-all duration-700 ease-out" />
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>

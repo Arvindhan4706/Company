@@ -45,7 +45,7 @@ const AdminDashboard = () => {
     { label: 'Fabrication Works', value: '/images/project-fabrication.png' },
     { label: 'Erection Works', value: '/images/project-erection.png' },
     { label: 'Electrical Works', value: '/images/project-electrical.png' },
-    { label: 'Medical Infrastructure', value: '/images/project-medical.png' },
+    { label: 'Air Compressor Rental', value: '/images/project-compressor.png' },
     { label: 'Industrial Maintenance', value: '/images/project-maintenance.png' },
     { label: 'Commercial Infrastructure', value: '/images/project-commercial.png' },
   ];
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
                       <option value="Fabrication Works">Fabrication Works</option>
                       <option value="Erection Works">Erection Works</option>
                       <option value="Electrical Works">Electrical Works</option>
-                      <option value="Medical Infrastructure">Medical Infrastructure</option>
+                      <option value="Turbocharger Services">Turbocharger Services</option>
                       <option value="Industrial Maintenance">Industrial Maintenance</option>
                     </select>
                   </div>
@@ -429,7 +429,7 @@ const AdminDashboard = () => {
                     name="description"
                     value={projectForm.description}
                     onChange={handleProjectFormChange}
-                    placeholder="Provide a brief summary of structural fabrications, rigging, or medical specifications..."
+                    placeholder="Provide a brief summary of structural fabrications, rigging, or equipment specifications..."
                     className="form-control"
                     style={{ minHeight: '100px' }}
                   />

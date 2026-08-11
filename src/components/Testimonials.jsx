@@ -61,7 +61,7 @@ const Testimonials = ({ testimonials = [] }) => {
           <span className="section-badge">Testimonials</span>
           <h2 className="section-title">What Our Clients Say</h2>
           <p className="section-subtitle">
-            Read comments from project developers, plant managers, and healthcare operators who have worked with us.
+            Read comments from project developers, plant managers, and industrial operators who have worked with us.
           </p>
         </div>
 

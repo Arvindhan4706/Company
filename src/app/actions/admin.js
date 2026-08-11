@@ -3,13 +3,16 @@ import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
 // Helper to check admin access
 async function checkAdmin() {
-  const hasSession = cookies().has('admin_session');
-  if (!hasSession) {
+  const session = await getServerSession(authOptions);
+  if (!session || (session.user.role !== 'SUPER_ADMIN' && session.user.role !== 'ADMIN')) {
     throw new Error('Unauthorized');
   }
-  return true;
+  return session;
 }
 
 // ----------------------------------------------------------------------

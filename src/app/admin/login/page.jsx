@@ -1,21 +1,40 @@
 "use client";
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
-import { login } from '@/app/actions/auth';
 
 export default function LoginAdminPage() {
+  const router = useRouter();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError('');
 
-    const res = await login(formData);
-    
-    if (res?.error) {
-      setError(res.error);
+    const formData = new FormData(e.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    try {
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (res?.error) {
+        setError('Invalid credentials');
+      } else {
+        router.push('/admin/dashboard');
+        router.refresh();
+      }
+    } catch (err) {
+      setError('An error occurred during login');
+    } finally {
       setLoading(false);
     }
   };
@@ -44,7 +63,7 @@ export default function LoginAdminPage() {
           </div>
         )}
 
-        <form action={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">
               Email Address
@@ -74,7 +93,6 @@ export default function LoginAdminPage() {
                 required
                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-accent transition-colors"
                 placeholder="••••••••"
-                defaultValue="admin"
               />
             </div>
           </div>

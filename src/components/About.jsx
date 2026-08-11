@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 import TextReveal from './animations/TextReveal';
 
-const About = () => {
+const About = ({ content }) => {
   const sectionRef = useRef(null);
 
   useGSAP(() => {
@@ -47,7 +47,7 @@ const About = () => {
           delay={0.1}
           className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-8 max-w-3xl mx-auto"
         >
-          MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.
+          {content?.mission || 'MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED is a premier industrial engineering and infrastructure solutions partner. Founded by leading mechanical and mechatronics engineers, we specialize in the intersection of heavy structural fabrication, automated systems, and high-precision electromechanical integration.'}
         </TextReveal>
 
         <TextReveal
@@ -55,7 +55,7 @@ const About = () => {
           delay={0.2}
           className="text-lg md:text-xl text-secondary font-light leading-relaxed mb-16 max-w-3xl mx-auto"
         >
-          Our expertise spans end-to-end heavy metal fabrication, rigorous structural erection, high-voltage power distribution networks, and the integration of highly complex, compliant medical pipeline systems. We do not just build facilities; we engineer automated, fault-tolerant ecosystems designed to maximize uptime and operational efficiency for the most demanding industries.
+          {content?.vision || 'Our expertise spans end-to-end heavy metal fabrication, rigorous structural erection, and the maintenance of highly complex pneumatic and hydraulic systems. We do not just build facilities; we engineer automated, fault-tolerant ecosystems designed to maximize uptime and operational efficiency for the most demanding industries.'}
         </TextReveal>
 
         {/* Enhanced Sections per Master Prompt */}
@@ -136,10 +136,13 @@ const About = () => {
             Leadership
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
-            Experienced Engineering Team
+            Our Core Values
           </h3>
+          <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-2xl">
+            {content?.values || 'Safety, Quality, Integrity, Innovation'}
+          </p>
           <p className="text-secondary text-base font-light leading-relaxed mb-8 max-w-3xl">
-            Our leadership team consists of certified professional engineers with decades of combined experience in industrial fabrication, automation, and infrastructure projects. We maintain a policy of using only verified team member information and do not publish individual profiles without explicit consent.
+            Our team consists of certified professional engineers with decades of combined experience in industrial fabrication, automation, and infrastructure projects. We maintain a policy of using only verified team member information and do not publish individual profiles without explicit consent.
           </p>
 
           {/* Certifications */}

@@ -15,6 +15,15 @@ model User {
   role      String   @default("EDITOR") // SUPER_ADMIN, ADMIN, EDITOR, VIEWER
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  activityLogs ActivityLog[]
+  inquiryNotes InquiryNote[]
+  assignedInquiries Inquiry[] @relation("AssignedAdmin")
+  notifications Notification[]
+  followUps FollowUp[]
+  quotations Quotation[]
+  media Media[]
+  documents Document[]
 }
 
 model Project {
@@ -55,6 +64,7 @@ model Industry {
   description  String
   capabilities String?  // JSON string array
   image        String?
+  status       String   @default("PUBLISHED") // DRAFT, PUBLISHED
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -67,6 +77,7 @@ model Testimonial {
   quote     String
   rating    Int      @default(5)
   featured  Boolean  @default(false)
+  status    String   @default("PUBLISHED") // DRAFT, PUBLISHED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -76,33 +87,122 @@ model Client {
   name      String
   logoUrl   String?
   featured  Boolean  @default(false)
+  status    String   @default("PUBLISHED") // DRAFT, PUBLISHED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Inquiry {
+  id                     String   @id @default(cuid())
+  referenceNumber        String   @unique
+  name                   String
+  email                  String
+  phone                  String?
+  company                String?
+  service                String?
+  location               String?
+  timeline               String?
+  message                String
+  documentUrl            String?
+  preferredContactMethod String?  @default("Email") // Phone, Email, WhatsApp
+  status                 String   @default("NEW") // NEW, CONTACTED, REQUIREMENT_VERIFIED, QUOTATION, NEGOTIATION, WON, LOST, CLOSED
+  priority               String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  assignedToId           String?
+  assignedTo             User?    @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  lastContactedAt        DateTime?
+  closedAt               DateTime?
+  tags                   String?  // JSON string array e.g. ["Urgent", "Generator"]
+
+  notes     InquiryNote[]
+  followUps FollowUp[]
+  quotations Quotation[]
+  documents Document[]
+}
+
+model InquiryNote {
   id        String   @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  company   String?
-  service   String?
-  message   String
-  status    String   @default("NEW") // NEW, IN_PROGRESS, RESOLVED, SPAM
+  note      String
+  inquiryId String
+  inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g. INQUIRY_STATUS_CHANGED, PROJECT_PUBLISHED
+  entity    String   // e.g. INQUIRY, PROJECT, SERVICE
+  entityId  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  details   String?  // JSON string for extra context
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       String   // e.g. INQUIRY_CREATED, FOLLOW_UP_DUE
+  title      String
+  message    String
+  entityType String?  // e.g. INQUIRY
+  entityId   String?
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model FollowUp {
+  id        String   @id @default(cuid())
+  date      DateTime
+  time      String?  // e.g. "14:30"
+  note      String
+  status    String   @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  inquiryId String
+  inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Media {
-  id        String   @id @default(cuid())
-  filename  String
-  url       String
-  key       String   @unique
-  mimeType  String
-  size      Int
-  alt       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  filename     String
+  url          String
+  key          String   @unique
+  mimeType     String
+  size         Int
+  alt          String?
+  dimensions   String?
+  isPrivate    Boolean  @default(false)
+  uploadedById String?
+  user         User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Document {
+  id           String   @id @default(cuid())
+  filename     String
+  url          String
+  key          String   @unique
+  mimeType     String
+  size         Int
+  category     String   @default("GENERAL") // GENERAL, REQUIREMENT, TECHNICAL, CERTIFICATION
+  isPrivate    Boolean  @default(true)
+  
+  uploadedById String?
+  user         User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  
+  inquiryId    String?
+  inquiry      Inquiry? @relation(fields: [inquiryId], references: [id], onDelete: SetNull)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Certification {
@@ -113,6 +213,7 @@ model Certification {
   image       String?
   fileUrl     String?
   featured    Boolean  @default(false)
+  status      String   @default("PUBLISHED") // DRAFT, PUBLISHED
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -124,4 +225,56 @@ model Setting {
   type      String   @default("STRING") // STRING, BOOLEAN, NUMBER, JSON
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Quotation {
+  id               String   @id @default(cuid())
+  quotationNumber  String   @unique
+  inquiryId        String
+  inquiry          Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  
+  // Snapshot of Customer Info
+  customerName     String
+  companyName      String?
+  email            String
+  phone            String?
+  address          String?
+  
+  // Quotation Details
+  service          String
+  scopeOfWork      String
+  termsConditions  String?
+  validityDays     Int      @default(30)
+  
+  // Financials
+  subtotal         Float
+  taxRate          Float    @default(0) // e.g. 18 for 18% GST
+  taxAmount        Float
+  discount         Float    @default(0)
+  grandTotal       Float
+  
+  status           String   @default("DRAFT") // DRAFT, SENT, VIEWED, ACCEPTED, REJECTED, EXPIRED
+  version          Int      @default(1)
+  
+  parentQuotationId String?
+  parentQuotation   Quotation? @relation("QuotationRevisions", fields: [parentQuotationId], references: [id], onDelete: SetNull)
+  revisions         Quotation[] @relation("QuotationRevisions")
+  
+  createdBy        String
+  user             User     @relation(fields: [createdBy], references: [id])
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  items            QuotationItem[]
+}
+
+model QuotationItem {
+  id          String   @id @default(cuid())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Int
+  unitPrice   Float
+  totalPrice  Float
 }

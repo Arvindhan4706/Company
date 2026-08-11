@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function POST(req) {
   try {
-    const hasSession = cookies().has('admin_session');
-    if (!hasSession) {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user.role !== 'SUPER_ADMIN' && session.user.role !== 'ADMIN')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -16,6 +17,17 @@ export async function POST(req) {
 
     if (!file) {
       return NextResponse.json({ error: 'No file received.' }, { status: 400 });
+    }
+
+    // Security: Validate MIME types
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!allowedMimes.includes(file.type)) {
+      return NextResponse.json({ error: 'Invalid file type.' }, { status: 400 });
+    }
+
+    // Security: Validate size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());

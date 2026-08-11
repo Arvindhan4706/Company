@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Contact = ({ services = [] }) => {
+const Contact = ({ services = [], content }) => {
   const containerRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -19,11 +19,13 @@ const Contact = ({ services = [] }) => {
     serviceRequired: 'Fabrication Works',
     projectDescription: '',
     expectedTimeline: '',
+    preferredContactMethod: 'Email',
     documentUpload: null
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadError, setUploadError] = useState('');
 
@@ -131,6 +133,7 @@ const Contact = ({ services = [] }) => {
       formDataObj.append('serviceRequired', formData.serviceRequired);
       formDataObj.append('projectDescription', formData.projectDescription);
       formDataObj.append('expectedTimeline', formData.expectedTimeline);
+      formDataObj.append('preferredContactMethod', formData.preferredContactMethod);
 
       if (formData.documentUpload) {
         formDataObj.append('documentUpload', formData.documentUpload);
@@ -142,6 +145,8 @@ const Contact = ({ services = [] }) => {
       });
 
       if (response.ok) {
+        const responseData = await response.json();
+        setReferenceNumber(responseData.referenceNumber || 'MEC-REQ-RECEIVED');
         setIsSubmitted(true);
         setFormData({
           fullName: '',
@@ -152,6 +157,7 @@ const Contact = ({ services = [] }) => {
           serviceRequired: 'Fabrication Works',
           projectDescription: '',
           expectedTimeline: '',
+          preferredContactMethod: 'Email',
           documentUpload: null
         });
       } else {
@@ -197,15 +203,15 @@ const Contact = ({ services = [] }) => {
           <div className="contact-left flex flex-col gap-12">
             <div>
               <h3 className="text-2xl font-light text-white mb-8">
-                MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED
+                {content?.companyName || 'MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED'}
               </h3>
               <div className="flex flex-col gap-6">
                 <div className="flex items-start gap-4">
                   <MapPin size={20} className="text-accent mt-1" />
                   <div>
                     <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">HEADQUARTERS</h4>
-                    <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Bengaluru, India
+                    <p className="text-white/80 text-sm font-light leading-relaxed whitespace-pre-wrap">
+                      {content?.address || 'Bengaluru, India'}
                     </p>
                   </div>
                 </div>
@@ -215,7 +221,7 @@ const Contact = ({ services = [] }) => {
                   <div>
                     <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">CONTACT NUMBER</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Available upon request through form submission
+                      {content?.phone || 'Available upon request'}
                     </p>
                   </div>
                 </div>
@@ -225,7 +231,7 @@ const Contact = ({ services = [] }) => {
                   <div>
                     <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">EMAIL ADDRESS</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Contact via secure website form
+                      {content?.email || 'Contact via secure website form'}
                     </p>
                   </div>
                 </div>
@@ -235,7 +241,7 @@ const Contact = ({ services = [] }) => {
                   <div>
                     <h4 className="text-xs font-heading font-semibold text-secondary uppercase tracking-widest mb-1">OPERATIONS</h4>
                     <p className="text-white/80 text-sm font-light leading-relaxed">
-                      Standard business hours
+                      {content?.workingHours || 'Standard business hours'}
                     </p>
                   </div>
                 </div>
@@ -265,10 +271,14 @@ const Contact = ({ services = [] }) => {
                 <div className="inline-flex text-accent mb-6">
                   <CheckCircle size={64} strokeWidth={1} />
                 </div>
-                <h3 className="text-2xl font-light text-white mb-4">REQUEST RECEIVED</h3>
-                <p className="text-secondary text-sm font-light mb-8">
-                  Thank you. Our engineering team will review your requirements and contact you shortly.
+                <h3 className="text-2xl font-light text-white mb-2 uppercase tracking-widest">SERVICE REQUEST RECEIVED</h3>
+                <p className="text-white/60 text-sm font-light mb-8">
+                  Your request has been submitted successfully. Our engineering team will review your requirements.
                 </p>
+                <div className="bg-white/5 border border-white/10 p-6 rounded-lg mb-8 max-w-sm mx-auto">
+                  <p className="text-xs text-secondary font-heading uppercase tracking-widest mb-2">Reference Number</p>
+                  <p className="text-2xl text-white font-medium">{referenceNumber}</p>
+                </div>
                 <button
                   onClick={() => setIsSubmitted(false)}
                   className="px-6 py-3 border border-white/20 text-white font-heading text-xs tracking-widest uppercase hover:bg-white hover:text-primary transition-colors duration-300"
@@ -383,8 +393,8 @@ const Contact = ({ services = [] }) => {
                   </div>
                 </div>
 
-                {/* Row 4: Expected Timeline and Document Upload */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Row 4: Timeline and Preferred Contact */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-xs font-heading tracking-widest text-secondary uppercase">Expected Timeline *</label>
                     <input
@@ -398,25 +408,24 @@ const Contact = ({ services = [] }) => {
                     {formErrors.expectedTimeline && <p className="text-red-500 text-xs mt-1">{formErrors.expectedTimeline}</p>}
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Document Upload (Optional)</label>
-                    <div className="flex flex-col gap-2">
-                      <input
-                        type="file"
-                        id="documentUpload"
-                        name="documentUpload"
-                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                        onChange={handleFileChange}
-                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
-                      />
-                      {uploadError && <p className="text-red-500 text-xs mt-1">{uploadError}</p>}
-                      <p className="text-secondary text-xs font-light">
-                        Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB)
-                      </p>
-                      {formData.documentUpload && (
-                        <p className="text-secondary text-xs font-light mt-1">
-                          Selected: {formData.documentUpload.name}
-                        </p>
-                      )}
+                    <label className="text-xs font-heading tracking-widest text-secondary uppercase">Preferred Contact Method</label>
+                    <div className="flex gap-4 mt-1">
+                      {['Phone', 'Email', 'WhatsApp'].map(method => (
+                        <label key={method} className="flex items-center gap-2 cursor-pointer group">
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${formData.preferredContactMethod === method ? 'border-accent' : 'border-white/30 group-hover:border-white/60'}`}>
+                            {formData.preferredContactMethod === method && <div className="w-2 h-2 rounded-full bg-accent" />}
+                          </div>
+                          <span className={`text-sm font-light transition-colors ${formData.preferredContactMethod === method ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>{method}</span>
+                          <input
+                            type="radio"
+                            name="preferredContactMethod"
+                            value={method}
+                            checked={formData.preferredContactMethod === method}
+                            onChange={handleChange}
+                            className="hidden"
+                          />
+                        </label>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -433,6 +442,27 @@ const Contact = ({ services = [] }) => {
                     placeholder="Describe your project requirements, scope, specifications, and any special considerations..."
                   />
                   {formErrors.projectDescription && <p className="text-red-500 text-xs mt-1">{formErrors.projectDescription}</p>}
+                </div>
+
+                {/* Document Upload */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-heading tracking-widest text-secondary uppercase">Document Upload (Optional)</label>
+                  <input
+                    type="file"
+                    id="documentUpload"
+                    name="documentUpload"
+                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                    onChange={handleFileChange}
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
+                  />
+                  <p className="text-secondary text-xs font-light mt-1">
+                    Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB)
+                  </p>
+                  {formData.documentUpload && (
+                    <p className="text-secondary text-xs font-light">
+                      Selected: {formData.documentUpload.name}
+                    </p>
+                  )}
                 </div>
 
                 {uploadError && <p className="text-red-500 text-xs mt-4">{uploadError}</p>}

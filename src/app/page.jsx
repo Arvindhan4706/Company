@@ -2,8 +2,10 @@ import Hero from '../components/Hero';
 import TrustSection from '../components/TrustSection';
 import Services from '../components/Services';
 import ProcessTimeline from '../components/ProcessTimeline';
+import EngineeringWorkflow from '../components/EngineeringWorkflow';
 import Industries from '../components/Industries';
 import ProjectsGallery from '../components/ProjectsGallery';
+import ServiceFinder from '../components/ServiceFinder';
 import WhyChooseUs from '../components/WhyChooseUs';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
@@ -18,9 +20,14 @@ export default async function HomePage() {
     orderBy: { createdAt: 'desc' }
   });
 
-  // Fetch stats
+  // Fetch stats and content
   const settings = await db.setting.findMany({
-    where: { key: { startsWith: 'stats_' } }
+    where: { 
+      OR: [
+        { key: { startsWith: 'stats_' } },
+        { key: 'CONTENT_HOMEPAGE' }
+      ]
+    }
   });
 
   // Fetch clients and testimonials
@@ -34,17 +41,22 @@ export default async function HomePage() {
     safetyCompliance: settings.find(s => s.key === 'stats_safetyCompliance')?.value || '0',
   };
 
+  const homepageContent = settings.find(s => s.key === 'CONTENT_HOMEPAGE')?.value 
+    ? JSON.parse(settings.find(s => s.key === 'CONTENT_HOMEPAGE').value) 
+    : null;
+
   return (
     <>
-      <Hero />
+      <Hero content={homepageContent} />
       <TrustSection stats={stats} />
       <Services />
-      <ProcessTimeline />
+      <EngineeringWorkflow />
       <Industries />
       <ProjectsGallery projects={projects} />
       <Testimonials testimonials={testimonials} />
       <ClientLogos clients={clients} />
       <WhyChooseUs />
+      <ServiceFinder />
     </>
   );
 }

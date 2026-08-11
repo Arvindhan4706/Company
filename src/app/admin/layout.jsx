@@ -1,92 +1,98 @@
-"use client";
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Shield, Home, LayoutDashboard, Wrench, Briefcase, Users, MessageSquare, Image as ImageIcon, Settings, Activity } from 'lucide-react';
+import { db } from '@/lib/db';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import AdminHeader from '@/components/admin/AdminHeader';
+export const metadata = {
+  title: 'Admin Dashboard | MECELFAB',
+  robots: 'noindex, nofollow'
+};
 
-export default function AdminLayout({ children }) {
-  const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const adminLinks = [
+  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/inquiries', label: 'Inquiries (CRM)', icon: MessageSquare },
+  { href: '/admin/quotations', label: 'Quotations', icon: Shield },
+  { href: '/admin/services', label: 'Services', icon: Wrench },
+  { href: '/admin/projects', label: 'Projects', icon: Briefcase },
+  { href: '/admin/clients', label: 'Clients', icon: Users },
+  { href: '/admin/media', label: 'Media Library', icon: ImageIcon },
+  { href: '/admin/documents', label: 'Document Vault', icon: Shield },
+  { href: '/admin/content', label: 'Global Content', icon: LayoutDashboard },
+  { href: '/admin/users', label: 'Users', icon: Shield },
+  { href: '/admin/activity', label: 'Activity Log', icon: Activity },
+  { href: '/admin/settings', label: 'Settings', icon: Settings },
+];
+
+export default async function AdminLayout({ children }) {
+  const session = await getServerSession(authOptions);
   
-  // Close menu when route changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+  // If no session but we're in /admin/login, don't crash, just render without sidebar
+  // But wait, middleware protects most routes.
+  const role = session?.user?.role || 'VIEWER';
+  let notifications = [];
 
-  if (pathname === '/admin/login') {
-    return <>{children}</>;
+  if (session?.user?.email) {
+    const user = await db.user.findUnique({ where: { email: session.user.email } });
+    if (user) {
+      notifications = await db.notification.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: 'desc' },
+        take: 20
+      });
+    }
   }
 
-  const navItems = [
-    { name: 'Dashboard', path: '/admin/dashboard' },
-    { name: 'Projects', path: '/admin/projects' },
-    { name: 'Services', path: '/admin/services' },
-    { name: 'Industries', path: '/admin/industries' },
-    { name: 'Testimonials', path: '/admin/testimonials' },
-    { name: 'Clients', path: '/admin/clients' },
-    { name: 'Inquiries', path: '/admin/inquiries' },
-    { name: 'Media', path: '/admin/media' },
-    { name: 'Certifications', path: '/admin/certifications' },
-    { name: 'Settings', path: '/admin/settings' },
-    { name: 'Users', path: '/admin/users' },
-  ];
-
   return (
-    <div className="flex h-screen bg-primary pt-20 md:pt-[80px]">
-      
-      {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-[80px] left-0 right-0 h-14 bg-primary-dark border-b border-white/5 z-40 flex items-center justify-between px-6">
-        <span className="font-heading font-bold text-white tracking-widest uppercase text-sm">CMS Panel</span>
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="text-white hover:text-white/70"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Sidebar Overlay for Mobile */}
-      {isMobileMenuOpen && (
-        <div 
-          className="md:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm top-[136px]" 
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
+    <div className="flex h-screen bg-primary text-white font-sans">
       {/* Sidebar */}
-      <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-64 bg-primary-dark border-r border-white/5 overflow-y-auto
-        transform transition-transform duration-300 ease-in-out
-        md:translate-x-0
-        ${isMobileMenuOpen ? 'translate-x-0 top-[136px]' : '-translate-x-full'}
-      `}>
-        <div className="p-6 hidden md:block">
-          <h2 className="text-xl font-heading font-bold text-white tracking-wider">CMS PANEL</h2>
+      <aside className="w-64 bg-black/60 border-r border-white/5 flex flex-col hidden md:flex backdrop-blur-md z-20">
+        <div className="p-6 border-b border-white/10">
+          <h2 className="text-xl font-heading font-bold tracking-tight uppercase text-white">MECELFAB</h2>
+          <p className="text-[10px] text-accent mt-1 uppercase tracking-widest font-heading">Admin Portal</p>
         </div>
-        <nav className="mt-2 md:mt-6 pb-20 md:pb-0">
-          {navItems.map((item) => {
-            const isActive = pathname === item.path;
+        
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+          {adminLinks.map(link => {
+            const Icon = link.icon;
+            
+            // Hide Users, Settings, Content, and Activity for non-admins
+            if ((link.label === 'Users' || link.label === 'Settings' || link.label === 'Activity Log' || link.label === 'Global Content') && (role !== 'SUPER_ADMIN' && role !== 'ADMIN')) {
+              return null;
+            }
+
             return (
-              <Link
-                key={item.name}
-                href={item.path}
-                className={`block px-6 py-4 md:py-3 text-sm font-heading tracking-widest uppercase transition-colors min-h-[44px] ${
-                  isActive 
-                    ? 'bg-white/10 text-white border-r-4 border-white' 
-                    : 'text-secondary hover:bg-white/5 hover:text-white'
-                }`}
-              >
-                {item.name}
+              <Link key={link.href} href={link.href} className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-colors text-sm text-secondary hover:text-white font-light">
+                <Icon size={18} className="text-white/40" />
+                {link.label}
               </Link>
             );
           })}
         </nav>
+        
+        <div className="p-4 border-t border-white/10 bg-black/40">
+          <Link href="/" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-colors text-sm text-secondary hover:text-white font-light">
+            <Home size={18} className="text-white/40" />
+            Public Website
+          </Link>
+          <form action="/api/auth/signout" method="POST" className="mt-2">
+            <button type="submit" className="w-full text-left flex items-center gap-3 px-3 py-2 rounded-md hover:bg-red-500/10 text-red-400 transition-colors text-sm font-light">
+              Sign Out
+            </button>
+          </form>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden bg-primary text-white mt-14 md:mt-0 relative w-full">
-        {children}
-      </main>
+      <div className="flex-1 flex flex-col overflow-hidden bg-primary relative">
+        {/* subtle background glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent pointer-events-none" />
+        
+        <AdminHeader session={session} initialNotifications={notifications} />
+        <main className="flex-1 overflow-y-auto p-6 md:p-10 relative z-10">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

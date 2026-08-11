@@ -102,10 +102,9 @@ export default function ServiceList({ initialServices }) {
                 </td>
                 <td className="p-4 text-sm text-secondary">{service.slug}</td>
                 <td className="p-4">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    service.status === 'ACTIVE' 
-                      ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
-                      : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                  <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                    service.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 
+                    service.status === 'DRAFT' ? 'bg-gray-100 text-gray-600' : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {service.status}
                   </span>
@@ -220,10 +219,10 @@ export default function ServiceList({ initialServices }) {
                     </label>
                     <select
                       name="status"
-                      defaultValue={editingService?.status || 'ACTIVE'}
+                      defaultValue={editingService?.status || 'DRAFT'}
                       className="w-full bg-black border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-accent transition-colors text-sm"
                     >
-                      <option value="ACTIVE">Active</option>
+                      <option value="PUBLISHED">Published</option>
                       <option value="DRAFT">Draft</option>
                       <option value="ARCHIVED">Archived</option>
                     </select>
@@ -232,22 +231,36 @@ export default function ServiceList({ initialServices }) {
               </form>
             </div>
 
-            <div className="p-6 border-t border-white/10 flex justify-end gap-4 bg-white/[0.02]">
-              <button
-                type="button"
-                onClick={handleCloseModal}
-                className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                form="service-form"
-                disabled={loading}
-                className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
-              >
-                {loading ? 'Saving...' : 'Save Service'}
-              </button>
+            <div className="p-6 border-t border-white/10 flex justify-between gap-4 bg-white/[0.02]">
+              <div>
+                {editingService && (
+                  <a
+                    href={`/services/${editingService.slug}?preview=true`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase inline-block"
+                  >
+                    Preview
+                  </a>
+                )}
+              </div>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="service-form"
+                  disabled={loading}
+                  className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

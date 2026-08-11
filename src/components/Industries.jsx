@@ -24,7 +24,7 @@ const Industries = () => {
         'Structural Fabrication'
       ]
     },
-    {
+    /* {
       id: '02',
       title: 'Construction & Infrastructure',
       desc: 'Structural fabrication and mechanical infrastructure support.',
@@ -34,7 +34,7 @@ const Industries = () => {
         'Mechanical Installation',
         'Site Support'
       ]
-    },
+    }, */
     {
       id: '03',
       title: 'Power & Energy',

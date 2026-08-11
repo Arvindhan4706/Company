@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import SmoothScroller from '../components/SmoothScroller';
 import { ArrowRight } from 'lucide-react';
 import '../index.css';
+import { db } from '@/lib/db';
 
 export const metadata = {
   title: 'MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED',
@@ -40,16 +41,24 @@ export const viewport = {
   maximumScale: 1,
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const settings = await db.setting.findMany({
+    where: { key: 'CONTENT_CONTACT' }
+  });
+  
+  const contactContent = settings.length > 0 && settings[0].value 
+    ? JSON.parse(settings[0].value) 
+    : null;
+
   return (
     <html lang="en">
       <body>
         <I18nProvider>
           <SmoothScroller>
             <CMSProvider>
-              <Navbar />
+              <Navbar contact={contactContent} />
               <main className="flex-grow">{children}</main>
-              <Footer />
+              <Footer contact={contactContent} />
               {/* Floating CTA */}
             </CMSProvider>
           </SmoothScroller>

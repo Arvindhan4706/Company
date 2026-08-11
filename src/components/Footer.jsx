@@ -2,7 +2,7 @@
 import { ArrowUp } from 'lucide-react';
 import Link from 'next/link';
 
-const Footer = () => {
+const Footer = ({ contact }) => {
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -135,7 +135,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-secondary font-light text-center md:text-left break-words w-full">
           <div className="leading-relaxed">
-            &copy; {new Date().getFullYear()} MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED. All rights reserved.
+            &copy; {new Date().getFullYear()} {contact?.companyName || 'MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED'}. All rights reserved.
           </div>
           <button
             onClick={handleScrollToTop}

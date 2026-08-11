@@ -1,25 +1,31 @@
-import { NextResponse } from 'next/server';
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export function middleware(req) {
-  const { nextUrl } = req;
-  const isAuthenticated = req.cookies.has('admin_session');
-  
-  const isAdminRoute = nextUrl.pathname.startsWith('/admin');
-  const isLoginRoute = nextUrl.pathname === '/admin/login';
-
-  if (isLoginRoute) {
-    if (isAuthenticated) {
-      return NextResponse.redirect(new URL('/admin/dashboard', nextUrl));
+export default withAuth(
+  function middleware(req) {
+    const { token } = req.nextauth;
+    const { pathname } = req.nextUrl;
+    
+    // RBAC Checks for restricted admin routes
+    if (
+      (pathname.startsWith("/admin/users") || 
+       pathname.startsWith("/admin/settings") || 
+       pathname.startsWith("/admin/activity") ||
+       pathname.startsWith("/admin/content")) && 
+      token?.role !== "SUPER_ADMIN" && token?.role !== "ADMIN"
+    ) {
+      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     }
-    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+    pages: {
+      signIn: '/admin/login',
+    }
   }
-
-  if (isAdminRoute && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/admin/login', nextUrl));
-  }
-
-  return NextResponse.next();
-}
+);
 
 export const config = {
   matcher: ['/admin/:path*'],

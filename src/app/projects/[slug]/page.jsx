@@ -2,10 +2,12 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, User, CheckCircle } from 'lucide-react';
-import { INITIAL_PROJECTS } from '../../../context/CMSContext';
+import { db } from '@/lib/db';
 
 export async function generateMetadata({ params }) {
-  const project = INITIAL_PROJECTS.find(p => p.slug === params.slug);
+  const project = await db.project.findUnique({
+    where: { slug: params.slug }
+  });
   if (!project) return { title: 'Project Not Found' };
 
   return {
@@ -25,8 +27,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function ProjectPage({ params }) {
-  const project = INITIAL_PROJECTS.find(p => p.slug === params.slug);
+export default async function ProjectPage({ params }) {
+  const project = await db.project.findUnique({
+    where: { slug: params.slug }
+  });
 
   if (!project) {
     notFound();
@@ -37,7 +41,7 @@ export default function ProjectPage({ params }) {
     'Fabrication Works': 'Manufacturing',
     'Erection Works': 'Construction',
     'Electrical Works': 'Energy',
-    'Medical Infrastructure': 'Healthcare',
+    'Turbocharger Services': 'Heavy Machinery',
     'Industrial Maintenance': 'Manufacturing',
     'Other': 'Commercial'
   };

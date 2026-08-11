@@ -24,7 +24,7 @@ export default function ProjectList({ initialProjects }) {
   });
 
   const categories = ['Erection', 'Fabrication', 'Hydraulic & Pneumatic', 'Generator Services', 'AMC', 'Rental', 'Turbocharger'];
-  const statuses = ['Completed', 'In Progress', 'DISABLED'];
+  const statuses = ['Completed', 'In Progress', 'DRAFT'];
 
   const handleOpenModal = (project = null) => {
     if (project) {
@@ -164,7 +164,7 @@ export default function ProjectList({ initialProjects }) {
                   <span className={`inline-block text-xs px-2 py-1 rounded ${
                     project.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
                     project.status === 'In Progress' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 
-                    'bg-red-500/10 text-red-400 border border-red-500/20'
+                    'bg-gray-500/10 text-gray-400 border border-gray-500/20'
                   }`}>
                     {project.status}
                   </span>
@@ -253,13 +253,27 @@ export default function ProjectList({ initialProjects }) {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-4 pt-4 border-t border-white/10">
-                <button type="button" onClick={handleCloseModal} className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors">
-                  Cancel
-                </button>
-                <button type="submit" disabled={loading} className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-white hover:text-black transition-colors disabled:opacity-50">
-                  {loading ? 'Saving...' : 'Save Project'}
-                </button>
+              <div className="flex justify-between gap-4 pt-4 border-t border-white/10 mt-6">
+                <div>
+                  {editingProject && (
+                    <a
+                      href={`/projects/${editingProject.slug}?preview=true`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors inline-block text-sm font-heading tracking-widest uppercase"
+                    >
+                      Preview
+                    </a>
+                  )}
+                </div>
+                <div className="flex gap-4">
+                  <button type="button" onClick={handleCloseModal} className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase">
+                    Cancel
+                  </button>
+                  <button type="submit" disabled={loading} className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-white hover:text-black transition-colors disabled:opacity-50 text-sm font-heading tracking-widest uppercase">
+                    {loading ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
               </div>
             </form>
           </div>

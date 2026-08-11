@@ -10,7 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 
-const Hero = () => {
+const Hero = ({ content }) => {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
 
@@ -170,7 +170,7 @@ const Hero = () => {
             className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase w-full"
             style={{ fontSize: 'clamp(3.5rem, 15vw, 13rem)', lineHeight: 0.9 }}
           >
-            MECELFAB
+            {content?.heroTitle?.split(' ')[0] || 'MECELFAB'}
           </h1>
           <div className="w-32 h-[2px] bg-gradient-to-r from-accent/0 via-accent to-accent/0 mt-6 md:hidden opacity-0 hero-tagline"></div>
         </div>
@@ -178,7 +178,7 @@ const Hero = () => {
         {/* Full legal name + tagline */}
         <div className="hero-tagline flex flex-col md:flex-row items-center md:items-baseline gap-2 md:gap-x-4 mb-8 opacity-0 text-center md:text-left mt-5 md:mt-0">
           <span className="text-white/40 text-[11px] md:text-sm font-heading tracking-[0.25em] uppercase">
-            Industrial Solutions Pvt. Ltd.
+            {content?.heroTitle?.substring(content.heroTitle.indexOf(' ') + 1) || 'Industrial Solutions Pvt. Ltd.'}
           </span>
           <div className="w-[1px] h-3 bg-white/20 hidden md:block" />
           <span className="text-white/60 text-[11px] md:text-sm font-heading tracking-[0.2em] uppercase italic">
@@ -188,9 +188,7 @@ const Hero = () => {
 
         {/* Description */}
         <p className="hero-desc text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0 text-center md:text-left mx-auto md:mx-0">
-          Industrial erection, heavy fabrication, generator services, hydraulic &amp; pneumatic
-          overhauling, AMC, and equipment rental — delivered with zero-compromise precision
-          across India.
+          {content?.heroDescription || 'Industrial erection, heavy fabrication, generator services, hydraulic & pneumatic overhauling, AMC, and equipment rental — delivered with zero-compromise precision across India.'}
         </p>
 
         {/* Horizontal rule */}
@@ -213,7 +211,7 @@ const Hero = () => {
                   background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
                 }}
               />
-              <span className="relative">Get a Free Quote</span>
+              <span className="relative">{content?.heroCta || 'Get a Free Quote'}</span>
               <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-black/10 group-hover:bg-white/10 transition-colors duration-300">
                 <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
               </span>
@@ -232,7 +230,7 @@ const Hero = () => {
               style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.08)' }}
             />
             <span className="relative z-10 flex w-full justify-center items-center gap-4 px-8 py-4 border border-white/20 text-white/60 font-heading text-xs md:text-sm tracking-[0.18em] uppercase group-hover:border-white/40 group-hover:text-white transition-all duration-400">
-              <span>Our Services</span>
+              <span>{content?.secondaryCta || 'Our Services'}</span>
               <span className="relative flex items-center justify-center w-6 h-6 border border-white/20 group-hover:border-white/50 transition-colors duration-300 rounded-sm">
                 <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
               </span>

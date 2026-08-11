@@ -62,12 +62,12 @@ const ProjectsGallery = ({ projects = [] }) => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap gap-3 mb-16">
+        <div className="flex overflow-x-auto whitespace-nowrap gap-3 mb-16 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-x">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-heading tracking-widest uppercase transition-all duration-300 ${
+              className={`flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-heading tracking-widest uppercase transition-all duration-300 ${
                 activeFilter === cat 
                   ? 'bg-white text-primary border border-white' 
                   : 'bg-transparent text-secondary border border-white/10 hover:border-white/30 hover:text-white'

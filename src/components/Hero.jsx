@@ -161,7 +161,7 @@ const Hero = () => {
         <div className="overflow-hidden mb-3">
           <h1
             className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase"
-            style={{ fontSize: 'clamp(4.5rem, 13vw, 13rem)', lineHeight: 0.9 }}
+            style={{ fontSize: 'clamp(3rem, 12vw, 13rem)', lineHeight: 0.9 }}
           >
             MECELFAB
           </h1>
@@ -169,17 +169,17 @@ const Hero = () => {
 
         {/* Full legal name + tagline */}
         <div className="hero-tagline flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-8 opacity-0">
-          <span className="text-white/35 text-xs md:text-sm font-heading tracking-[0.25em] uppercase">
+          <span className="text-white/35 text-[10px] md:text-sm font-heading tracking-[0.25em] uppercase">
             Industrial Solutions Pvt. Ltd.
           </span>
           <div className="w-[1px] h-3 bg-white/20 hidden md:block" />
-          <span className="text-white/50 text-xs md:text-sm font-heading tracking-[0.2em] uppercase italic">
+          <span className="text-white/50 text-[10px] md:text-sm font-heading tracking-[0.2em] uppercase italic">
             Precision Engineering Excellence
           </span>
         </div>
 
         {/* Description */}
-        <p className="hero-desc text-white/55 text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
+        <p className="hero-desc text-white/55 text-sm md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
           Industrial erection, heavy fabrication, generator services, hydraulic &amp; pneumatic
           overhauling, AMC, and equipment rental — delivered with zero-compromise precision
           across India.
@@ -189,15 +189,15 @@ const Hero = () => {
         <div className="hero-rule w-full max-w-2xl h-[1px] bg-gradient-to-r from-white/25 to-transparent mb-10 opacity-0" />
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center gap-5 mb-16">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-5 mb-16">
 
           {/* Primary — Get a Free Quote */}
           <Link
             href="/contact"
-            className="hero-cta-btn group relative inline-flex items-center gap-4 overflow-hidden opacity-0"
+            className="hero-cta-btn group relative inline-flex items-center justify-center gap-4 overflow-hidden opacity-0"
             style={{ textDecoration: 'none' }}
           >
-            <span className="relative z-10 flex items-center gap-4 px-8 py-4 bg-white text-black font-heading font-semibold text-sm tracking-[0.18em] uppercase transition-all duration-500 group-hover:bg-transparent group-hover:text-white border border-white">
+            <span className="relative z-10 flex w-full justify-center items-center gap-4 px-8 py-4 bg-white text-black font-heading font-semibold text-xs md:text-sm tracking-[0.18em] uppercase transition-all duration-500 group-hover:bg-transparent group-hover:text-white border border-white">
               {/* shimmer sweep on hover */}
               <span
                 className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
@@ -215,7 +215,7 @@ const Hero = () => {
           {/* Secondary — Our Services */}
           <Link
             href="/services"
-            className="hero-cta-btn group relative inline-flex items-center gap-4 opacity-0"
+            className="hero-cta-btn group relative inline-flex items-center justify-center gap-4 opacity-0"
             style={{ textDecoration: 'none' }}
           >
             {/* animated border glow */}
@@ -223,7 +223,7 @@ const Hero = () => {
               className="absolute inset-0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.08)' }}
             />
-            <span className="relative z-10 flex items-center gap-4 px-8 py-4 border border-white/20 text-white/60 font-heading text-sm tracking-[0.18em] uppercase group-hover:border-white/40 group-hover:text-white transition-all duration-400">
+            <span className="relative z-10 flex w-full justify-center items-center gap-4 px-8 py-4 border border-white/20 text-white/60 font-heading text-xs md:text-sm tracking-[0.18em] uppercase group-hover:border-white/40 group-hover:text-white transition-all duration-400">
               <span>Our Services</span>
               <span className="relative flex items-center justify-center w-6 h-6 border border-white/20 group-hover:border-white/50 transition-colors duration-300 rounded-sm">
                 <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />

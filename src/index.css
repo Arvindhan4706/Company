@@ -65,6 +65,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure html doesn't overflow horizontally either */
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 #root {
@@ -73,32 +80,34 @@ body {
   flex-direction: column;
 }
 
-/* Headings - Improved per Master Prompt */
+/* Custom Responsive Container overriding Tailwind */
+@layer components {
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: clamp(1.25rem, 4vw, 3rem); /* 20px mobile, ~64px desktop */
+    padding-left: clamp(1.25rem, 4vw, 3rem);
+    max-width: 1600px !important;
+  }
+}
+
+/* Headings - Fluid Scaling per Master Prompt */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--white);
-  font-weight: 600; /* Bold headings as requested */
-  line-height: 1.2;
-  letter-spacing: -0.02em; /* Moderate letter spacing */
-}
-
-/* Improved section labels - compact uppercase */
-.section-header {
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  font-size: 2.25rem;
   font-weight: 600;
-  letter-spacing: 0.05em; /* Compact uppercase spacing */
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Fluid section headings */
+.section-title {
+  font-size: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 1rem;
-}
-
-@media (min-width: 768px) {
-  .section-title {
-    font-size: 3rem;
-  }
 }
 
 .section-subtitle {

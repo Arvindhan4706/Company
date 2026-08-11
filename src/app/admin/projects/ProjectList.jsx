@@ -122,9 +122,9 @@ export default function ProjectList({ initialProjects }) {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
+      <div className="overflow-x-hidden md:overflow-x-auto">
+        <table className="w-full text-left border-collapse block md:table">
+          <thead className="hidden md:table-header-group">
             <tr className="border-b border-white/10 text-secondary text-xs uppercase tracking-widest font-heading">
               <th className="pb-4 font-normal">Project</th>
               <th className="pb-4 font-normal">Category</th>
@@ -133,12 +133,12 @@ export default function ProjectList({ initialProjects }) {
               <th className="pb-4 font-normal text-right">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="block md:table-row-group">
             {projects.map((project) => (
-              <tr key={project.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                <td className="py-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 relative">
+              <tr key={project.id} className="block md:table-row border-b border-white/5 hover:bg-white/[0.02] transition-colors mb-6 md:mb-0 pb-4 md:pb-0">
+                <td className="block md:table-cell py-2 md:py-4">
+                  <div className="flex items-center gap-4 mb-2 md:mb-0">
+                    <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 relative flex-shrink-0">
                       {project.image ? (
                         <Image src={project.image} alt={project.title} fill className="object-cover" />
                       ) : (
@@ -151,10 +151,17 @@ export default function ProjectList({ initialProjects }) {
                     </div>
                   </div>
                 </td>
-                <td className="py-4 text-sm text-secondary">{project.category}</td>
-                <td className="py-4 text-sm text-secondary">{project.client}</td>
-                <td className="py-4">
-                  <span className={`text-xs px-2 py-1 rounded ${
+                <td className="block md:table-cell py-1 md:py-4 text-sm text-secondary">
+                  <span className="md:hidden font-heading text-xs uppercase tracking-widest text-white/40 mr-2">Category:</span>
+                  {project.category}
+                </td>
+                <td className="block md:table-cell py-1 md:py-4 text-sm text-secondary">
+                  <span className="md:hidden font-heading text-xs uppercase tracking-widest text-white/40 mr-2">Client:</span>
+                  {project.client}
+                </td>
+                <td className="block md:table-cell py-2 md:py-4">
+                  <span className="md:hidden font-heading text-xs uppercase tracking-widest text-white/40 mr-2">Status:</span>
+                  <span className={`inline-block text-xs px-2 py-1 rounded ${
                     project.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
                     project.status === 'In Progress' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 
                     'bg-red-500/10 text-red-400 border border-red-500/20'
@@ -162,21 +169,21 @@ export default function ProjectList({ initialProjects }) {
                     {project.status}
                   </span>
                 </td>
-                <td className="py-4 text-right">
-                  <div className="flex items-center justify-end gap-3">
-                    <button onClick={() => handleOpenModal(project)} className="text-secondary hover:text-white transition-colors">
-                      <Edit size={16} />
+                <td className="block md:table-cell py-3 md:py-4 text-left md:text-right mt-2 md:mt-0 border-t border-white/5 md:border-0">
+                  <div className="flex items-center justify-start md:justify-end gap-4">
+                    <button onClick={() => handleOpenModal(project)} className="text-secondary hover:text-white transition-colors flex items-center gap-2 text-sm uppercase tracking-widest font-heading">
+                      <Edit size={16} /> <span className="md:hidden">Edit</span>
                     </button>
-                    <button onClick={() => handleDelete(project.id)} className="text-red-400 hover:text-red-300 transition-colors">
-                      <Trash2 size={16} />
+                    <button onClick={() => handleDelete(project.id)} className="text-red-400 hover:text-red-300 transition-colors flex items-center gap-2 text-sm uppercase tracking-widest font-heading">
+                      <Trash2 size={16} /> <span className="md:hidden">Delete</span>
                     </button>
                   </div>
                 </td>
               </tr>
             ))}
             {projects.length === 0 && (
-              <tr>
-                <td colSpan="5" className="py-8 text-center text-secondary italic">
+              <tr className="block md:table-row">
+                <td colSpan="5" className="block md:table-cell py-8 text-center text-secondary italic">
                   No projects found. Create one to get started.
                 </td>
               </tr>

@@ -9,8 +9,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary pt-24 pb-8 border-t border-white/5 text-left">
-      <div className="container px-8 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      <div className="container px-4 sm:px-6 md:px-8 mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12 mb-12 md:mb-16">
           {/* Brand Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
@@ -26,7 +26,7 @@ const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
+                className="w-[44px] h-[44px] rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
               </a>
@@ -34,7 +34,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
+                className="w-[44px] h-[44px] rounded-full bg-white/5 flex items-center justify-center text-secondary hover:bg-white hover:text-primary transition-colors duration-300"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
               </a>
@@ -118,13 +118,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-secondary font-light">
-          <div>
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-secondary font-light text-center md:text-left break-words w-full">
+          <div className="leading-relaxed">
             &copy; {new Date().getFullYear()} MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED. All rights reserved.
           </div>
           <button
             onClick={handleScrollToTop}
-            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-300"
+            className="w-[44px] h-[44px] shrink-0 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-300"
             aria-label="Scroll to top"
           >
             <ArrowUp size={16} />

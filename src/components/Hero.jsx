@@ -140,7 +140,7 @@ const Hero = () => {
       </div>
 
       {/* ─── Top strip ───────────────────────────────────────── */}
-      <div className="hero-topstrip relative z-10 flex items-center justify-between px-8 md:px-16 pt-28 opacity-0">
+      <div className="hero-topstrip relative z-10 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-16 pt-28 opacity-0">
         <div className="flex items-center gap-3">
           <div className="w-5 h-[1px] bg-white/40" />
           <span className="text-white/40 text-[10px] font-heading tracking-[0.35em] uppercase">
@@ -155,13 +155,13 @@ const Hero = () => {
       </div>
 
       {/* ─── Main content ─────────────────────────────────────── */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-16 py-16">
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-16 py-16">
 
         {/* Company name — the hero wordmark */}
         <div className="overflow-hidden mb-3">
           <h1
             className="hero-wordmark font-heading font-bold text-white leading-none tracking-tighter uppercase"
-            style={{ fontSize: 'clamp(3rem, 12vw, 13rem)', lineHeight: 0.9 }}
+            style={{ fontSize: 'clamp(2.5rem, 11vw, 13rem)', lineHeight: 0.9 }}
           >
             MECELFAB
           </h1>
@@ -172,14 +172,14 @@ const Hero = () => {
           <span className="text-white/35 text-[10px] md:text-sm font-heading tracking-[0.25em] uppercase">
             Industrial Solutions Pvt. Ltd.
           </span>
-          <div className="w-[1px] h-3 bg-white/20 hidden md:block" />
+          <div className="w-[1px] h-3 bg-white/20 hidden sm:block" />
           <span className="text-white/50 text-[10px] md:text-sm font-heading tracking-[0.2em] uppercase italic">
             Precision Engineering Excellence
           </span>
         </div>
 
         {/* Description */}
-        <p className="hero-desc text-white/55 text-sm md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
+        <p className="hero-desc text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-xl mb-10 opacity-0">
           Industrial erection, heavy fabrication, generator services, hydraulic &amp; pneumatic
           overhauling, AMC, and equipment rental — delivered with zero-compromise precision
           across India.
@@ -189,12 +189,12 @@ const Hero = () => {
         <div className="hero-rule w-full max-w-2xl h-[1px] bg-gradient-to-r from-white/25 to-transparent mb-10 opacity-0" />
 
         {/* CTAs */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-5 mb-16">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-5 mb-16">
 
           {/* Primary — Get a Free Quote */}
           <Link
             href="/contact"
-            className="hero-cta-btn group relative inline-flex items-center justify-center gap-4 overflow-hidden opacity-0"
+            className="hero-cta-btn group relative inline-flex w-full sm:w-auto items-center justify-center gap-4 overflow-hidden opacity-0"
             style={{ textDecoration: 'none' }}
           >
             <span className="relative z-10 flex w-full justify-center items-center gap-4 px-8 py-4 bg-white text-black font-heading font-semibold text-xs md:text-sm tracking-[0.18em] uppercase transition-all duration-500 group-hover:bg-transparent group-hover:text-white border border-white">
@@ -215,7 +215,7 @@ const Hero = () => {
           {/* Secondary — Our Services */}
           <Link
             href="/services"
-            className="hero-cta-btn group relative inline-flex items-center justify-center gap-4 opacity-0"
+            className="hero-cta-btn group relative inline-flex w-full sm:w-auto items-center justify-center gap-4 opacity-0"
             style={{ textDecoration: 'none' }}
           >
             {/* animated border glow */}
@@ -234,7 +234,7 @@ const Hero = () => {
         </div>
 
         {/* Service pillars — suits a new company */}
-        <div className="flex flex-wrap items-start gap-8 md:gap-14">
+        <div className="grid grid-cols-2 md:flex md:flex-wrap items-start gap-6 md:gap-14">
           {[
             { label: '8 Industrial Services', sub: 'End-to-End Capability' },
             { label: 'Pan-India Operations', sub: 'Project Site Coverage' },
@@ -254,9 +254,9 @@ const Hero = () => {
       </div>
 
       {/* ─── Bottom strip ─────────────────────────────────────── */}
-      <div className="hero-bottomstrip relative z-10 flex items-center justify-between px-8 md:px-16 pb-10 opacity-0">
-        {/* Service tags — left aligned, untouched */}
-        <div className="hidden md:flex items-center gap-5 text-xs text-white/55 font-heading tracking-[0.18em] uppercase">
+      <div className="hero-bottomstrip relative z-10 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-16 pb-10 opacity-0 overflow-hidden">
+        {/* Service tags */}
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-2 md:gap-5 text-[10px] md:text-xs text-white/40 md:text-white/55 font-heading tracking-[0.15em] md:tracking-[0.18em] uppercase">
           <span>Fabrication</span>
           <span className="text-white/20">·</span>
           <span>Erection</span>

@@ -38,13 +38,13 @@ const Navbar = () => {
       onEnter: () => {
         if (navRef.current && !isOpen) {
           navRef.current.classList.add('bg-black/90', 'backdrop-blur-xl', 'border-b', 'border-white/5');
-          gsap.to(navRef.current, { padding: '1rem 0', duration: 0.5, ease: 'power2.out' });
+          gsap.to(navRef.current, { paddingTop: '1rem', paddingBottom: '1rem', duration: 0.5, ease: 'power2.out' });
         }
       },
       onLeaveBack: () => {
         if (navRef.current && !isOpen) {
           navRef.current.classList.remove('bg-black/90', 'backdrop-blur-xl', 'border-b', 'border-white/5');
-          gsap.to(navRef.current, { padding: '2rem 0', duration: 0.5, ease: 'power2.out' });
+          gsap.to(navRef.current, { paddingTop: '1.5rem', paddingBottom: '1.5rem', duration: 0.5, ease: 'power2.out' });
         }
       }
     });
@@ -68,6 +68,7 @@ const Navbar = () => {
     // Toggle body scroll
     if (nextState) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
       // Animate menu in
       gsap.fromTo(menuDrawerRef.current,
         { yPercent: -100, opacity: 0 },
@@ -79,6 +80,7 @@ const Navbar = () => {
       );
     } else {
       document.body.style.overflow = '';
+      document.body.style.touchAction = '';
       // Animate menu out
       gsap.to(menuDrawerRef.current, {
         yPercent: -100, opacity: 0, duration: 0.5, ease: 'power3.in'
@@ -90,12 +92,11 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-500 ${isOpen ? 'bg-black border-b border-white/5' : ''}`}
-        style={{ padding: '2rem 0' }}
+        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-500 py-4 md:py-6 ${isOpen ? 'bg-black border-b border-white/5' : ''}`}
       >
-        <div className="container flex items-center justify-between mx-auto px-8">
+        <div className="container flex items-center justify-between mx-auto px-4 sm:px-6 md:px-8">
           <Link href="/" onClick={() => isOpen && toggleMenu()} className="flex items-center gap-3 relative z-[101]">
-            <span className="font-heading font-light tracking-widest text-xl md:text-2xl text-white uppercase">
+            <span className="font-heading font-light tracking-widest text-lg sm:text-xl md:text-2xl text-white uppercase">
               MECELFAB
             </span>
           </Link>
@@ -126,7 +127,7 @@ const Navbar = () => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={toggleMenu}
-            className="lg:hidden relative z-[101] text-white hover:text-white/70 transition-colors p-2 -mr-2"
+            className="lg:hidden relative z-[101] text-white hover:text-white/70 transition-colors p-3 -mr-3 flex items-center justify-center min-h-[44px] min-w-[44px]"
             aria-label="Toggle Navigation"
           >
             {isOpen ? <X size={28} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
@@ -137,7 +138,7 @@ const Navbar = () => {
       {/* Full-screen Mobile Menu Drawer */}
       <div
         ref={menuDrawerRef}
-        className="fixed inset-0 bg-black z-[90] flex flex-col justify-center px-8 pb-10 opacity-0 pointer-events-none lg:hidden"
+        className="fixed inset-0 bg-black z-[90] flex flex-col justify-center px-6 sm:px-8 pb-10 opacity-0 pointer-events-none lg:hidden"
         style={{ display: isOpen ? 'flex' : 'none', pointerEvents: isOpen ? 'auto' : 'none' }}
       >
         <div className="flex flex-col gap-6 w-full max-w-sm mx-auto">
@@ -155,7 +156,7 @@ const Navbar = () => {
           <Link
             href="/contact"
             onClick={() => toggleMenu()}
-            className="mobile-nav-link mt-8 flex items-center justify-between px-8 py-5 bg-white text-black font-heading font-medium text-sm tracking-widest uppercase"
+            className="mobile-nav-link mt-8 flex w-full items-center justify-between px-6 py-5 bg-white text-black font-heading font-medium text-sm tracking-widest uppercase min-h-[44px]"
           >
             Request a Service
             <ArrowRight size={18} />

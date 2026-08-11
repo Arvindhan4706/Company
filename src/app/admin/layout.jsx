@@ -70,7 +70,7 @@ export default function AdminLayout({ children }) {
               <Link
                 key={item.name}
                 href={item.path}
-                className={`block px-6 py-3 text-sm font-heading tracking-widest uppercase transition-colors ${
+                className={`block px-6 py-4 md:py-3 text-sm font-heading tracking-widest uppercase transition-colors min-h-[44px] ${
                   isActive 
                     ? 'bg-white/10 text-white border-r-4 border-white' 
                     : 'text-secondary hover:bg-white/5 hover:text-white'

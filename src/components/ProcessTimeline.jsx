@@ -73,8 +73,8 @@ const ProcessTimeline = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="process" className="py-24 lg:py-36 bg-[#030303] border-t border-white/5 overflow-hidden">
-      <div className="container mx-auto px-8 max-w-7xl">
+    <section ref={containerRef} id="process" className="section-padding bg-[#030303] border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl">
         
         {/* Header */}
         <div className="process-header mb-20 md:mb-28 max-w-2xl opacity-0">
@@ -84,7 +84,7 @@ const ProcessTimeline = () => {
               Our Engineering Process
             </span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-heading font-light text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-light text-white tracking-tight mb-6">
             From Concept to <br />
             <span className="text-white/40 italic font-serif">Commissioning</span>
           </h2>
@@ -101,7 +101,7 @@ const ProcessTimeline = () => {
             <div className="process-line-fill w-full h-full bg-gradient-to-b lg:bg-gradient-to-r from-white/60 to-transparent lg:scale-x-0 scale-y-0 lg:scale-y-100 opacity-0" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-y-12 lg:gap-y-0 lg:gap-x-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-y-10 lg:gap-y-0 lg:gap-x-6 relative z-10">
             {stages.map((stage) => (
               <div
                 key={stage.id}

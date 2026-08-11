@@ -74,6 +74,12 @@ html {
   max-width: 100vw;
 }
 
+/* Global responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 #root {
   min-height: 100vh;
   display: flex;
@@ -140,6 +146,7 @@ p, li, td, th, label, input, textarea, select {
   transition: var(--transition-fast);
   border-width: 1px;
   font-family: var(--font-body);
+  min-height: 44px; /* Minimum comfortable touch target */
 }
 
 .btn-primary {
@@ -189,6 +196,7 @@ p, li, td, th, label, input, textarea, select {
   color: var(--white);
   font-size: 0.875rem;
   transition: var(--transition-fast);
+  min-height: 44px; /* Minimum comfortable touch target */
 }
 
 .form-control:focus, .input-field:focus {
@@ -209,4 +217,18 @@ textarea.form-control {
 /* Fix global page padding under navbar */
 .page-wrapper {
   padding-top: 4rem; /* Reduced from 100px to match new navbar height */
+}
+
+/* Fluid section padding */
+@layer utilities {
+  .section-padding {
+    padding-top: clamp(4rem, 8vw, 8rem);
+    padding-bottom: clamp(4rem, 8vw, 8rem);
+  }
+  .section-padding-t {
+    padding-top: clamp(4rem, 8vw, 8rem);
+  }
+  .section-padding-b {
+    padding-bottom: clamp(4rem, 8vw, 8rem);
+  }
 }

@@ -28,8 +28,8 @@ export default async function AdminDashboardPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-heading font-light text-white mb-2">CMS Administration</h1>
           <p className="text-secondary text-sm">Welcome back, Administrator</p>
@@ -43,7 +43,7 @@ export default async function AdminDashboardPage() {
         </form>
       </div>
       
-      <div className="bg-white/[0.02] border border-white/5 p-8 rounded-lg max-w-2xl">
+      <div className="bg-white/[0.02] border border-white/5 p-5 sm:p-8 rounded-lg max-w-2xl">
         <h2 className="text-xl font-heading font-light text-white mb-6 border-b border-white/10 pb-4">
           Update Statistics
         </h2>
@@ -58,7 +58,7 @@ export default async function AdminDashboardPage() {
                 type="number" 
                 name="projectsCompleted" 
                 defaultValue={stats.projectsCompleted} 
-                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors" 
+                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors min-h-[44px]" 
               />
             </div>
             
@@ -70,7 +70,7 @@ export default async function AdminDashboardPage() {
                 type="number" 
                 name="industrialClients" 
                 defaultValue={stats.industrialClients} 
-                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors" 
+                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors min-h-[44px]" 
               />
             </div>
             
@@ -82,7 +82,7 @@ export default async function AdminDashboardPage() {
                 type="number" 
                 name="serviceCategories" 
                 defaultValue={stats.serviceCategories} 
-                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors" 
+                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors min-h-[44px]" 
               />
             </div>
             
@@ -95,7 +95,7 @@ export default async function AdminDashboardPage() {
                 name="safetyCompliance" 
                 defaultValue={stats.safetyCompliance} 
                 max="100"
-                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors" 
+                className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-accent transition-colors min-h-[44px]" 
               />
             </div>
           </div>

@@ -47,10 +47,10 @@ const ProjectsGallery = ({ projects = [] }) => {
   }, [activeFilter]);
 
   return (
-    <section ref={containerRef} id="projects" className="py-24 lg:py-32 bg-primary border-t border-white/5">
-      <div className="container mx-auto px-8 max-w-7xl">
+    <section ref={containerRef} id="projects" className="section-padding bg-primary border-t border-white/5">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl">
         <div className="gallery-header max-w-3xl mb-16">
-          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Our Portfolio
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-8">
@@ -67,7 +67,7 @@ const ProjectsGallery = ({ projects = [] }) => {
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className={`flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-heading tracking-widest uppercase transition-all duration-300 ${
+              className={`flex-shrink-0 px-6 py-2.5 min-h-[44px] rounded-full text-sm font-heading tracking-widest uppercase transition-all duration-300 ${
                 activeFilter === cat 
                   ? 'bg-white text-primary border border-white' 
                   : 'bg-transparent text-secondary border border-white/10 hover:border-white/30 hover:text-white'
@@ -120,7 +120,7 @@ const ProjectsGallery = ({ projects = [] }) => {
                 </div>
 
                 {/* Project Details */}
-                <div className="p-8 flex flex-col flex-grow">
+                <div className="p-5 sm:p-6 md:p-8 flex flex-col flex-grow">
                   <h3 className="text-xl font-heading font-light text-white mb-3">
                     {project.title}
                   </h3>

@@ -98,10 +98,10 @@ const Industries = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="industries" className="py-24 lg:py-32 bg-primary">
-      <div className="container mx-auto px-8 max-w-7xl">
+    <section ref={containerRef} id="industries" className="section-padding bg-primary">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl">
         <div className="max-w-3xl mb-20">
-          <span className="ind-header-badge inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <span className="ind-header-badge inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Markets We Serve
           </span>
           <TextReveal as="h2" splitType="char" className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight">
@@ -109,7 +109,7 @@ const Industries = () => {
           </TextReveal>
         </div>
 
-        <div className="ind-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 border-t border-white/5 pt-16">
+        <div className="ind-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-16 border-t border-white/5 pt-16">
           {industries.map((ind, index) => (
             <div key={index} className="ind-card group flex flex-col bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-500">
               {/* Image */}
@@ -127,7 +127,7 @@ const Industries = () => {
               </div>
 
               {/* Details */}
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-5 sm:p-6 flex flex-col flex-grow">
                 <h3 className="text-xl font-heading font-light text-white mb-3">
                   {ind.title}
                 </h3>

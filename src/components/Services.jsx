@@ -104,11 +104,11 @@ const Services = () => {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} id="services" className="py-28 lg:py-36 bg-black border-t border-white/5">
-      <div className="container mx-auto px-8 max-w-7xl">
+    <section ref={sectionRef} id="services" className="section-padding bg-black border-t border-white/5">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-12 md:mb-20">
           <div>
             <div className="svc-eyebrow flex items-center gap-3 mb-5 opacity-0">
               <div className="w-5 h-[1px] bg-white/30" />
@@ -140,24 +140,26 @@ const Services = () => {
                 onMouseEnter={() => setHoveredId(service.id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
-                <div className="flex items-stretch gap-0 py-7 transition-all duration-500">
+                <div className="flex flex-col md:flex-row items-start md:items-stretch gap-5 md:gap-0 py-6 md:py-7 transition-all duration-500">
+                  
+                  <div className="flex items-center gap-4 md:contents">
+                    {/* Number */}
+                    <div className="w-auto md:w-16 flex-shrink-0 flex items-start pt-1">
+                      <span className="text-xs font-heading text-white/20 group-hover:text-white/50 transition-colors duration-500 tracking-widest">
+                        {service.id}
+                      </span>
+                    </div>
 
-                  {/* Number */}
-                  <div className="w-16 flex-shrink-0 flex items-start pt-1">
-                    <span className="text-xs font-heading text-white/20 group-hover:text-white/50 transition-colors duration-500 tracking-widest">
-                      {service.id}
-                    </span>
-                  </div>
-
-                  {/* Icon */}
-                  <div className="w-12 flex-shrink-0 flex items-start pt-0.5">
-                    <div className="w-9 h-9 flex items-center justify-center border border-white/8 group-hover:border-white/25 bg-white/[0.02] group-hover:bg-white/[0.06] transition-all duration-500">
-                      <Icon size={15} className="text-white/35 group-hover:text-white/80 transition-colors duration-500" />
+                    {/* Icon */}
+                    <div className="w-auto md:w-12 flex-shrink-0 flex items-start pt-0.5">
+                      <div className="w-9 h-9 flex items-center justify-center border border-white/8 group-hover:border-white/25 bg-white/[0.02] group-hover:bg-white/[0.06] transition-all duration-500">
+                        <Icon size={15} className="text-white/35 group-hover:text-white/80 transition-colors duration-500" />
+                      </div>
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
+                  <div className="flex-1 flex flex-col md:flex-row md:items-start gap-5 md:gap-12 w-full">
                     <div className="flex-1">
                       <h3 className="text-xl md:text-2xl font-heading font-light text-white/70 group-hover:text-white tracking-tight mb-2 transition-colors duration-500">
                         {service.title}
@@ -167,8 +169,8 @@ const Services = () => {
                       </p>
                     </div>
 
-                    {/* Tags — show on hover */}
-                    <div className={`hidden md:flex flex-wrap gap-2 items-start max-w-xs transition-all duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                    {/* Tags — always show on mobile, hover on desktop */}
+                    <div className={`flex flex-wrap gap-2 items-start w-full md:w-auto md:max-w-xs transition-all duration-500 md:opacity-0 group-hover:opacity-100 ${isHovered ? 'md:opacity-100' : ''}`}>
                       {service.capabilities.map((cap) => (
                         <span key={cap} className="px-2.5 py-1 text-[10px] font-heading tracking-widest uppercase border border-white/10 text-white/40">
                           {cap}
@@ -178,7 +180,7 @@ const Services = () => {
                   </div>
 
                   {/* Arrow CTA */}
-                  <div className="flex-shrink-0 flex items-center pl-8">
+                  <div className="flex-shrink-0 flex items-center pl-0 md:pl-8 mt-2 md:mt-0 w-full md:w-auto justify-end md:justify-start">
                     <Link
                       href="/contact"
                       className={`flex items-center justify-center w-10 h-10 border border-white/10 group-hover:border-white/40 group-hover:bg-white group-hover:text-black text-white/30 transition-all duration-500`}

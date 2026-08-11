@@ -178,10 +178,10 @@ const Contact = ({ services = [] }) => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="contact" className="py-24 lg:py-32 bg-primary-light border-y border-white/5">
-      <div className="container mx-auto px-8 max-w-7xl">
+    <section ref={containerRef} id="contact" className="section-padding bg-primary-light border-y border-white/5">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl">
         <div className="max-w-3xl mb-16">
-          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <span className="inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-6 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Start Your Industrial Project
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-light text-white tracking-tight mb-6">
@@ -259,7 +259,7 @@ const Contact = ({ services = [] }) => {
           </div>
 
           {/* Contact Form */}
-          <div className="contact-right p-8 lg:p-12 bg-white/[0.02] border border-white/5">
+          <div className="contact-right p-5 sm:p-8 lg:p-12 bg-white/[0.02] border border-white/5">
             {isSubmitted ? (
               <div className="text-center py-16">
                 <div className="inline-flex text-accent mb-6">
@@ -291,7 +291,7 @@ const Contact = ({ services = [] }) => {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className={`w-full bg-white/5 border ${formErrors.fullName ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
+                      className={`w-full bg-white/5 border ${formErrors.fullName ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]`}
                       placeholder="e.g. John Doe"
                     />
                     {formErrors.fullName && <p className="text-red-500 text-xs mt-1">{formErrors.fullName}</p>}
@@ -303,7 +303,7 @@ const Contact = ({ services = [] }) => {
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
                       placeholder="e.g. Acme Corp"
                     />
                     {formErrors.companyName && <p className="text-red-500 text-xs mt-1">{formErrors.companyName}</p>}
@@ -319,7 +319,7 @@ const Contact = ({ services = [] }) => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full bg-white/5 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
+                      className={`w-full bg-white/5 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]`}
                       placeholder="e.g. john@acme.com"
                     />
                     {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
@@ -331,7 +331,7 @@ const Contact = ({ services = [] }) => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className={`w-full bg-white/5 border ${formErrors.phone ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm`}
+                      className={`w-full bg-white/5 border ${formErrors.phone ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]`}
                       placeholder="e.g. +91 98450 12345"
                     />
                     {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
@@ -347,7 +347,7 @@ const Contact = ({ services = [] }) => {
                       name="projectLocation"
                       value={formData.projectLocation}
                       onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
                       placeholder="e.g. Mumbai, Maharashtra"
                     />
                     {formErrors.projectLocation && <p className="text-red-500 text-xs mt-1">{formErrors.projectLocation}</p>}
@@ -358,7 +358,7 @@ const Contact = ({ services = [] }) => {
                       name="serviceRequired"
                       value={formData.serviceRequired}
                       onChange={handleChange}
-                      className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none"
+                      className="w-full bg-primary-light border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm appearance-none min-h-[44px]"
                     >
                       <option value="">Select Service Required</option>
                       {services.length > 0 ? (
@@ -392,7 +392,7 @@ const Contact = ({ services = [] }) => {
                       name="expectedTimeline"
                       value={formData.expectedTimeline}
                       onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
                       placeholder="e.g. 3-4 months"
                     />
                     {formErrors.expectedTimeline && <p className="text-red-500 text-xs mt-1">{formErrors.expectedTimeline}</p>}
@@ -406,7 +406,7 @@ const Contact = ({ services = [] }) => {
                         name="documentUpload"
                         accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                         onChange={handleFileChange}
-                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm"
+                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm min-h-[44px]"
                       />
                       {uploadError && <p className="text-red-500 text-xs mt-1">{uploadError}</p>}
                       <p className="text-secondary text-xs font-light">
@@ -429,7 +429,7 @@ const Contact = ({ services = [] }) => {
                     value={formData.projectDescription}
                     onChange={handleChange}
                     rows="6"
-                    className={`w-full bg-white/5 border ${formErrors.projectDetails ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm resize-y`}
+                    className={`w-full bg-white/5 border ${formErrors.projectDetails ? 'border-red-500' : 'border-white/10'} text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors font-light text-sm resize-y min-h-[44px]`}
                     placeholder="Describe your project requirements, scope, specifications, and any special considerations..."
                   />
                   {formErrors.projectDescription && <p className="text-red-500 text-xs mt-1">{formErrors.projectDescription}</p>}

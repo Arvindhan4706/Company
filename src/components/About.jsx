@@ -31,10 +31,10 @@ const About = () => {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} id="about" className="py-24 lg:py-32 bg-primary border-t border-white/5 overflow-hidden">
-      <div className="container mx-auto px-8 max-w-4xl text-center">
+    <section ref={sectionRef} id="about" className="section-padding bg-primary border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-4xl text-center">
 
-        <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-8 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+        <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-8 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
           Our Foundation
         </div>
 
@@ -61,7 +61,7 @@ const About = () => {
         {/* Enhanced Sections per Master Prompt */}
         <div className="text-left mb-20">
           {/* Who We Are */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Who We Are
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
@@ -72,7 +72,7 @@ const About = () => {
           </p>
 
           {/* Our Capabilities */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Our Capabilities
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
@@ -106,13 +106,13 @@ const About = () => {
           </div>
 
           {/* Our Values */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Our Values
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
             Guiding Principles
           </h3>
-          <div className="grid grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
             <div className="text-left">
               <h4 className="font-heading text-xl text-white mb-2">PRECISION</h4>
               <p className="text-secondary text-sm font-light">Exact measurements and tight tolerances in all work</p>
@@ -132,7 +132,7 @@ const About = () => {
           </div>
 
           {/* Leadership */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Leadership
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
@@ -143,7 +143,7 @@ const About = () => {
           </p>
 
           {/* Certifications */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Certifications
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">
@@ -161,7 +161,7 @@ const About = () => {
           </div>
 
           {/* Company Timeline */}
-          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
+          <div className="about-animate inline-block text-secondary text-sm font-heading tracking-widest uppercase mb-4 relative after:hidden md:after:block after:content-[''] after:absolute after:top-1/2 after:-right-12 after:w-8 after:h-[1px] after:bg-secondary/50">
             Company Timeline
           </div>
           <h3 className="about-animate text-2xl font-heading font-light text-white mb-6">

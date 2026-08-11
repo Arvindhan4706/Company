@@ -92,10 +92,14 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-500 py-4 md:py-6 ${isOpen ? 'bg-black border-b border-white/5' : ''}`}
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-4 md:py-6 ${isOpen ? 'bg-transparent' : ''}`}
       >
         <div className="container flex items-center justify-between mx-auto px-4 sm:px-6 md:px-8">
-          <Link href="/" onClick={() => isOpen && toggleMenu()} className="flex items-center gap-3 relative z-[101]">
+          <Link 
+            href="/" 
+            onClick={() => isOpen && toggleMenu()} 
+            className={`flex items-center gap-3 relative z-[101] transition-opacity duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          >
             <span className="font-heading font-light tracking-widest text-lg sm:text-xl md:text-2xl text-white uppercase">
               MECELFAB
             </span>

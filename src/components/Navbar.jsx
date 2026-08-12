@@ -88,6 +88,8 @@ const Navbar = () => {
     }
   };
 
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <>
       <nav

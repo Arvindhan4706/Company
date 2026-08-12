@@ -3,7 +3,6 @@ import { Shield, Home, LayoutDashboard, Wrench, Briefcase, Users, MessageSquare,
 import { db } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import AdminHeader from '@/components/admin/AdminHeader';
 export const metadata = {
   title: 'Admin Dashboard | MECELFAB',
   robots: 'noindex, nofollow'
@@ -30,18 +29,6 @@ export default async function AdminLayout({ children }) {
   // If no session but we're in /admin/login, don't crash, just render without sidebar
   // But wait, middleware protects most routes.
   const role = session?.user?.role || 'VIEWER';
-  let notifications = [];
-
-  if (session?.user?.email) {
-    const user = await db.user.findUnique({ where: { email: session.user.email } });
-    if (user) {
-      notifications = await db.notification.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        take: 20
-      });
-    }
-  }
 
   if (!session) {
     return (
@@ -98,7 +85,6 @@ export default async function AdminLayout({ children }) {
         {/* subtle background glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent pointer-events-none" />
         
-        <AdminHeader session={session} initialNotifications={notifications} />
         <main className="flex-1 overflow-y-auto p-6 md:p-10 relative z-10">
           {children}
         </main>

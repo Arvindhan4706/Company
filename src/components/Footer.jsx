@@ -1,11 +1,16 @@
 "use client";
 import { ArrowUp } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = ({ contact }) => {
+  const pathname = usePathname();
+
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <footer className="bg-primary pt-24 pb-8 relative">

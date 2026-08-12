@@ -38,7 +38,7 @@ export default function AdminHeader({ session, initialNotifications }) {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 sticky top-0 z-50">
+    <header className="bg-black/40 backdrop-blur-md border-b border-white/10 h-16 flex items-center justify-between px-8 sticky top-0 z-50">
       <div className="flex-1"></div>
       
       <div className="flex items-center gap-6">
@@ -46,38 +46,38 @@ export default function AdminHeader({ session, initialNotifications }) {
         <div className="relative" ref={dropdownRef}>
           <button 
             onClick={() => setShowDropdown(!showDropdown)}
-            className="relative p-2 text-gray-500 hover:text-gray-900 transition-colors focus:outline-none rounded-full hover:bg-gray-100"
+            className="relative p-2 text-secondary hover:text-white transition-colors focus:outline-none rounded-full hover:bg-white/10"
           >
             <Bell size={20} />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-primary"></span>
             )}
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden">
-              <div className="p-3 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 className="font-semibold text-gray-800 text-sm">Notifications</h3>
+            <div className="absolute right-0 mt-2 w-80 bg-black/90 backdrop-blur-xl rounded-md shadow-2xl border border-white/10 overflow-hidden">
+              <div className="p-3 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 className="font-semibold text-white text-sm">Notifications</h3>
                 {unreadCount > 0 && (
-                  <button onClick={markAllAsRead} className="text-xs text-blue-600 hover:text-blue-800 font-medium">Mark all read</button>
+                  <button onClick={markAllAsRead} className="text-xs text-accent-blue hover:text-blue-400 transition-colors font-medium">Mark all read</button>
                 )}
               </div>
               <div className="max-h-[300px] overflow-y-auto">
                 {notifications.length > 0 ? (
                   notifications.map(notif => (
-                    <div key={notif.id} className={`p-4 border-b border-gray-50 ${!notif.read ? 'bg-blue-50/30' : 'bg-white'}`}>
+                    <div key={notif.id} className={`p-4 border-b border-white/5 hover:bg-white/10 transition-colors ${!notif.read ? 'bg-white/5' : 'bg-transparent'}`}>
                       <div className="flex justify-between items-start gap-4">
                         <Link 
                           href={notif.entityType === 'INQUIRY' ? `/admin/inquiries/${notif.entityId}` : '#'}
                           className="flex-1 cursor-pointer"
                           onClick={() => { if (!notif.read) markAsRead(notif.id); setShowDropdown(false); }}
                         >
-                          <p className={`text-sm ${!notif.read ? 'font-semibold text-gray-900' : 'font-medium text-gray-700'}`}>{notif.title}</p>
-                          <p className="text-xs text-gray-500 mt-1">{notif.message}</p>
-                          <p className="text-[10px] text-gray-400 mt-2">{new Date(notif.createdAt).toLocaleString()}</p>
+                          <p className={`text-sm ${!notif.read ? 'font-semibold text-white' : 'font-medium text-secondary'}`}>{notif.title}</p>
+                          <p className="text-xs text-secondary/80 mt-1">{notif.message}</p>
+                          <p className="text-[10px] text-secondary/60 mt-2">{new Date(notif.createdAt).toLocaleString()}</p>
                         </Link>
                         {!notif.read && (
-                          <button onClick={() => markAsRead(notif.id)} className="text-gray-400 hover:text-green-600 p-1" title="Mark as read">
+                          <button onClick={() => markAsRead(notif.id)} className="text-secondary/50 hover:text-green-400 p-1 transition-colors" title="Mark as read">
                             <Check size={14} />
                           </button>
                         )}
@@ -85,7 +85,7 @@ export default function AdminHeader({ session, initialNotifications }) {
                     </div>
                   ))
                 ) : (
-                  <div className="p-8 text-center text-sm text-gray-500">No notifications</div>
+                  <div className="p-8 text-center text-sm text-secondary">No notifications</div>
                 )}
               </div>
             </div>
@@ -94,12 +94,12 @@ export default function AdminHeader({ session, initialNotifications }) {
 
         {/* User Profile Outline */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
+          <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center text-white font-bold text-sm shadow-[0_0_10px_rgba(30,58,138,0.5)] border border-white/10">
             {session?.user?.name?.charAt(0) || 'A'}
           </div>
           <div className="hidden md:block">
-            <p className="text-sm font-medium text-gray-900">{session?.user?.name || 'Administrator'}</p>
-            <p className="text-xs text-gray-500">{session?.user?.role?.replace('_', ' ')}</p>
+            <p className="text-sm font-medium text-white">{session?.user?.name || 'Administrator'}</p>
+            <p className="text-xs text-secondary">{session?.user?.role?.replace('_', ' ')}</p>
           </div>
         </div>
       </div>

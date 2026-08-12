@@ -5,7 +5,10 @@ export default withAuth(
   function middleware(req) {
     const { token } = req.nextauth;
     const { pathname } = req.nextUrl;
-    
+    if (pathname === "/admin/login" && token) {
+      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    }
+
     // RBAC Checks for restricted admin routes
     if (
       (pathname.startsWith("/admin/users") || 
@@ -18,9 +21,6 @@ export default withAuth(
     }
   },
   {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
     pages: {
       signIn: '/admin/login',
     }
@@ -28,5 +28,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/((?!login).*)'],
 };

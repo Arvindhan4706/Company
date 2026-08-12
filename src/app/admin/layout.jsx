@@ -43,6 +43,16 @@ export default async function AdminLayout({ children }) {
     }
   }
 
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-primary flex flex-col font-sans">
+        <main className="flex-1 flex items-center justify-center p-6 relative z-10">
+          {children}
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen bg-primary text-white font-sans">
       {/* Sidebar */}

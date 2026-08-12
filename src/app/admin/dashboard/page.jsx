@@ -2,7 +2,7 @@ import { db } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
-import { Briefcase, MessageSquare, Activity, Calendar, AlertTriangle, FileText, CheckCircle, ArrowRight } from 'lucide-react';
+import { Briefcase, MessageSquare, Activity, Calendar, AlertTriangle, FileText, CheckCircle, ArrowRight, Wrench } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {

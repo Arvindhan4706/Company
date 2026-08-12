@@ -77,6 +77,7 @@ export default function LoginAdminPage() {
                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-accent transition-colors"
                 placeholder="admin@mecelfab.com"
                 defaultValue="admin@mecelfab.com"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -93,6 +94,7 @@ export default function LoginAdminPage() {
                 required
                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-accent transition-colors"
                 placeholder="••••••••"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -101,6 +103,7 @@ export default function LoginAdminPage() {
             type="submit"
             disabled={loading}
             className="w-full bg-white text-black font-heading tracking-widest uppercase text-sm py-4 rounded-xl hover:bg-accent hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            suppressHydrationWarning
           >
             {loading ? 'Authenticating...' : 'Secure Login'}
           </button>

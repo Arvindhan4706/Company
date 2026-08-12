@@ -13,7 +13,7 @@ export default async function CRMInboxPage({ searchParams }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect('/admin/login');
 
-  const { status, q } = searchParams;
+  const { status, q } = await searchParams;
 
   const whereClause = {};
   if (status) whereClause.status = status;

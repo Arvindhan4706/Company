@@ -51,8 +51,8 @@ export default async function RootLayout({ children }) {
     : null;
 
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <I18nProvider>
           <SmoothScroller>
             <CMSProvider>

@@ -13,8 +13,9 @@ export default async function QuotationsIndexPage({ searchParams }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect('/admin/login');
 
-  const query = searchParams?.q || '';
-  const statusFilter = searchParams?.status || '';
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams?.q || '';
+  const statusFilter = resolvedSearchParams?.status || '';
 
   const where = {
     AND: [

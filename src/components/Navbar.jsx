@@ -25,6 +25,8 @@ const Navbar = () => {
   ];
 
   useGSAP(() => {
+    if (!navRef.current) return;
+
     // Entrance animation
     gsap.fromTo(navRef.current,
       { y: -100, opacity: 0 },

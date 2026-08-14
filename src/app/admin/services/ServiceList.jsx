@@ -84,10 +84,10 @@ export default function ServiceList({ initialServices }) {
         </button>
       </div>
 
-      <div className="bg-white/[0.02] border border-white/5 rounded-xl overflow-hidden">
+      <div className="bg-admin-surface/[0.02] border border-white/5 rounded-xl overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/5 bg-white/5">
+            <tr className="border-b border-white/5 bg-admin-surface/5">
               <th className="p-4 text-xs font-heading tracking-widest text-secondary uppercase">Title</th>
               <th className="p-4 text-xs font-heading tracking-widest text-secondary uppercase">Slug</th>
               <th className="p-4 text-xs font-heading tracking-widest text-secondary uppercase">Status</th>
@@ -96,7 +96,7 @@ export default function ServiceList({ initialServices }) {
           </thead>
           <tbody>
             {services.map((service) => (
-              <tr key={service.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+              <tr key={service.id} className="border-b border-white/5 hover:bg-admin-surface/[0.02] transition-colors">
                 <td className="p-4">
                   <div className="font-medium text-white">{service.title}</div>
                 </td>
@@ -104,7 +104,7 @@ export default function ServiceList({ initialServices }) {
                 <td className="p-4">
                   <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                     service.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 
-                    service.status === 'DRAFT' ? 'bg-gray-100 text-gray-600' : 'bg-yellow-100 text-yellow-800'
+                    service.status === 'DRAFT' ? 'bg-admin-elevated text-admin-muted' : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {service.status}
                   </span>
@@ -231,14 +231,14 @@ export default function ServiceList({ initialServices }) {
               </form>
             </div>
 
-            <div className="p-6 border-t border-white/10 flex justify-between gap-4 bg-white/[0.02]">
+            <div className="p-6 border-t border-white/10 flex justify-between gap-4 bg-admin-surface/[0.02]">
               <div>
                 {editingService && (
                   <a
                     href={`/services/${editingService.slug}?preview=true`}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase inline-block"
+                    className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-admin-surface/5 transition-colors text-sm font-heading tracking-widest uppercase inline-block"
                   >
                     Preview
                   </a>
@@ -248,7 +248,7 @@ export default function ServiceList({ initialServices }) {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase"
+                  className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-admin-surface/5 transition-colors text-sm font-heading tracking-widest uppercase"
                 >
                   Cancel
                 </button>
@@ -256,7 +256,7 @@ export default function ServiceList({ initialServices }) {
                   type="submit"
                   form="service-form"
                   disabled={loading}
-                  className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
+                  className="px-6 py-2 bg-admin-surface text-admin-heading rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save'}
                 </button>

@@ -74,7 +74,7 @@ export default function TestimonialList({ initialTestimonials }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="bg-white/[0.02] border border-white/5 rounded-xl p-6 flex flex-col group relative">
+          <div key={testimonial.id} className="bg-admin-surface/[0.02] border border-white/5 rounded-xl p-6 flex flex-col group relative">
             <div className="flex text-accent mb-4">
               {[...Array(testimonial.rating)].map((_, i) => (
                 <Star key={i} size={14} fill="currentColor" />
@@ -98,7 +98,7 @@ export default function TestimonialList({ initialTestimonials }) {
       </div>
 
       {testimonials.length === 0 && (
-        <div className="p-12 text-center text-secondary bg-white/[0.02] border border-white/5 rounded-xl">
+        <div className="p-12 text-center text-secondary bg-admin-surface/[0.02] border border-white/5 rounded-xl">
           No testimonials found. Add one to get started.
         </div>
       )}
@@ -175,11 +175,11 @@ export default function TestimonialList({ initialTestimonials }) {
               </form>
             </div>
 
-            <div className="p-6 border-t border-white/10 flex justify-end gap-4 bg-white/[0.02]">
+            <div className="p-6 border-t border-white/10 flex justify-end gap-4 bg-admin-surface/[0.02]">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase"
+                className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-admin-surface/5 transition-colors text-sm font-heading tracking-widest uppercase"
               >
                 Cancel
               </button>
@@ -187,7 +187,7 @@ export default function TestimonialList({ initialTestimonials }) {
                 type="submit"
                 form="testimonial-form"
                 disabled={loading}
-                className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
+                className="px-6 py-2 bg-admin-surface text-admin-heading rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
               >
                 {loading ? 'Adding...' : 'Add Testimonial'}
               </button>

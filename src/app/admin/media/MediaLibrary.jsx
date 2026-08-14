@@ -59,7 +59,7 @@ export default function MediaLibrary({ initialMedia }) {
   };
 
   return (
-    <div className="bg-white/[0.02] border border-white/5 p-8 rounded-lg">
+    <div className="bg-admin-surface/[0.02] border border-white/5 p-8 rounded-lg">
       <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
         <h2 className="text-xl font-heading font-light text-white">
           Media Library
@@ -75,7 +75,7 @@ export default function MediaLibrary({ initialMedia }) {
           />
           <label 
             htmlFor="file-upload"
-            className={`flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-white hover:text-black transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
+            className={`flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-admin-surface hover:text-admin-heading transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
           >
             <Upload size={16} /> {isUploading ? 'Uploading...' : 'Upload File'}
           </label>
@@ -97,7 +97,7 @@ export default function MediaLibrary({ initialMedia }) {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {mediaList.map((media) => (
             <div key={media.id} className="group bg-black/40 border border-white/5 rounded-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col">
-              <div className="relative aspect-square bg-white/[0.02] flex items-center justify-center p-4">
+              <div className="relative aspect-square bg-admin-surface/[0.02] flex items-center justify-center p-4">
                 {media.mimeType.startsWith('image/') ? (
                   <Image src={media.url} alt={media.alt || 'Media'} fill className="object-contain" />
                 ) : (
@@ -108,7 +108,7 @@ export default function MediaLibrary({ initialMedia }) {
                 <div className="absolute inset-0 bg-black/80 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button 
                     onClick={() => handleCopy(media.url)}
-                    className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                    className="p-2 bg-admin-surface/10 hover:bg-admin-surface/20 rounded-full text-white transition-colors"
                     title="Copy URL"
                   >
                     {copiedUrl === media.url ? <CheckCircle size={20} className="text-emerald-400" /> : <Copy size={20} />}

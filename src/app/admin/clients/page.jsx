@@ -16,8 +16,8 @@ export default async function AdminClientsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Clients Management</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage client logos and featured partners.</p>
+          <h1 className="text-2xl font-bold text-admin-heading">Clients Management</h1>
+          <p className="text-admin-muted text-sm mt-1">Manage client logos and featured partners.</p>
         </div>
         <Link href="/admin/clients/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
           <Plus size={16} />
@@ -25,26 +25,26 @@ export default async function AdminClientsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border overflow-hidden">
         {clients.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No clients found. Add your first client.</div>
+          <div className="p-8 text-center text-admin-muted">No clients found. Add your first client.</div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client Name</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Logo</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-admin-elevated border-b border-admin-border">
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Client Name</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Logo</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Featured</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-admin-border/50">
               {clients.map(client => (
-                <tr key={client.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="py-4 px-6 font-medium text-gray-900">{client.name}</td>
+                <tr key={client.id} className="hover:bg-admin-elevated transition-colors">
+                  <td className="py-4 px-6 font-medium text-admin-heading">{client.name}</td>
                   <td className="py-4 px-6">
                     {client.logoUrl ? (
-                      <div className="relative w-12 h-12 bg-gray-100 rounded border border-gray-200 flex items-center justify-center p-1">
+                      <div className="relative w-12 h-12 bg-admin-elevated rounded border border-admin-border flex items-center justify-center p-1">
                         <img src={client.logoUrl} alt={client.name} className="max-w-full max-h-full object-contain" />
                       </div>
                     ) : (

@@ -42,19 +42,19 @@ export default function InquiryList({ initialInquiries }) {
       case 'NEW':
         return <span className="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded text-xs font-medium">NEW</span>;
       case 'READ':
-        return <span className="px-2 py-1 bg-gray-500/10 text-gray-400 border border-gray-500/20 rounded text-xs font-medium">READ</span>;
+        return <span className="px-2 py-1 bg-admin-elevated0/10 text-gray-400 border border-gray-500/20 rounded text-xs font-medium">READ</span>;
       case 'RESPONDED':
         return <span className="px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded text-xs font-medium">RESPONDED</span>;
       default:
-        return <span className="px-2 py-1 bg-gray-500/10 text-gray-400 border border-gray-500/20 rounded text-xs font-medium">{status}</span>;
+        return <span className="px-2 py-1 bg-admin-elevated0/10 text-gray-400 border border-gray-500/20 rounded text-xs font-medium">{status}</span>;
     }
   };
 
   return (
     <div className="flex gap-8 h-[calc(100vh-8rem)]">
       {/* Inbox List */}
-      <div className="w-1/3 flex flex-col bg-white/[0.02] border border-white/5 rounded-xl overflow-hidden">
-        <div className="p-4 border-b border-white/5 bg-white/5">
+      <div className="w-1/3 flex flex-col bg-admin-surface/[0.02] border border-white/5 rounded-xl overflow-hidden">
+        <div className="p-4 border-b border-white/5 bg-admin-surface/5">
           <h2 className="text-lg font-heading font-light text-white">Inbox ({inquiries.filter(i => i.status === 'NEW').length} New)</h2>
         </div>
         <div className="flex-1 overflow-y-auto">
@@ -69,7 +69,7 @@ export default function InquiryList({ initialInquiries }) {
                   if (inq.status === 'NEW') handleStatusChange(inq.id, 'READ');
                 }}
                 className={`p-4 border-b border-white/5 cursor-pointer transition-colors ${
-                  selectedInquiry?.id === inq.id ? 'bg-white/10' : 'hover:bg-white/[0.04]'
+                  selectedInquiry?.id === inq.id ? 'bg-admin-surface/10' : 'hover:bg-admin-surface/[0.04]'
                 }`}
               >
                 <div className="flex justify-between items-start mb-2">
@@ -88,10 +88,10 @@ export default function InquiryList({ initialInquiries }) {
       </div>
 
       {/* Inquiry Detail */}
-      <div className="w-2/3 bg-white/[0.02] border border-white/5 rounded-xl overflow-hidden flex flex-col">
+      <div className="w-2/3 bg-admin-surface/[0.02] border border-white/5 rounded-xl overflow-hidden flex flex-col">
         {selectedInquiry ? (
           <>
-            <div className="p-6 border-b border-white/5 flex justify-between items-start bg-white/5">
+            <div className="p-6 border-b border-white/5 flex justify-between items-start bg-admin-surface/5">
               <div>
                 <h2 className="text-2xl font-heading font-light text-white mb-2">{selectedInquiry.name}</h2>
                 <div className="flex items-center gap-4 text-sm text-secondary">

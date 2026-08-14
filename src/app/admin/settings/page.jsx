@@ -43,43 +43,43 @@ export default async function AdminSettingsPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Global Settings</h1>
-        <p className="text-gray-500 text-sm mt-1">Configure company information and global SEO parameters.</p>
+        <h1 className="text-2xl font-bold text-admin-heading">Global Settings</h1>
+        <p className="text-admin-muted text-sm mt-1">Configure company information and global SEO parameters.</p>
       </div>
 
       <form action={updateSettings} className="space-y-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Company Information</h2>
+        <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border p-6">
+          <h2 className="text-lg font-bold text-admin-heading mb-4 border-b border-admin-border pb-2">Company Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-              <input type="text" name="companyName" defaultValue={settings.companyName || 'MECELFAB Industrial Solutions'} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">Company Name</label>
+              <input type="text" name="companyName" defaultValue={settings.companyName || 'MECELFAB Industrial Solutions'} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-              <input type="email" name="contactEmail" defaultValue={settings.contactEmail || 'info@mecelfab.com'} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">Contact Email</label>
+              <input type="email" name="contactEmail" defaultValue={settings.contactEmail || 'info@mecelfab.com'} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-              <input type="text" name="contactPhone" defaultValue={settings.contactPhone || '+91 90000 00000'} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">Phone Number</label>
+              <input type="text" name="contactPhone" defaultValue={settings.contactPhone || '+91 90000 00000'} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Office Location</label>
-              <input type="text" name="location" defaultValue={settings.location || 'Chennai, Tamil Nadu'} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">Office Location</label>
+              <input type="text" name="location" defaultValue={settings.location || 'Chennai, Tamil Nadu'} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Social Media & Links</h2>
+        <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border p-6">
+          <h2 className="text-lg font-bold text-admin-heading mb-4 border-b border-admin-border pb-2">Social Media & Links</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
-              <input type="url" name="socialLinkedIn" defaultValue={settings.socialLinkedIn || ''} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">LinkedIn URL</label>
+              <input type="url" name="socialLinkedIn" defaultValue={settings.socialLinkedIn || ''} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Twitter URL</label>
-              <input type="url" name="socialTwitter" defaultValue={settings.socialTwitter || ''} className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
+              <label className="block text-sm font-medium text-admin-text mb-1">Twitter URL</label>
+              <input type="url" name="socialTwitter" defaultValue={settings.socialTwitter || ''} className="w-full border border-admin-border rounded p-2 text-sm focus:outline-none focus:border-blue-500" />
             </div>
           </div>
         </div>

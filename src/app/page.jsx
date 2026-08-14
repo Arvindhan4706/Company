@@ -14,10 +14,14 @@ import { db } from '@/lib/db';
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage() {
-  // Fetch active projects
+  // Fetch active projects and services
   const projects = await db.project.findMany({
     where: { status: { not: 'DISABLED' } },
     orderBy: { createdAt: 'desc' }
+  });
+  const services = await db.service.findMany({
+    where: { status: 'ACTIVE' },
+    orderBy: { createdAt: 'asc' }
   });
 
   // Fetch stats and content
@@ -49,14 +53,14 @@ export default async function HomePage() {
     <>
       <Hero content={homepageContent} />
       <TrustSection stats={stats} />
-      <Services />
+      <Services services={services} />
       <EngineeringWorkflow />
       <Industries />
       <ProjectsGallery projects={projects} />
       <Testimonials testimonials={testimonials} />
       <ClientLogos clients={clients} />
       <WhyChooseUs />
-      <ServiceFinder />
+      <ServiceFinder services={services} />
     </>
   );
 }

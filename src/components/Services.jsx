@@ -8,74 +8,22 @@ import { ArrowRight, Wrench, Hammer, Droplets, Zap, Clock, Battery, Wind, Settin
 
 gsap.registerPlugin(ScrollTrigger);
 
-const services = [
-  {
-    id: '01',
-    icon: Hammer,
-    title: 'Industrial Erection',
-    slug: 'industrial-erection',
-    description: 'Industrial equipment erection, installation, alignment and commissioning support.',
-    capabilities: ['Equipment Erection', 'Machinery Installation', 'Structural Erection', 'Alignment'],
-  },
-  {
-    id: '02',
-    icon: Wrench,
-    title: 'Industrial Fabrication',
-    slug: 'industrial-fabrication',
-    description: 'Industrial fabrication and custom mechanical fabrication services.',
-    capabilities: ['Structural Fabrication', 'Industrial Assemblies', 'Welding', 'Mechanical Fabrication'],
-  },
-  {
-    id: '03',
-    icon: Droplets,
-    title: 'Hydraulic & Pneumatic System Overhauling',
-    slug: 'hydraulic-pneumatic-overhauling',
-    description: 'Inspection, servicing, troubleshooting and overhauling of hydraulic and pneumatic systems.',
-    capabilities: ['Hydraulic Systems', 'Pneumatic Systems', 'Cylinders', 'Valves'],
-  },
-  {
-    id: '04',
-    icon: Zap,
-    title: 'Industrial Generator Spare Parts',
-    slug: 'generator-spare-parts',
-    description: 'Supply of genuine spare parts for industrial generators.',
-    capabilities: ['Engine Components', 'Filters', 'Electrical Components', 'Fuel System'],
-  },
-  {
-    id: '05',
-    icon: Clock,
-    title: 'AMC — Annual Maintenance Contract',
-    slug: 'amc-maintenance',
-    description: 'Annual maintenance and service contracts for industrial equipment and generator systems.',
-    capabilities: ['Preventive Maintenance', 'Scheduled Inspections', 'Breakdown Support', 'Service Visits'],
-  },
-  {
-    id: '06',
-    icon: Battery,
-    title: 'Industrial Generator Rental',
-    slug: 'generator-rental',
-    description: 'Industrial generator rental services for temporary and emergency power requirements.',
-    capabilities: ['Generator Rental', 'Temporary Power', 'Industrial Applications', 'Installation Support'],
-  },
-  {
-    id: '07',
-    icon: Wind,
-    title: 'Air Compressor Rental',
-    slug: 'air-compressor-rental',
-    description: 'Air compressor rental services for industrial and construction requirements.',
-    capabilities: ['Compressor Rental', 'Temporary Air Supply', 'Industrial Site Support'],
-  },
-  {
-    id: '08',
-    icon: Settings,
-    title: 'Turbocharger Services',
-    slug: 'turbocharger-services',
-    description: 'Turbocharger inspection, servicing, repair and overhauling for industrial engines.',
-    capabilities: ['Inspection', 'Servicing', 'Overhauling', 'Component Replacement'],
-  },
-];
+const ICON_MAP = {
+  'industrial-erection': Hammer,
+  'industrial-fabrication': Wrench,
+  'hydraulic-pneumatic-overhauling': Droplets,
+  'generator-spare-parts': Zap,
+  'amc': Clock,
+  'generator-rental': Battery,
+  'air-compressor-rental': Wind,
+  'turbocharger-services': Settings,
+};
 
-const Services = () => {
+const getServiceIcon = (slug) => {
+  return ICON_MAP[slug] || Settings;
+};
+
+const Services = ({ services = [] }) => {
   const sectionRef = useRef(null);
   const [hoveredId, setHoveredId] = useState(null);
   const [expandedIds, setExpandedIds] = useState(new Set());
@@ -142,9 +90,12 @@ const Services = () => {
         {/* Services List */}
         <div className="svc-list grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-col gap-6 lg:gap-0">
           {services.map((service, index) => {
-            const Icon = service.icon;
+            const Icon = getServiceIcon(service.slug);
+            const displayId = String(index + 1).padStart(2, '0');
             const isHovered = hoveredId === service.id;
             const isExpanded = expandedIds.has(service.id);
+            const capabilities = service.capabilities ? JSON.parse(service.capabilities) : [];
+            
             return (
               <div
                 key={service.id}
@@ -154,7 +105,7 @@ const Services = () => {
               >
                 {/* Mobile Ghost Number */}
                 <div className="absolute top-0 right-4 text-[80px] font-heading font-bold text-white/[0.02] select-none pointer-events-none lg:hidden leading-none pt-4">
-                  {service.id}
+                  {displayId}
                 </div>
 
                 <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-5 lg:gap-0 py-6 px-6 lg:px-0 lg:py-7 transition-all duration-500 relative z-10">
@@ -163,7 +114,7 @@ const Services = () => {
                     {/* Number - Desktop only */}
                     <div className="hidden lg:flex w-auto lg:w-16 flex-shrink-0 items-start pt-1">
                       <span className="text-xs font-heading text-white/20 group-hover:text-white/50 transition-colors duration-500 tracking-widest">
-                        {service.id}
+                        {displayId}
                       </span>
                     </div>
 
@@ -189,7 +140,7 @@ const Services = () => {
                     {/* Tags — toggle on mobile, hover on desktop */}
                     <div className={`flex flex-col gap-3 w-full lg:w-auto lg:max-w-xs transition-all duration-500 ${isExpanded ? 'h-auto mt-2 lg:mt-0 opacity-100' : 'h-0 overflow-hidden lg:h-auto lg:overflow-visible lg:opacity-0 group-hover:opacity-100'} ${isHovered ? 'lg:opacity-100' : ''}`}>
                       <div className="flex flex-wrap gap-2 items-start">
-                        {service.capabilities.map((cap) => (
+                        {capabilities.map((cap) => (
                           <span key={cap} className="px-2.5 py-1 text-[10px] font-heading tracking-widest uppercase border border-white/10 text-white/40 bg-black/20 lg:bg-transparent">
                             {cap}
                           </span>

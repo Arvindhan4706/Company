@@ -25,8 +25,8 @@ export default async function AdminUsersPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Access Management</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage admin roles and portal access.</p>
+          <h1 className="text-2xl font-bold text-admin-heading">User Access Management</h1>
+          <p className="text-admin-muted text-sm mt-1">Manage admin roles and portal access.</p>
         </div>
         <Link href="/admin/users/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
           <Plus size={16} />
@@ -34,27 +34,27 @@ export default async function AdminUsersPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-100">
-              <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name / Email</th>
-              <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-              <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined</th>
-              <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+            <tr className="bg-admin-elevated border-b border-admin-border">
+              <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Name / Email</th>
+              <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Role</th>
+              <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Joined</th>
+              <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-admin-border/50">
             {users.map(user => (
-              <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={user.id} className="hover:bg-admin-elevated transition-colors">
                 <td className="py-4 px-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                    <div className="w-10 h-10 rounded-full bg-admin-elevated flex items-center justify-center text-admin-muted">
                       <UserIcon size={20} />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{user.name || 'Admin User'}</p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="font-medium text-admin-heading">{user.name || 'Admin User'}</p>
+                      <p className="text-xs text-admin-muted">{user.email}</p>
                     </div>
                   </div>
                 </td>
@@ -62,13 +62,13 @@ export default async function AdminUsersPage() {
                   <span className={`px-2.5 py-1 text-xs font-medium rounded-full flex items-center gap-1 w-max ${
                     user.role === 'SUPER_ADMIN' ? 'bg-purple-100 text-purple-800' :
                     user.role === 'ADMIN' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-700'
+                    'bg-admin-elevated text-admin-text'
                   }`}>
                     {user.role === 'SUPER_ADMIN' && <Shield size={12} />}
                     {user.role}
                   </span>
                 </td>
-                <td className="py-4 px-6 text-sm text-gray-500">
+                <td className="py-4 px-6 text-sm text-admin-muted">
                   {new Date(user.createdAt).toLocaleDateString()}
                 </td>
                 <td className="py-4 px-6 text-right">

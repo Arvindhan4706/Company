@@ -44,10 +44,10 @@ export async function POST(req) {
     }
 
     // Generate Reference Number
-    // Example: MEC-2026-0001
+    // Example: MEC-REQ-2026-0001
     const currentYear = new Date().getFullYear();
     const count = await db.inquiry.count();
-    const referenceNumber = `MEC-${currentYear}-${String(count + 1).padStart(4, '0')}`;
+    const referenceNumber = `MEC-REQ-${currentYear}-${String(count + 1).padStart(4, '0')}`;
 
     const newInquiry = await db.inquiry.create({
       data: {

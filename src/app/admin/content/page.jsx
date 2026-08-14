@@ -66,8 +66,8 @@ export default async function AdminContentPage() {
   return (
     <div className="pb-12 max-w-5xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Content Management</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage static page content like the Homepage hero, About Us text, and global Contact information.</p>
+        <h1 className="text-2xl font-bold text-admin-heading">Content Management</h1>
+        <p className="text-admin-muted text-sm mt-1">Manage static page content like the Homepage hero, About Us text, and global Contact information.</p>
       </div>
 
       <ContentEditor initialSettings={settings} saveContentAction={saveContentAction} />

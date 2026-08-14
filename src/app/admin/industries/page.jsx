@@ -15,8 +15,8 @@ export default async function AdminIndustriesPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Industries Management</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage the industrial sectors you serve.</p>
+          <h1 className="text-2xl font-bold text-admin-heading">Industries Management</h1>
+          <p className="text-admin-muted text-sm mt-1">Manage the industrial sectors you serve.</p>
         </div>
         <Link href="/admin/industries/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
           <Plus size={16} />
@@ -24,28 +24,28 @@ export default async function AdminIndustriesPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border overflow-hidden">
         {industries.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No industries found. Create your first one.</div>
+          <div className="p-8 text-center text-admin-muted">No industries found. Create your first one.</div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Industry Title</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Slug</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Capabilities Configured</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-admin-elevated border-b border-admin-border">
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Industry Title</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Slug</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Capabilities Configured</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-admin-border/50">
               {industries.map(industry => {
                 const caps = industry.capabilities ? JSON.parse(industry.capabilities) : [];
                 return (
-                  <tr key={industry.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-4 px-6 font-medium text-gray-900">{industry.title}</td>
-                    <td className="py-4 px-6 text-sm text-gray-500">{industry.slug}</td>
+                  <tr key={industry.id} className="hover:bg-admin-elevated transition-colors">
+                    <td className="py-4 px-6 font-medium text-admin-heading">{industry.title}</td>
+                    <td className="py-4 px-6 text-sm text-admin-muted">{industry.slug}</td>
                     <td className="py-4 px-6">
-                      <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">
+                      <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-admin-elevated text-admin-text">
                         {caps.length} defined
                       </span>
                     </td>

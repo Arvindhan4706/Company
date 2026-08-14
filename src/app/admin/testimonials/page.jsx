@@ -15,8 +15,8 @@ export default async function AdminTestimonialsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Testimonials</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage client reviews and feedback.</p>
+          <h1 className="text-2xl font-bold text-admin-heading">Testimonials</h1>
+          <p className="text-admin-muted text-sm mt-1">Manage client reviews and feedback.</p>
         </div>
         <Link href="/admin/testimonials/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
           <Plus size={16} />
@@ -24,28 +24,28 @@ export default async function AdminTestimonialsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border overflow-hidden">
         {testimonials.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No testimonials found. Add your first review.</div>
+          <div className="p-8 text-center text-admin-muted">No testimonials found. Add your first review.</div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Quote Summary</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-admin-elevated border-b border-admin-border">
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Client</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Quote Summary</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Rating</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Featured</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-admin-border/50">
               {testimonials.map(t => (
-                <tr key={t.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={t.id} className="hover:bg-admin-elevated transition-colors">
                   <td className="py-4 px-6">
-                    <p className="font-medium text-gray-900">{t.name}</p>
-                    <p className="text-xs text-gray-500">{t.role}, {t.company}</p>
+                    <p className="font-medium text-admin-heading">{t.name}</p>
+                    <p className="text-xs text-admin-muted">{t.role}, {t.company}</p>
                   </td>
-                  <td className="py-4 px-6 text-sm text-gray-600 max-w-xs truncate">
+                  <td className="py-4 px-6 text-sm text-admin-muted max-w-xs truncate">
                     "{t.quote}"
                   </td>
                   <td className="py-4 px-6">

@@ -12,7 +12,7 @@ model User {
   name      String?
   email     String   @unique
   password  String
-  role      String   @default("EDITOR") // SUPER_ADMIN, ADMIN, EDITOR, VIEWER
+  role      String   @default("EDITOR") // SUPER_ADMIN, ADMIN, MANAGER, STAFF, TECHNICIAN, CUSTOMER
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -24,6 +24,33 @@ model User {
   quotations Quotation[]
   media Media[]
   documents Document[]
+  
+  workOrders WorkOrder[] @relation("AssignedTechnician")
+  serviceVisits ServiceVisit[] @relation("AssignedTechnician")
+  serviceReports ServiceReport[] @relation("ReportTechnician")
+}
+
+model Customer {
+  id            String   @id @default(cuid())
+  companyName   String
+  contactPerson String
+  email         String   @unique
+  phone         String?
+  location      String?
+  industry      String?
+  notes         String?
+  userId        String?  @unique // For customer portal login
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  inquiries      Inquiry[]
+  quotations     Quotation[]
+  workOrders     WorkOrder[]
+  equipment      Equipment[]
+  amcs           AMC[]
+  serviceVisits  ServiceVisit[]
+  serviceReports ServiceReport[]
+  invoices       Invoice[]
 }
 
 model Project {
@@ -107,6 +134,10 @@ model Inquiry {
   preferredContactMethod String?  @default("Email") // Phone, Email, WhatsApp
   status                 String   @default("NEW") // NEW, CONTACTED, REQUIREMENT_VERIFIED, QUOTATION, NEGOTIATION, WON, LOST, CLOSED
   priority               String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  
+  customerId             String?
+  customer               Customer? @relation(fields: [customerId], references: [id])
+  
   assignedToId           String?
   assignedTo             User?    @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
   createdAt              DateTime @default(now())
@@ -230,8 +261,11 @@ model Setting {
 model Quotation {
   id               String   @id @default(cuid())
   quotationNumber  String   @unique
-  inquiryId        String
-  inquiry          Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  inquiryId        String?
+  inquiry          Inquiry?  @relation(fields: [inquiryId], references: [id], onDelete: SetNull)
+  
+  customerId       String?
+  customer         Customer? @relation(fields: [customerId], references: [id])
   
   // Snapshot of Customer Info
   customerName     String
@@ -267,6 +301,8 @@ model Quotation {
   updatedAt        DateTime @updatedAt
   
   items            QuotationItem[]
+  workOrders       WorkOrder[]
+  invoices         Invoice[]
 }
 
 model QuotationItem {
@@ -277,4 +313,201 @@ model QuotationItem {
   quantity    Int
   unitPrice   Float
   totalPrice  Float
+}
+
+model WorkOrder {
+  id              String   @id @default(cuid())
+  workOrderNumber String   @unique
+  quotationId     String?
+  quotation       Quotation? @relation(fields: [quotationId], references: [id])
+  
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  status          String   @default("SCHEDULED") // SCHEDULED, ASSIGNED, IN_PROGRESS, COMPLETED, CLOSED
+  scheduledDate   DateTime?
+  
+  assignedToId    String?
+  assignedTo      User?    @relation("AssignedTechnician", fields: [assignedToId], references: [id])
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  serviceVisits   ServiceVisit[]
+  serviceReports  ServiceReport[]
+  stockMovements  StockMovement[]
+  invoices        Invoice[]
+}
+
+model Equipment {
+  id              String   @id @default(cuid())
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  type            String
+  manufacturer    String?
+  model           String?
+  serialNumber    String?
+  location        String?
+  status          String   @default("ACTIVE") // ACTIVE, UNDER_MAINTENANCE, OUT_OF_SERVICE, RETIRED
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  serviceVisits   ServiceVisit[]
+  serviceReports  ServiceReport[]
+  amcs            AMCEquipment[]
+}
+
+model AMC {
+  id              String   @id @default(cuid())
+  amcNumber       String   @unique
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  startDate       DateTime
+  endDate         DateTime
+  coveredServices String?  // JSON string
+  frequency       String   // MONTHLY, QUARTERLY, HALF_YEARLY, YEARLY, CUSTOM
+  status          String   @default("DRAFT") // DRAFT, ACTIVE, EXPIRING, EXPIRED, CANCELLED, RENEWED
+  renewalDate     DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  equipment       AMCEquipment[]
+}
+
+model AMCEquipment {
+  amcId       String
+  amc         AMC       @relation(fields: [amcId], references: [id], onDelete: Cascade)
+  equipmentId String
+  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([amcId, equipmentId])
+}
+
+model ServiceVisit {
+  id              String   @id @default(cuid())
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  workOrderId     String?
+  workOrder       WorkOrder? @relation(fields: [workOrderId], references: [id])
+  
+  equipmentId     String?
+  equipment       Equipment? @relation(fields: [equipmentId], references: [id])
+  
+  technicianId    String?
+  technician      User?    @relation("AssignedTechnician", fields: [technicianId], references: [id])
+  
+  date            DateTime
+  startTime       String?
+  endTime         String?
+  workPerformed   String?
+  observations    String?
+  recommendations String?
+  status          String   @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ServiceReport {
+  id              String   @id @default(cuid())
+  reportNumber    String   @unique
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  workOrderId     String?
+  workOrder       WorkOrder? @relation(fields: [workOrderId], references: [id])
+  
+  equipmentId     String?
+  equipment       Equipment? @relation(fields: [equipmentId], references: [id])
+  
+  technicianId    String?
+  technician      User?    @relation("ReportTechnician", fields: [technicianId], references: [id])
+  
+  date            DateTime
+  workPerformed   String
+  observations    String?
+  issues          String?
+  recommendations String?
+  photos          String?  // JSON string array of URLs
+  customerAcknowledgement Boolean @default(false)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Part {
+  id              String   @id @default(cuid())
+  partNumber      String   @unique
+  name            String
+  category        String?
+  manufacturer    String?
+  compatibility   String?  // JSON string
+  quantity        Int      @default(0)
+  minimumStock    Int      @default(0)
+  location        String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  stockMovements  StockMovement[]
+}
+
+model StockMovement {
+  id              String   @id @default(cuid())
+  partId          String
+  part            Part     @relation(fields: [partId], references: [id])
+  type            String   // RECEIVED, ISSUED, RETURNED, ADJUSTED
+  quantity        Int
+  
+  workOrderId     String?
+  workOrder       WorkOrder? @relation(fields: [workOrderId], references: [id])
+  
+  note            String?
+  createdAt       DateTime @default(now())
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  invoiceNumber   String   @unique
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  
+  workOrderId     String?
+  workOrder       WorkOrder? @relation(fields: [workOrderId], references: [id])
+  
+  quotationId     String?
+  quotation       Quotation? @relation(fields: [quotationId], references: [id])
+  
+  status          String   @default("DRAFT") // DRAFT, ISSUED, SENT, PARTIALLY_PAID, PAID, OVERDUE, CANCELLED
+  
+  subtotal        Float
+  taxAmount       Float
+  discount        Float
+  grandTotal      Float
+  
+  issueDate       DateTime?
+  dueDate         DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  payments        Payment[]
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  invoiceId       String
+  invoice         Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  amount          Float
+  date            DateTime
+  method          String   // CASH, BANK_TRANSFER, CHEQUE, ONLINE
+  reference       String?
+  
+  createdAt       DateTime @default(now())
 }

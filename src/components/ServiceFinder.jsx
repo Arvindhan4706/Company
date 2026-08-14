@@ -5,19 +5,21 @@ import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-const servicesOptions = [
-  { label: 'I need industrial erection.', value: 'industrial-erection' },
-  { label: 'I need fabrication.', value: 'industrial-fabrication' },
-  { label: 'I need hydraulic/pneumatic servicing.', value: 'hydraulic-pneumatic-overhauling' },
-  { label: 'I need generator spare parts.', value: 'generator-spare-parts' },
-  { label: 'I need AMC.', value: 'amc-maintenance' },
-  { label: 'I need generator rental.', value: 'generator-rental' },
-  { label: 'I need air compressor rental.', value: 'air-compressor-rental' },
-  { label: 'I need turbocharger service.', value: 'turbocharger-services' },
-];
-
-const ServiceFinder = () => {
+const ServiceFinder = ({ services = [] }) => {
   const containerRef = useRef(null);
+
+  const servicesOptions = services.length > 0 
+    ? services.map(s => ({ label: `I need ${s.title.toLowerCase()}.`, value: s.slug }))
+    : [
+        { label: 'I need industrial erection.', value: 'industrial-erection' },
+        { label: 'I need fabrication.', value: 'industrial-fabrication' },
+        { label: 'I need hydraulic/pneumatic servicing.', value: 'hydraulic-pneumatic-overhauling' },
+        { label: 'I need generator spare parts.', value: 'generator-spare-parts' },
+        { label: 'I need AMC.', value: 'amc-maintenance' },
+        { label: 'I need generator rental.', value: 'generator-rental' },
+        { label: 'I need air compressor rental.', value: 'air-compressor-rental' },
+        { label: 'I need turbocharger service.', value: 'turbocharger-services' },
+      ];
 
   useGSAP(() => {
     gsap.fromTo('.sf-heading',

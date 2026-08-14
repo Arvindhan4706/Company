@@ -48,7 +48,7 @@ export default function DocumentVault({ initialDocuments }) {
   };
 
   return (
-    <div className="bg-white/[0.02] border border-white/5 p-8 rounded-lg">
+    <div className="bg-admin-surface/[0.02] border border-white/5 p-8 rounded-lg">
       <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
         <div>
           <h2 className="text-xl font-heading font-light text-white flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function DocumentVault({ initialDocuments }) {
           />
           <label 
             htmlFor="file-upload"
-            className={`flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-white hover:text-black transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
+            className={`flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-admin-surface hover:text-admin-heading transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
           >
             <Upload size={16} /> {isUploading ? 'Uploading...' : 'Upload Secure File'}
           </label>
@@ -99,10 +99,10 @@ export default function DocumentVault({ initialDocuments }) {
             </thead>
             <tbody>
               {documents.map((doc) => (
-                <tr key={doc.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={doc.id} className="border-b border-white/5 hover:bg-admin-surface/[0.02] transition-colors">
                   <td className="py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded bg-white/5 flex items-center justify-center border border-white/10">
+                      <div className="w-10 h-10 rounded bg-admin-surface/5 flex items-center justify-center border border-white/10">
                         <FileText size={18} className="text-accent" />
                       </div>
                       <div>
@@ -114,7 +114,7 @@ export default function DocumentVault({ initialDocuments }) {
                     </div>
                   </td>
                   <td className="py-4 text-sm text-secondary">
-                    <span className="px-2 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-heading">
+                    <span className="px-2 py-1 bg-admin-surface/5 border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-heading">
                       {doc.category}
                     </span>
                   </td>

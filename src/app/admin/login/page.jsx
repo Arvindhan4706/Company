@@ -1,120 +1,329 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, AlertCircle } from 'lucide-react';
+import {
+  Lock, Mail, AlertCircle, ArrowRight, Eye, EyeOff,
+  Shield, CheckCircle2, Layers, FileText, Wrench, Users,
+  Activity, Package
+} from 'lucide-react';
 
+/* ─── Design tokens ─────────────────────────────────────── */
+const BG       = '#0a0a0a';
+const SURFACE  = '#111111';
+const BORDER   = '#1e1e1e';
+const BORDER_FOCUS = '#3a3a3a';
+const TEXT     = '#e2e2e2';
+const MUTED    = '#525252';
+const DIMMED   = '#2a2a2a';
+const WHITE    = '#ffffff';
+
+/* ─── Platform capabilities list ────────────────────────── */
+const CAPABILITIES = [
+  { icon: Users,    label: 'CRM & Lead Management',      desc: 'Inquiries, follow-ups, pipeline tracking' },
+  { icon: Wrench,   label: 'Work Order Management',       desc: 'Scheduling, dispatch, and completion tracking' },
+  { icon: Activity, label: 'AMC & Service Contracts',     desc: 'Renewals, SLA alerts, and equipment history' },
+  { icon: FileText, label: 'Billing & Invoicing',         desc: 'Quotations, GST invoices, payment records' },
+  { icon: Package,  label: 'Inventory & Document Vault',  desc: 'Parts tracking, certifications, and media' },
+];
+
+/* ─── Subtle crosshatch background ─────────────────────── */
+const GRID_STYLE = {
+  backgroundImage: `
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
+  `,
+  backgroundSize: '32px 32px',
+};
+
+/* ─── Input component ────────────────────────────────────── */
+function FormInput({ id, label, type = 'text', name, required, defaultValue, placeholder, icon: Icon, children }) {
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef(null);
+
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        style={{ display: 'block', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: MUTED, marginBottom: '8px' }}
+      >
+        {label}
+      </label>
+      <div style={{ position: 'relative' }}>
+        {Icon && (
+          <Icon
+            size={15}
+            style={{
+              position: 'absolute', left: '13px', top: '50%', transform: 'translateY(-50%)',
+              color: focused ? '#888' : '#3a3a3a',
+              transition: 'color 0.15s ease',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+        <input
+          ref={inputRef}
+          id={id}
+          type={type}
+          name={name}
+          required={required}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          suppressHydrationWarning
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={{
+            width: '100%',
+            padding: `11px ${children ? '44px' : '13px'} 11px ${Icon ? '40px' : '13px'}`,
+            fontSize: '14px',
+            color: TEXT,
+            background: focused ? '#161616' : '#0f0f0f',
+            border: `1px solid ${focused ? BORDER_FOCUS : BORDER}`,
+            borderRadius: '6px',
+            outline: 'none',
+            transition: 'border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease',
+            boxShadow: focused ? `0 0 0 3px rgba(255,255,255,0.04)` : 'none',
+            boxSizing: 'border-box',
+          }}
+          className="placeholder-[#2e2e2e]"
+        />
+        {children && (
+          <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }}>
+            {children}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main page ─────────────────────────────────────────── */
 export default function LoginAdminPage() {
-  const router = useRouter();
-  const [error, setError] = useState('');
+  const router   = useRouter();
+  const [error,   setError]   = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPw,  setShowPw]  = useState(false);
+  const [ready,   setReady]   = useState(false);
+
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    const formData = new FormData(e.target);
-    const email = formData.get('email');
-    const password = formData.get('password');
-
+    const fd = new FormData(e.target);
     try {
       const res = await signIn('credentials', {
         redirect: false,
-        email,
-        password,
+        email:    fd.get('email'),
+        password: fd.get('password'),
       });
-
       if (res?.error) {
-        setError('Invalid credentials');
+        setError('Invalid credentials. Please verify your email and password.');
       } else {
         router.push('/admin/dashboard');
         router.refresh();
       }
-    } catch (err) {
-      setError('An error occurred during login');
+    } catch {
+      setError('A network error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] text-white">
-      {/* Background styling */}
-      <div className="absolute inset-0 z-0 overflow-hidden opacity-30">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[30rem] h-[30rem] bg-secondary/10 rounded-full blur-[150px]" />
-      </div>
+    <div suppressHydrationWarning style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: BG, color: TEXT, fontFamily: 'Inter, sans-serif', overflow: 'hidden' }}>
 
-      <div className="relative z-10 w-full max-w-md p-8 bg-white/[0.02] border border-white/5 backdrop-blur-xl rounded-2xl shadow-2xl">
-        <div className="text-center mb-8">
-          <div className="inline-block p-4 bg-white/5 rounded-full mb-4 border border-white/10">
-            <Lock className="w-8 h-8 text-accent" />
+
+      {/* ══════════════════════════════════════════════════
+          LOGIN BOX
+      ══════════════════════════════════════════════════ */}
+      <div style={{
+        width: '100%',
+        maxWidth: '480px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '40px 32px',
+        background: BG,
+        position: 'relative',
+      }}
+        className="w-full"
+      >
+
+        {/* Logo */}
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '40px', alignSelf: 'center' }}
+        >
+          <div style={{ width: '32px', height: '32px', borderRadius: '7px', background: WHITE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Shield size={14} color={BG} />
           </div>
-          <h1 className="text-2xl font-heading font-light tracking-widest uppercase mb-2">MECELFAB</h1>
-          <p className="text-secondary text-sm font-light">Admin Control Panel</p>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: WHITE, fontFamily: 'Space Grotesk, Inter, sans-serif', letterSpacing: '-0.02em' }}>
+            MECELFAB
+          </span>
         </div>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-            <p className="text-sm text-red-200">{error}</p>
-          </div>
-        )}
+        {/* Card */}
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '360px',
+            opacity: ready ? 1 : 0,
+            transform: ready ? 'translateY(0)' : 'translateY(12px)',
+            transition: 'opacity 0.4s ease, transform 0.4s ease',
+          }}
+        >
+          {/* ── Header ── */}
+          <div style={{ marginBottom: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            {/* Admin badge */}
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '4px 10px', borderRadius: '4px',
+              border: `1px solid ${BORDER}`,
+              background: '#0f0f0f',
+              marginBottom: '20px',
+            }}>
+              <Lock size={10} color={MUTED} />
+              <span style={{ fontSize: '11px', color: MUTED, fontWeight: 500, letterSpacing: '0.06em' }}>Admin Access</span>
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-              <input
-                type="email"
-                name="email"
-                required
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-accent transition-colors"
-                placeholder="admin@mecelfab.com"
-                defaultValue="admin@mecelfab.com"
-                suppressHydrationWarning
-              />
+            <h1 style={{
+              fontSize: '26px', fontWeight: 700, color: WHITE,
+              fontFamily: 'Space Grotesk, Inter, sans-serif',
+              letterSpacing: '-0.03em', lineHeight: 1.2,
+              marginBottom: '8px',
+            }}>
+              Sign in to your account
+            </h1>
+            <p style={{ fontSize: '13px', color: MUTED, lineHeight: 1.6 }}>
+              Enter your administrator credentials to access the control panel.
+            </p>
+          </div>
+
+          {/* ── Error Alert ── */}
+          {error && (
+            <div
+              role="alert"
+              style={{
+                display: 'flex', alignItems: 'flex-start', gap: '10px',
+                padding: '12px 14px', borderRadius: '6px', marginBottom: '20px',
+                background: 'rgba(220,38,38,0.06)',
+                border: '1px solid rgba(220,38,38,0.2)',
+              }}
+            >
+              <AlertCircle size={14} color="#ef4444" style={{ flexShrink: 0, marginTop: '1px' }} />
+              <p style={{ fontSize: '13px', color: '#ef4444', lineHeight: 1.5 }}>{error}</p>
+            </div>
+          )}
+
+          {/* ── Form ── */}
+          <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+            {/* Email */}
+            <FormInput
+              id="email"
+              label="Email Address"
+              type="email"
+              name="email"
+              required
+              defaultValue="admin@mecelfab.com"
+              placeholder="admin@mecelfab.com"
+              icon={Mail}
+            />
+
+            {/* Password */}
+            <FormInput
+              id="password"
+              label="Password"
+              type={showPw ? 'text' : 'password'}
+              name="password"
+              required
+              placeholder="Enter your password"
+              icon={Lock}
+            >
+              <button
+                type="button"
+                onClick={() => setShowPw(v => !v)}
+                tabIndex={-1}
+                aria-label={showPw ? 'Hide password' : 'Show password'}
+                style={{
+                  background: 'none', border: 'none', padding: '4px',
+                  cursor: 'pointer', color: MUTED,
+                  display: 'flex', alignItems: 'center',
+                  transition: 'color 0.15s ease',
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#888'}
+                onMouseLeave={e => e.currentTarget.style.color = MUTED}
+              >
+                {showPw ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+            </FormInput>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              suppressHydrationWarning
+              style={{
+                marginTop: '4px',
+                width: '100%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                padding: '12px 20px',
+                fontSize: '14px', fontWeight: 600,
+                color: BG,
+                background: loading ? '#d4d4d4' : WHITE,
+                border: 'none', borderRadius: '6px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                transition: 'background 0.15s ease, box-shadow 0.15s ease',
+                letterSpacing: '-0.01em',
+              }}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#e8e8e8'; }}
+              onMouseLeave={e => { if (!loading) e.currentTarget.style.background = WHITE; }}
+            >
+              {loading ? (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style={{ animation: 'spin 0.7s linear infinite' }}>
+                    <circle cx="12" cy="12" r="10" stroke={BG} strokeWidth="3" strokeOpacity="0.25" />
+                    <path d="M4 12a8 8 0 018-8" stroke={BG} strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                  <span>Authenticating…</span>
+                </>
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <ArrowRight size={14} />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* ── Security footer ── */}
+          <div style={{
+            marginTop: '28px', paddingTop: '24px',
+            borderTop: `1px solid ${BORDER}`,
+          }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', textAlign: 'center' }}>
+              {[
+                'Authorized personnel only — unauthorized access is prohibited',
+                'All login attempts and actions are logged and audited',
+              ].map(text => (
+                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+                  <CheckCircle2 size={12} color="#2e2e2e" style={{ flexShrink: 0 }} />
+                  <p style={{ fontSize: '11px', color: '#2e2e2e', lineHeight: 1.5 }}>{text}</p>
+                </div>
+              ))}
             </div>
           </div>
-
-          <div>
-            <label className="block text-xs font-heading tracking-widest text-secondary uppercase mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-              <input
-                type="password"
-                name="password"
-                required
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-accent transition-colors"
-                placeholder="••••••••"
-                suppressHydrationWarning
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-white text-black font-heading tracking-widest uppercase text-sm py-4 rounded-xl hover:bg-accent hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            suppressHydrationWarning
-          >
-            {loading ? 'Authenticating...' : 'Secure Login'}
-          </button>
-        </form>
-
-        <div className="mt-8 pt-6 border-t border-white/10 text-center">
-          <p className="text-xs text-secondary font-light">
-            Authorized personnel only. All access attempts are logged.
-          </p>
         </div>
       </div>
+
+      {/* Spin keyframe */}
+      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

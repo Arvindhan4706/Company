@@ -15,8 +15,8 @@ export default async function AdminCertificationsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Certifications</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage ISO and industry compliance certifications.</p>
+          <h1 className="text-2xl font-bold text-admin-heading">Certifications</h1>
+          <p className="text-admin-muted text-sm mt-1">Manage ISO and industry compliance certifications.</p>
         </div>
         <Link href="/admin/certifications/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
           <Plus size={16} />
@@ -24,29 +24,29 @@ export default async function AdminCertificationsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-admin-surface rounded-lg shadow-sm border border-admin-border overflow-hidden">
         {certifications.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No certifications found. Add your compliance documents.</div>
+          <div className="p-8 text-center text-admin-muted">No certifications found. Add your compliance documents.</div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Certification</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Issuer</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Year</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
-                <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-admin-elevated border-b border-admin-border">
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Certification</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Issuer</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Year</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider">Featured</th>
+                <th className="py-3 px-6 text-xs font-semibold text-admin-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-admin-border/50">
               {certifications.map(cert => (
-                <tr key={cert.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="py-4 px-6 font-medium text-gray-900 flex items-center gap-3">
+                <tr key={cert.id} className="hover:bg-admin-elevated transition-colors">
+                  <td className="py-4 px-6 font-medium text-admin-heading flex items-center gap-3">
                     <Award size={18} className="text-blue-500" />
                     {cert.title}
                   </td>
-                  <td className="py-4 px-6 text-sm text-gray-600">{cert.issuer}</td>
-                  <td className="py-4 px-6 text-sm text-gray-500">{cert.year || 'N/A'}</td>
+                  <td className="py-4 px-6 text-sm text-admin-muted">{cert.issuer}</td>
+                  <td className="py-4 px-6 text-sm text-admin-muted">{cert.year || 'N/A'}</td>
                   <td className="py-4 px-6">
                     {cert.featured ? (
                       <CheckCircle size={18} className="text-green-500" />

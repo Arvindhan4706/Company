@@ -33,13 +33,13 @@ export default async function AdminActivityPage() {
         </div>
       </div>
 
-      <div className="bg-white/[0.02] rounded-lg shadow-sm border border-white/5 overflow-hidden">
+      <div className="bg-admin-surface/[0.02] rounded-lg shadow-sm border border-white/5 overflow-hidden">
         {logs.length === 0 ? (
           <div className="p-8 text-center text-secondary font-light">No activity recorded yet.</div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-white/5 border-b border-white/10">
+              <tr className="bg-admin-surface/5 border-b border-white/10">
                 <th className="py-4 px-6 text-xs font-heading font-normal text-secondary uppercase tracking-widest">Timestamp</th>
                 <th className="py-4 px-6 text-xs font-heading font-normal text-secondary uppercase tracking-widest">User</th>
                 <th className="py-4 px-6 text-xs font-heading font-normal text-secondary uppercase tracking-widest">Action</th>
@@ -49,7 +49,7 @@ export default async function AdminActivityPage() {
             </thead>
             <tbody>
               {logs.map(log => (
-                <tr key={log.id} className="hover:bg-white/[0.02] border-b border-white/5 transition-colors">
+                <tr key={log.id} className="hover:bg-admin-surface/[0.02] border-b border-white/5 transition-colors">
                   <td className="py-4 px-6 text-sm font-light text-white whitespace-nowrap">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
@@ -57,7 +57,7 @@ export default async function AdminActivityPage() {
                     {log.user?.name || log.user?.email || 'System'}
                   </td>
                   <td className="py-4 px-6">
-                    <span className="px-2.5 py-1 text-[10px] font-heading font-semibold uppercase tracking-widest bg-white/5 border border-white/10 text-white/80 rounded-full">
+                    <span className="px-2.5 py-1 text-[10px] font-heading font-semibold uppercase tracking-widest bg-admin-surface/5 border border-white/10 text-white/80 rounded-full">
                       {log.action}
                     </span>
                   </td>

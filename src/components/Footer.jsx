@@ -138,13 +138,13 @@ const Footer = ({ contact }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-secondary font-light text-center md:text-left break-words w-full">
+        <div className="border-t border-white/5 pt-8 flex flex-col items-center justify-center gap-6 text-xs text-secondary font-light text-center break-words w-full relative">
           <div className="leading-relaxed">
             &copy; {new Date().getFullYear()} {contact?.companyName || 'MECELFAB INDUSTRIAL SOLUTIONS PRIVATE LIMITED'}. All rights reserved.
           </div>
           <button
             onClick={handleScrollToTop}
-            className="w-[44px] h-[44px] shrink-0 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-300"
+            className="md:absolute md:right-0 md:top-8 w-[44px] h-[44px] shrink-0 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-300"
             aria-label="Scroll to top"
           >
             <ArrowUp size={16} />

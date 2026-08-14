@@ -109,14 +109,14 @@ export default function ProjectList({ initialProjects }) {
   };
 
   return (
-    <div className="bg-white/[0.02] border border-white/5 p-8 rounded-lg">
+    <div className="bg-admin-surface/[0.02] border border-white/5 p-8 rounded-lg">
       <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
         <h2 className="text-xl font-heading font-light text-white">
           All Projects
         </h2>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
+          className="flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg text-sm font-heading tracking-widest uppercase hover:bg-admin-surface hover:text-admin-heading transition-colors"
         >
           <Plus size={16} /> New Project
         </button>
@@ -135,10 +135,10 @@ export default function ProjectList({ initialProjects }) {
           </thead>
           <tbody className="block md:table-row-group">
             {projects.map((project) => (
-              <tr key={project.id} className="block md:table-row border-b border-white/5 hover:bg-white/[0.02] transition-colors mb-6 md:mb-0 pb-4 md:pb-0">
+              <tr key={project.id} className="block md:table-row border-b border-white/5 hover:bg-admin-surface/[0.02] transition-colors mb-6 md:mb-0 pb-4 md:pb-0">
                 <td className="block md:table-cell py-2 md:py-4">
                   <div className="flex items-center gap-4 mb-2 md:mb-0">
-                    <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 relative flex-shrink-0">
+                    <div className="w-12 h-12 rounded bg-admin-surface/5 flex items-center justify-center overflow-hidden border border-white/10 relative flex-shrink-0">
                       {project.image ? (
                         <Image src={project.image} alt={project.title} fill className="object-cover" />
                       ) : (
@@ -164,7 +164,7 @@ export default function ProjectList({ initialProjects }) {
                   <span className={`inline-block text-xs px-2 py-1 rounded ${
                     project.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
                     project.status === 'In Progress' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 
-                    'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                    'bg-admin-elevated0/10 text-gray-400 border border-gray-500/20'
                   }`}>
                     {project.status}
                   </span>
@@ -260,17 +260,17 @@ export default function ProjectList({ initialProjects }) {
                       href={`/projects/${editingProject.slug}?preview=true`}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors inline-block text-sm font-heading tracking-widest uppercase"
+                      className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-admin-surface/5 transition-colors inline-block text-sm font-heading tracking-widest uppercase"
                     >
                       Preview
                     </a>
                   )}
                 </div>
                 <div className="flex gap-4">
-                  <button type="button" onClick={handleCloseModal} className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase">
+                  <button type="button" onClick={handleCloseModal} className="px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-admin-surface/5 transition-colors text-sm font-heading tracking-widest uppercase">
                     Cancel
                   </button>
-                  <button type="submit" disabled={loading} className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-white hover:text-black transition-colors disabled:opacity-50 text-sm font-heading tracking-widest uppercase">
+                  <button type="submit" disabled={loading} className="px-6 py-2 rounded-lg bg-accent text-white font-medium hover:bg-admin-surface hover:text-admin-heading transition-colors disabled:opacity-50 text-sm font-heading tracking-widest uppercase">
                     {loading ? 'Saving...' : 'Save'}
                   </button>
                 </div>

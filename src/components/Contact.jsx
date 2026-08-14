@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Contact = ({ services = [], content }) => {
+const Contact = ({ services = [], content, initialService = '' }) => {
   const containerRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ const Contact = ({ services = [], content }) => {
     email: '',
     phone: '',
     projectLocation: '',
-    serviceRequired: 'Fabrication Works',
+    serviceRequired: initialService || (services.length > 0 ? services[0].title : 'Industrial Erection'),
     projectDescription: '',
     expectedTimeline: '',
     preferredContactMethod: 'Email',
@@ -154,7 +154,7 @@ const Contact = ({ services = [], content }) => {
           email: '',
           phone: '',
           projectLocation: '',
-          serviceRequired: 'Fabrication Works',
+          serviceRequired: initialService || (services.length > 0 ? services[0].title : 'Industrial Erection'),
           projectDescription: '',
           expectedTimeline: '',
           preferredContactMethod: 'Email',

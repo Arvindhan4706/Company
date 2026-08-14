@@ -74,7 +74,7 @@ export default function ClientList({ initialClients }) {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {clients.map((client) => (
-          <div key={client.id} className="bg-white/[0.02] border border-white/5 rounded-xl p-6 flex flex-col items-center text-center group">
+          <div key={client.id} className="bg-admin-surface/[0.02] border border-white/5 rounded-xl p-6 flex flex-col items-center text-center group">
             <div className="relative w-32 h-20 mb-4 opacity-70 group-hover:opacity-100 transition-opacity">
               <Image 
                 src={client.logo || 'https://via.placeholder.com/300x150.png?text=No+Logo'} 
@@ -97,7 +97,7 @@ export default function ClientList({ initialClients }) {
       </div>
 
       {clients.length === 0 && (
-        <div className="p-12 text-center text-secondary bg-white/[0.02] border border-white/5 rounded-xl">
+        <div className="p-12 text-center text-secondary bg-admin-surface/[0.02] border border-white/5 rounded-xl">
           No clients found. Add one to get started.
         </div>
       )}
@@ -161,11 +161,11 @@ export default function ClientList({ initialClients }) {
               </form>
             </div>
 
-            <div className="p-6 border-t border-white/10 flex justify-end gap-4 bg-white/[0.02]">
+            <div className="p-6 border-t border-white/10 flex justify-end gap-4 bg-admin-surface/[0.02]">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-sm font-heading tracking-widest uppercase"
+                className="px-6 py-2 border border-white/10 text-white rounded-lg hover:bg-admin-surface/5 transition-colors text-sm font-heading tracking-widest uppercase"
               >
                 Cancel
               </button>
@@ -173,7 +173,7 @@ export default function ClientList({ initialClients }) {
                 type="submit"
                 form="client-form"
                 disabled={loading}
-                className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
+                className="px-6 py-2 bg-admin-surface text-admin-heading rounded-lg hover:bg-gray-200 transition-colors text-sm font-heading tracking-widest uppercase disabled:opacity-50"
               >
                 {loading ? 'Adding...' : 'Add Client'}
               </button>

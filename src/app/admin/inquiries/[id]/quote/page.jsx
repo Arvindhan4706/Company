@@ -91,7 +91,8 @@ async function saveQuotation(formData) {
   redirect(`/admin/quotations/${quotation.id}`);
 }
 
-export default async function CreateQuotationPage({ params }) {
+export default async function (props) {
+  const params = await props.params;
   const session = await getServerSession(authOptions);
   if (!session) redirect('/admin/login');
 
